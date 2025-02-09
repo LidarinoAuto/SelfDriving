@@ -17,32 +17,30 @@ const float ROTATION_GAIN = 1.0;
  *   maxPWM: Maximum PWM value (0..255)
  **************************************************************/
 void KiwiDrive(float vx, float vy, float omega, float maxPWM) {
-  // (Optional) Invert vy if needed to fix forward/backward reversal
-  vy = -vy;
-
-  // Apply a 90° correction to the wheel geometry if necessary:
+  vy = -vy;  // (Optional) Invert vy if needed to fix forward/backward reversal
+  
   float rad1 = radians(WHEEL_ANGLE_1 - 90);
   float rad2 = radians(WHEEL_ANGLE_2 - 90);
   float rad3 = radians(WHEEL_ANGLE_3 - 90);
 
-  // Compute the translational component for each wheel.
   float t1 = -sin(rad1) * vx + cos(rad1) * vy;
   float t2 = -sin(rad2) * vx + cos(rad2) * vy;
   float t3 = -sin(rad3) * vx + cos(rad3) * vy;
 
-  // Mix in rotation:
   float w1 = t1 + ROTATION_GAIN * omega;
   float w2 = t2 + ROTATION_GAIN * omega;
   float w3 = t3 + ROTATION_GAIN * omega;
 
-  // Normalize the wheel speeds so that none exceed the range after mixing.
   float maxVal = max(max(abs(w1), abs(w2)), abs(w3));
 
   if (maxVal < 0.0001) {
-    // When the maximum value is near zero, stop all motors
-    Motor1(0);
-    Motor2(0);
-    Motor3(0);
+    w1 = 0;
+    w2 = 0;
+    w3 = 0;
+
+    M1_Stop();
+    M2_Stop();
+    M3_Stop();
     return;
   } else {
     w1 /= maxVal;
@@ -50,31 +48,50 @@ void KiwiDrive(float vx, float vy, float omega, float maxPWM) {
     w3 /= maxVal;
   }
 
-  // Scale speeds to the maximum PWM value.
   w1 *= maxPWM;
   w2 *= maxPWM;
   w3 *= maxPWM;
 
-  // Set motor speeds using the signed values directly
-  Motor1(w1);
-  Motor2(w2);
-  Motor3(w3);
+  int pwm1 = (int)abs(w1);
+  int pwm2 = (int)abs(w2);
+  int pwm3 = (int)abs(w3);
 
-  // (Optional) Debug output
+  // Motor 1
+  if (w1 >= 0.0) {
+    M1_Forward(pwm1);  // Send PWM-verdi til funksjonen
+  } else {
+    M1_Backward(pwm1);
+  }
+
+  // Motor 2
+  if (w2 >= 0.0) {
+    M2_Forward(pwm2);
+  } else {
+    M2_Backward(pwm2);
+  }
+
+  // Motor 3
+  if (w3 >= 0.0) {
+    M3_Forward(pwm3);
+  } else {
+    M3_Backward(pwm3);
+  }
+
+  // Debug output
   Serial.print("Motor1 raw=");
   Serial.print(w1);
   Serial.print(", pwm=");
-  Serial.println((int)abs(w1));
+  Serial.println(pwm1);
 
   Serial.print("Motor2 raw=");
   Serial.print(w2);
   Serial.print(", pwm=");
-  Serial.println((int)abs(w2));
+  Serial.println(pwm2);
 
   Serial.print("Motor3 raw=");
   Serial.print(w3);
   Serial.print(", pwm=");
-  Serial.println((int)abs(w3));
+  Serial.println(pwm3);
 
   Serial.println("---------------");
 }
