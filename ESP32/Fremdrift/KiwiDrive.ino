@@ -1,97 +1,66 @@
-// KiwiDrive.ino
+/*******************************************************
+ *  TAB 2: KiwiDrive.ino
+ *******************************************************/
+#ifndef KIWI_DRIVE_INO
+#define KIWI_DRIVE_INO
 
-// Define the wheel mounting angles in degrees
-const float WHEEL_ANGLE_1 = 60.0;
-const float WHEEL_ANGLE_2 = 180.0;
-const float WHEEL_ANGLE_3 = 300.0;
+// We need to use the global setpoints declared in the main tab
+extern float setpoint1, setpoint2, setpoint3;
 
-// You can adjust this constant to fine-tune how strongly rotation affects
-// each wheel’s speed. Essentially, it converts your desired rotational velocity
-// into a PWM contribution.
-const float ROTATION_GAIN = 1.0;
+/**
+ * KiwiDrive(vx, vy, omega)
+ *  vx, vy: dimensionless translational commands (-1..+1)
+ *  omega:  dimensionless rotational command  (-1..+1)
+ *
+ *  This function calculates the desired wheel speeds (mm/s)
+ *  for each of the three omni wheels and stores them
+ *  in setpoint1, setpoint2, setpoint3.
+ */
+void KiwiDrive(float vx, float vy, float omega)
+{
+  // For your project, set the maximum translation/rotation speeds:
+  const float MAX_TRANS_SPEED = 300.0; // mm/s for vx or vy = ±1.0
+  const float MAX_ROT_SPEED   = 1.0;   // "1.0" = 1 rad/s, for example
 
-/**************************************************************
- * KiwiDrive()
- *   vx, vy: Desired translational velocity components (e.g. -1.0..+1.0)
- *   omega: Desired rotational speed (positive for, say, counterclockwise)
- *   maxPWM: Maximum PWM value (0..255)
- **************************************************************/
-void KiwiDrive(float vx, float vy, float omega, float maxPWM) {
-  vy = -vy;  // (Optional) Invert vy if needed to fix forward/backward reversal
-  
-  float rad1 = radians(WHEEL_ANGLE_1 - 90);
-  float rad2 = radians(WHEEL_ANGLE_2 - 90);
-  float rad3 = radians(WHEEL_ANGLE_3 - 90);
+  // Convert dimensionless [-1..+1] to mm/s or rad/s
+  float vx_mm = vx * MAX_TRANS_SPEED;
+  float vy_mm = vy * MAX_TRANS_SPEED;
+  float w_rad = omega * MAX_ROT_SPEED;
 
-  float t1 = -sin(rad1) * vx + cos(rad1) * vy;
-  float t2 = -sin(rad2) * vx + cos(rad2) * vy;
-  float t3 = -sin(rad3) * vx + cos(rad3) * vy;
+  // Adjust direction if needed: 
+  // For some Kiwi layouts, forward might be -vy instead of vy
+  // vy_mm = -vy_mm;  // (uncomment if needed)
 
-  float w1 = t1 + ROTATION_GAIN * omega;
-  float w2 = t2 + ROTATION_GAIN * omega;
-  float w3 = t3 + ROTATION_GAIN * omega;
+  // Wheel angles (assuming 3-wheel kiwi at 120° each)
+  float angle1 = radians(  60 - 90 ); // = -30 deg
+  float angle2 = radians( 180 - 90 ); // =  90 deg
+  float angle3 = radians( 300 - 90 ); // = 210 deg
 
-  float maxVal = max(max(abs(w1), abs(w2)), abs(w3));
+  // Translational components
+  float t1 = -sin(angle1)*vx_mm + cos(angle1)*vy_mm;
+  float t2 = -sin(angle2)*vx_mm + cos(angle2)*vy_mm;
+  float t3 = -sin(angle3)*vx_mm + cos(angle3)*vy_mm;
 
-  if (maxVal < 0.0001) {
-    w1 = 0;
-    w2 = 0;
-    w3 = 0;
+  // Convert rotation to linear speed at the wheel.
+  // This depends on your geometry (distance from center, etc).
+  // For a quick example, define some constant:
+  const float ROTATION_GAIN_MM = 50.0;
+  float w1 = t1 + (ROTATION_GAIN_MM * w_rad);
+  float w2 = t2 + (ROTATION_GAIN_MM * w_rad);
+  float w3 = t3 + (ROTATION_GAIN_MM * w_rad);
 
-    M1_Stop();
-    M2_Stop();
-    M3_Stop();
-    return;
-  } else {
-    w1 /= maxVal;
-    w2 /= maxVal;
-    w3 /= maxVal;
-  }
+  // Assign to global PID setpoints
+  setpoint1 = w1;
+  setpoint2 = w2;
+  setpoint3 = w3;
 
-  w1 *= maxPWM;
-  w2 *= maxPWM;
-  w3 *= maxPWM;
-
-  int pwm1 = (int)abs(w1);
-  int pwm2 = (int)abs(w2);
-  int pwm3 = (int)abs(w3);
-
-  // Motor 1
-  if (w1 >= 0.0) {
-    M1_Forward(pwm1);  // Send PWM-verdi til funksjonen
-  } else {
-    M1_Backward(pwm1);
-  }
-
-  // Motor 2
-  if (w2 >= 0.0) {
-    M2_Forward(pwm2);
-  } else {
-    M2_Backward(pwm2);
-  }
-
-  // Motor 3
-  if (w3 >= 0.0) {
-    M3_Forward(pwm3);
-  } else {
-    M3_Backward(pwm3);
-  }
-
-  // Debug output
-  Serial.print("Motor1 raw=");
-  Serial.print(w1);
-  Serial.print(", pwm=");
-  Serial.println(pwm1);
-
-  Serial.print("Motor2 raw=");
-  Serial.print(w2);
-  Serial.print(", pwm=");
-  Serial.println(pwm2);
-
-  Serial.print("Motor3 raw=");
-  Serial.print(w3);
-  Serial.print(", pwm=");
-  Serial.println(pwm3);
-
-  Serial.println("---------------");
+  // (Optional) Debug:
+  /*
+  Serial.print("KiwiDrive => w1: "); Serial.print(w1);
+  Serial.print(", w2: "); Serial.print(w2);
+  Serial.print(", w3: "); Serial.print(w3);
+  Serial.println(" mm/s");
+  */
 }
+
+#endif // KIWI_DRIVE_INO
