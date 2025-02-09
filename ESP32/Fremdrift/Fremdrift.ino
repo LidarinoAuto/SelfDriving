@@ -14,9 +14,6 @@ int speedY = 0;
 int rotation = 0;
 
 // === PID-relaterte arrayer (ett sett for hvert hjul) ===
-float pid_kp[3] = {1.8, 1.8, 1.8};
-float pid_ki[3] = {1.0, 1.0, 1.0};
-float pid_kd[3] = {0.0000001, 0.0000001, 0.0000001};
 
 float pid_integral[3]   = {0, 0, 0};
 float pid_lastError[3]  = {0, 0, 0};
@@ -91,6 +88,7 @@ void setup() {
 void loop() {
   // 1) Les IR for å bestemme speedX, speedY, rotation
   handleIRInput();
+  readSerialCommands();
 
   // 2) Kjør PID hver CONTROL_INTERVAL ms
   static unsigned long lastControlTime = 0;
