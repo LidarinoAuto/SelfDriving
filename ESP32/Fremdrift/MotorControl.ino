@@ -1,96 +1,88 @@
 // ==================== PIN DEFINITIONS ====================
-const int M1_IN1 = 5;
-const int M1_IN2 = 4;
-const int M1_EN  = 14; // Must be PWM-capable pin for speed control
+const int M1_IN1 = 14;
+const int M1_IN2 = 27;
 
-const int M2_IN1 = 16;
-const int M2_IN2 = 0;
-const int M2_EN  = 12; // Must be PWM-capable pin for speed control
+const int M2_IN1 = 25;
+const int M2_IN2 = 26;
 
-const int M3_IN1 = 15;
-const int M3_IN2 = 2;
-const int M3_EN  = 13; // Must be PWM-capable pin for speed control
+const int M3_IN1 = 33;
+const int M3_IN2 = 32;
 
 // ==================== INITIALIZATION ====================
 void MotorControl_Init() {
   pinMode(M1_IN1, OUTPUT);
   pinMode(M1_IN2, OUTPUT);
-  pinMode(M1_EN,  OUTPUT);
 
   pinMode(M2_IN1, OUTPUT);
   pinMode(M2_IN2, OUTPUT);
-  pinMode(M2_EN,  OUTPUT);
 
   pinMode(M3_IN1, OUTPUT);
   pinMode(M3_IN2, OUTPUT);
-  pinMode(M3_EN,  OUTPUT);
 
-  // If you have special setup for your driver (like setting up brake pins),
-  // do it here.
+  // Debugging info
+  Serial.begin(115200);
+  Serial.println("Motor control initialized");
 }
 
-// ==================== MOTOR 1 FUNCTIONS ====================
-void M1_Forward() {
-  digitalWrite(M1_IN1, LOW);
-  digitalWrite(M1_IN2, HIGH);
+// ==================== MOTOR 1 CONTROL ====================
+void Motor1(float speed) {
+  if (speed > 0) {
+      int constrainedSpeed = constrain(speed, 0, 255);
+      analogWrite(M1_IN1, constrainedSpeed);
+      analogWrite(M1_IN2, 0);
+      //Serial.print("Motor 1 Forward Speed: ");
+      //Serial.println(constrainedSpeed);
+  } else if (speed < 0) {
+      int constrainedSpeed = constrain(-speed, 0, 255);
+      analogWrite(M1_IN1, 0);
+      analogWrite(M1_IN2, constrainedSpeed);
+      //Serial.print("Motor 1 Backward Speed: ");
+      //Serial.println(constrainedSpeed);
+  } else {
+      analogWrite(M1_IN1, 0);
+      analogWrite(M1_IN2, 0);
+      //Serial.println("Motor 1 Stopped");
+  }
 }
 
-void M1_Backward() {
-  digitalWrite(M1_IN1, HIGH);
-  digitalWrite(M1_IN2, LOW);
+// ==================== MOTOR 2 CONTROL ====================
+void Motor2(float speed) {
+  if (speed > 0) {
+      int constrainedSpeed = constrain(speed, 0, 255);
+      analogWrite(M2_IN1, constrainedSpeed);
+      analogWrite(M2_IN2, 0);
+      //Serial.print("Motor 2 Forward Speed: ");
+      //Serial.println(constrainedSpeed);
+  } else if (speed < 0) {
+      int constrainedSpeed = constrain(-speed, 0, 255);
+      analogWrite(M2_IN1, 0);
+      analogWrite(M2_IN2, constrainedSpeed);
+      //Serial.print("Motor 2 Backward Speed: ");
+      //Serial.println(constrainedSpeed);
+  } else {
+      analogWrite(M2_IN1, 0);
+      analogWrite(M2_IN2, 0);
+      //Serial.println("Motor 2 Stopped");
+  }
 }
 
-void M1_Stop() {
-  digitalWrite(M1_IN1, LOW);
-  digitalWrite(M1_IN2, LOW);
-  analogWrite(M1_EN, 0);
-}
-
-void M1_SetSpeed(int speedVal) {
-  speedVal = constrain(speedVal, 0, 255);
-  analogWrite(M1_EN, speedVal);
-}
-
-// ==================== MOTOR 2 FUNCTIONS ====================
-void M2_Forward() {
-  digitalWrite(M2_IN1, LOW);
-  digitalWrite(M2_IN2, HIGH);
-}
-
-void M2_Backward() {
-  digitalWrite(M2_IN1, HIGH);
-  digitalWrite(M2_IN2, LOW);
-}
-
-void M2_Stop() {
-  digitalWrite(M2_IN1, LOW);
-  digitalWrite(M2_IN2, LOW);
-  analogWrite(M2_EN, 0);
-}
-
-void M2_SetSpeed(int speedVal) {
-  speedVal = constrain(speedVal, 0, 255);
-  analogWrite(M2_EN, speedVal);
-}
-
-// ==================== MOTOR 3 FUNCTIONS ====================
-void M3_Forward() {
-  digitalWrite(M3_IN1, LOW);
-  digitalWrite(M3_IN2, HIGH);
-}
-
-void M3_Backward() {
-  digitalWrite(M3_IN1, HIGH);
-  digitalWrite(M3_IN2, LOW);
-}
-
-void M3_Stop() {
-  digitalWrite(M3_IN1, LOW);
-  digitalWrite(M3_IN2, LOW);
-  analogWrite(M3_EN, 0);
-}
-
-void M3_SetSpeed(int speedVal) {
-  speedVal = constrain(speedVal, 0, 255);
-  analogWrite(M3_EN, speedVal);
+// ==================== MOTOR 3 CONTROL ====================
+void Motor3(float speed) {
+  if (speed > 0) {
+      int constrainedSpeed = constrain(speed, 0, 255);
+      analogWrite(M3_IN1, constrainedSpeed);
+      analogWrite(M3_IN2, 0);
+      //Serial.print("Motor 3 Forward Speed: ");
+      //Serial.println(constrainedSpeed);
+  } else if (speed < 0) {
+      int constrainedSpeed = constrain(-speed, 0, 255);
+      analogWrite(M3_IN1, 0);
+      analogWrite(M3_IN2, constrainedSpeed);
+      //Serial.print("Motor 3 Backward Speed: ");
+      //Serial.println(constrainedSpeed);
+  } else {
+      analogWrite(M3_IN1, 0);
+      analogWrite(M3_IN2, 0);
+      //Serial.println("Motor 3 Stopped");
+  }
 }

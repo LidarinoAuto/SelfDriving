@@ -1,107 +1,80 @@
+// KiwiDrive.ino
 
-// Hjulene står plassert med 120° mellom seg.
-// Oppsettet avhenger av hvordan du faktisk har montert hjulene.
-// La oss si hjul 1 står i vinkel 0°, hjul 2 = 120°, hjul 3 = 240°:
-const float WHEEL_ANGLE_1 = 90.0;
-const float WHEEL_ANGLE_2 = 210.0;
-const float WHEEL_ANGLE_3 = 330.0;
+// Define the wheel mounting angles in degrees
+const float WHEEL_ANGLE_1 = 60.0;
+const float WHEEL_ANGLE_2 = 180.0;
+const float WHEEL_ANGLE_3 = 300.0;
+
+// You can adjust this constant to fine-tune how strongly rotation affects
+// each wheel’s speed. Essentially, it converts your desired rotational velocity
+// into a PWM contribution.
+const float ROTATION_GAIN = 1.0;
 
 /**************************************************************
  * KiwiDrive()
- *   vx, vy: Desired velocity components (e.g. -1.0..+1.0)
+ *   vx, vy: Desired translational velocity components (e.g. -1.0..+1.0)
+ *   omega: Desired rotational speed (positive for, say, counterclockwise)
  *   maxPWM: Maximum PWM value (0..255)
  **************************************************************/
-void KiwiDrive(float vx, float vy, float maxPWM) {
-  // Convert degrees -> radians
-  float rad1 = radians(WHEEL_ANGLE_1);
-  float rad2 = radians(WHEEL_ANGLE_2);
-  float rad3 = radians(WHEEL_ANGLE_3);
+void KiwiDrive(float vx, float vy, float omega, float maxPWM) {
+  // (Optional) Invert vy if needed to fix forward/backward reversal
+  vy = -vy;
 
-  // Calculate raw wheel speeds (could be negative or positive)
-  float w1 = -sin(rad1) * vx + cos(rad1) * vy;
-  float w2 = -sin(rad2) * vx + cos(rad2) * vy;
-  float w3 = -sin(rad3) * vx + cos(rad3) * vy;
+  // Apply a 90° correction to the wheel geometry if necessary:
+  float rad1 = radians(WHEEL_ANGLE_1 - 90);
+  float rad2 = radians(WHEEL_ANGLE_2 - 90);
+  float rad3 = radians(WHEEL_ANGLE_3 - 90);
 
-  // Find max absolute value for normalization
+  // Compute the translational component for each wheel.
+  float t1 = -sin(rad1) * vx + cos(rad1) * vy;
+  float t2 = -sin(rad2) * vx + cos(rad2) * vy;
+  float t3 = -sin(rad3) * vx + cos(rad3) * vy;
+
+  // Mix in rotation:
+  float w1 = t1 + ROTATION_GAIN * omega;
+  float w2 = t2 + ROTATION_GAIN * omega;
+  float w3 = t3 + ROTATION_GAIN * omega;
+
+  // Normalize the wheel speeds so that none exceed the range after mixing.
   float maxVal = max(max(abs(w1), abs(w2)), abs(w3));
 
-  // If maxVal is near zero, everything goes to zero => robot stands still
   if (maxVal < 0.0001) {
-    w1 = 0;
-    w2 = 0;
-    w3 = 0;
+    // When the maximum value is near zero, stop all motors
+    Motor1(0);
+    Motor2(0);
+    Motor3(0);
+    return;
   } else {
-    // Normalize so that the largest magnitude becomes 1
     w1 /= maxVal;
     w2 /= maxVal;
     w3 /= maxVal;
   }
 
-  // Scale to the desired maxPWM range
+  // Scale speeds to the maximum PWM value.
   w1 *= maxPWM;
   w2 *= maxPWM;
   w3 *= maxPWM;
 
-  // -----------------------------------------------------------------------
-  // Motor 1
-  int pwm1 = (int)abs(w1);
-  bool m1Forward = (w1 >= 0.0);
-  if (m1Forward) {
-    M1_Forward();
-    M1_SetSpeed(pwm1);
-  } else {
-    M1_Backward();
-    M1_SetSpeed(pwm1);
-  }
+  // Set motor speeds using the signed values directly
+  Motor1(w1);
+  Motor2(w2);
+  Motor3(w3);
 
-  // Motor 2
-  int pwm2 = (int)abs(w2);
-  bool m2Forward = (w2 >= 0.0);
-  if (m2Forward) {
-    M2_Forward();
-    M2_SetSpeed(pwm2);
-  } else {
-    M2_Backward();
-    M2_SetSpeed(pwm2);
-  }
-
-  // Motor 3
-  int pwm3 = (int)abs(w3);
-  bool m3Forward = (w3 >= 0.0);
-  if (m3Forward) {
-    M3_Forward();
-    M3_SetSpeed(pwm3);
-  } else {
-    M3_Backward();
-    M3_SetSpeed(pwm3);
-  }
-
-  // -----------------------------------------------------------------------
-  // Print out debug information: raw float, direction, final PWM
-  // Motor 1
+  // (Optional) Debug output
   Serial.print("Motor1 raw=");
   Serial.print(w1);
-  Serial.print(", dir=");
-  Serial.print(m1Forward ? "Fwd" : "Bwd");
   Serial.print(", pwm=");
-  Serial.println(pwm1);
+  Serial.println((int)abs(w1));
 
-  // Motor 2
   Serial.print("Motor2 raw=");
   Serial.print(w2);
-  Serial.print(", dir=");
-  Serial.print(m2Forward ? "Fwd" : "Bwd");
   Serial.print(", pwm=");
-  Serial.println(pwm2);
+  Serial.println((int)abs(w2));
 
-  // Motor 3
   Serial.print("Motor3 raw=");
   Serial.print(w3);
-  Serial.print(", dir=");
-  Serial.print(m3Forward ? "Fwd" : "Bwd");
   Serial.print(", pwm=");
-  Serial.println(pwm3);
+  Serial.println((int)abs(w3));
 
   Serial.println("---------------");
-
 }
