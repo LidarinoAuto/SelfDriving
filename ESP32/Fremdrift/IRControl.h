@@ -31,21 +31,21 @@ inline void handleIRInput() {
     switch (IrReceiver.decodedIRData.command) {
       case 0x18: // Forward
         speedX = 0;    
-        speedY = 200;  
+        speedY = 300;  
         rotation = 0;
         break;
       case 0x52: // Backward
         speedX = 0;
-        speedY = -200;
+        speedY = -300;
         rotation = 0;
         break;
       case 0x8:  // Left
-        speedX = -200;
+        speedX = -300;
         speedY = 0;
         rotation = 0;
         break;
       case 0x5A: // Right
-        speedX = 200;
+        speedX = 300;
         speedY = 0;
         rotation = 0;
         break;
@@ -57,12 +57,12 @@ inline void handleIRInput() {
       case 0x16: // Rotate left
         speedX = 0;
         speedY = 0;
-        rotation = -5;
+        rotation = -2;
         break;
       case 0xD: // Rotate right
         speedX = 0;
         speedY = 0;
-        rotation = 5;
+        rotation = 2;
         break;
       default:
         Serial.println("Unknown command");
