@@ -1,5 +1,5 @@
 /*******************************************************
- *  HOVEDFIL: Fremdrift_3.ino
+    HOVEDFIL: Fremdrift_3.ino
  *******************************************************/
 #include <Arduino.h>
 #include "PinConfig.h"
@@ -116,8 +116,8 @@ void loop() {
       //  'count' = antall "pulses" denne perioden
       float revs = (float)count / ENCODER_COUNTS_PER_REV; // antall omdreininger
       // Ta hensyn til giring (om encoder sitter på motoraksling).
-      float revsWheel = revs / GEAR_RATIO; 
-      // RPM = revsWheel / dt (sek) * 60 
+      float revsWheel = revs / GEAR_RATIO;
+      // RPM = revsWheel / dt (sek) * 60
       float rpm = (revsWheel / dt_seconds) * 60.0;
       // mm/s = (RPM * hjulomkrets) / 60
       float speed_mms = (rpm * WHEEL_CIRCUM_MM) / 60.0;
