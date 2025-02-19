@@ -13,7 +13,7 @@ const int IR_RECEIVE_PIN = 13;
 decode_results results;
 
 // Timeout for å nullstille hvis ingen IR-kommando:
-const unsigned long IR_TIMEOUT = 280; // ms
+const unsigned long IR_TIMEOUT = 99999999999999999999999; // ms
 unsigned long lastIRReceiveTime = 0;
 
 // ------------------ Encoder Pins --------------------
