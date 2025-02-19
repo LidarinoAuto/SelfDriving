@@ -10,7 +10,7 @@ extern int speedY;
 extern int rotation;
 
 // Timeout in ms
-static const unsigned long IR_TIMEOUT = 500; // e.g. 500 ms
+//static const unsigned long IR_TIMEOUT = 500; // e.g. 500 ms
 
 // We store the last time we received any IR signal
 static unsigned long lastIRReceiveTime = 0;
@@ -74,11 +74,11 @@ inline void handleIRInput() {
 
   // ---- CHECK TIMEOUT ----
   // If too long has passed since last IR command, stop the robot
-  if (millis() - lastIRReceiveTime > IR_TIMEOUT) {
+  /*if (millis() - lastIRReceiveTime > IR_TIMEOUT) {
     speedX = 0;
     speedY = 0;
     rotation = 0;
-  }
+  }*/
 }
 
 #endif // IR_CONTROL_H

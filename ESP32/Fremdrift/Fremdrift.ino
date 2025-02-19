@@ -7,6 +7,7 @@
 #include "PID.h"
 #include "IRControl.h"
 #include "Kiwidrive.h"
+#include "SerielControl.h"
 
 // === Globale variabler for IR-styrt bevegelse ===
 int speedX = 0;
@@ -15,7 +16,7 @@ int rotation = 0;
 
 // === PID-relaterte arrayer (ett sett for hvert hjul) ===
 float pid_kp[3] = {1.7, 1.7, 1.7};
-float pid_ki[3] = {2.3, 2.3, 2.3};
+float pid_ki[3] = {2.5, 2.5, 2.5};
 float pid_kd[3] = {0.00001, 0.00001, 0.00001};
 
 float pid_integral[3]   = {0, 0, 0};
@@ -91,6 +92,7 @@ void setup() {
 void loop() {
   // 1) Les IR for å bestemme speedX, speedY, rotation
   handleIRInput();
+  readSerialCommands();
 
   // 2) Kjør PID hver CONTROL_INTERVAL ms
   static unsigned long lastControlTime = 0;
