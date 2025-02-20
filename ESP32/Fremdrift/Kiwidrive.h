@@ -16,8 +16,8 @@ static const float KIWI_SCALE_ROTATION = 1.0;
 // 3 hjul, 120° mellom hver. Her er en vanlig definisjon:
 // (60°, 180°, 300°) justert -90° for orientering.
 static const float ANGLE_1 = (60.0  - 90.0) * DEG_TO_RAD; // = -30° i rad
-static const float ANGLE_2 = (180.0 - 90.0) * DEG_TO_RAD; // =  90° i rad
-static const float ANGLE_3 = (300.0 - 90.0) * DEG_TO_RAD; // = 210° i rad;
+static const float ANGLE_2 = (300.0 - 90.0) * DEG_TO_RAD; // =  90° i rad
+static const float ANGLE_3 = (180.0 - 90.0) * DEG_TO_RAD; // = 210° i rad;
 
 // Hvis du vil bruke en radius for rotasjon (mm):
 // [Du kan justere til 75 mm, 100 mm e.l. avhengig av robotens geometri]
