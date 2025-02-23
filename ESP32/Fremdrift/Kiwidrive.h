@@ -21,7 +21,7 @@ static const float ANGLE_3 = (390.0 - 90.0) * DEG_TO_RAD; // = 210° i rad;
 
 // Hvis du vil bruke en radius for rotasjon (mm):
 // [Du kan justere til 75 mm, 100 mm e.l. avhengig av robotens geometri]
-static const float ROTATION_RADIUS = 75.0;
+static const float ROTATION_RADIUS = 235.0;
 
 inline void kiwiSetup() {
   // Evt. spesielle init-rutiner for KiwiDrive. 
