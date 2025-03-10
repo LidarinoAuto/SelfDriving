@@ -4,11 +4,11 @@ import threading
 from rplidar import RPLidar
 
 # Sett opp LIDAR
-PORT_NAME = "/dev/ttyUSB0"  # Sjekk at dette er riktig port!
+PORT_NAME = "/dev/ttyUSB1"  # Sjekk at dette er riktig port!
 lidar = RPLidar(PORT_NAME, baudrate=115200)
 
 # Sett opp Serial til ESP32
-ESP_PORT = "/dev/ttyUSB1"  # Sjekk at dette er riktig port!
+ESP_PORT = "/dev/ttyUSB0"  # Sjekk at dette er riktig port!
 esp = serial.Serial(ESP_PORT, 115200, timeout=1)
 time.sleep(2)  # Vent for å sikre at Serial er klar
 
@@ -65,7 +65,7 @@ try:
     time.sleep(1)
 
     print("🚀 Starter roboten... Kjører forover (Y = 100)")
-    send_command("0 100 0\n")
+    send_command("100 0 0\n")
 
     while True:
         print(f"📏 Avstand til hindring i Y-retning: {current_distance:.1f} mm")
