@@ -22,6 +22,7 @@ static const float ANGLE_3 = (390.0 - 90.0) * DEG_TO_RAD; // = 210° i rad;
 // Hvis du vil bruke en radius for rotasjon (mm):
 // [Du kan justere til 75 mm, 100 mm e.l. avhengig av robotens geometri]
 static const float ROTATION_RADIUS = 235.0;
+static const float ROTATION_RADIUS = 50.0;
 
 inline void kiwiSetup() {
   // Evt. spesielle init-rutiner for KiwiDrive. 
@@ -55,6 +56,9 @@ inline void setKiwiDrive(int speedX, int speedY, int rotation)
   float w1 = t1 + rotation_linear;
   float w2 = t2 + rotation_linear;
   float w3 = t3 + rotation_linear;
+  float w1 = t1 - rotation_linear;
+  float w2 = t2 - rotation_linear;
+  float w3 = t3 - rotation_linear;
 
   // Disse hastighetene (mm/s) vil vi at hvert hjul skal oppnå:
   setpointSpeed[0] = w1;

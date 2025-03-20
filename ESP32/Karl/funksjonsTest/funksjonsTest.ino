@@ -121,14 +121,14 @@ void loop() {
     if (forward) {
       // Kjør framover
       vx_mm = 0.0;
-      vy_mm = 250.0;   // endre verdi om du vil ha annen fart
-      omega_rad = 0.0;
+      vy_mm = 0.0;   // endre verdi om du vil ha annen fart
+      omega_rad = -300.0;
       Serial.println("** Framover i 1 sekund **");
     } else {
       // Kjør bakover
       vx_mm = 0.0;
-      vy_mm = -250.0;  // endre verdi om du vil ha annen fart
-      omega_rad = 0.0;
+      vy_mm = 0.0;  // endre verdi om du vil ha annen fart
+      omega_rad = 300.0;
       Serial.println("** Bakover i 1 sekund **");
     }
   }
