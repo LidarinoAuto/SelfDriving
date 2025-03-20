@@ -89,21 +89,21 @@ inline void handleIRInput() {
         // Stopp også Lidar hvis den var på
         if (lidarStarted) {
           Serial.println("Stopping Lidar...");
-          Serial2.println("STOP_LIDAR");
+          Serial.println("STOP_LIDAR");
           lidarStarted = false;
         }
         break;
       case 0x45: // Start Lidar
         if (!lidarStarted) {
           Serial.println("Starting Lidar...");
-          Serial2.println("START_LIDAR");
+          Serial.println("START_LIDAR");
           lidarStarted = true;
         }
         break;
       case 0x46: // Stop Lidar
         if (lidarStarted) {
           Serial.println("Stopping Lidar...");
-          Serial2.println("STOP_LIDAR");
+          Serial.println("STOP_LIDAR");
           lidarStarted = false;
         }
         break;
