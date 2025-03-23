@@ -75,11 +75,9 @@ inline void handleIRInput() {
         break;
       case 0x1C: // Start (med 2 sek delay)
         Serial.println("Starting robot in 2 sec...");
-        Serial.println("START_LIDAR");
         delay(2000);
         robotStarted = true;
         Serial.println("Robot started!");
-        Serial.println("ROBOT_START");
         break;
       case 0x19: // Stop (stopper også Lidar)
         robotStarted = false;
@@ -87,7 +85,6 @@ inline void handleIRInput() {
         speedY = 0;
         rotation = 0;
         Serial.println("Robot stopped!");
-        Serial.println("ROBOT_STOP");
  
         // Stopp også Lidar hvis den var på
         if (lidarStarted) {

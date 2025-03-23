@@ -8,145 +8,128 @@
 #include "IRControl.h"
 #include "Kiwidrive.h"
 #include "SerielControl.h"
+#include "Debugging.h"
 
-// === Globale variabler for IR-styrt bevegelse ===
+
+// === Globale variabler for bevegelse ===
 int speedX = 0;
 int speedY = 0;
 int rotation = 0;
 
-// === PID-relaterte arrayer (ett sett for hvert hjul) ===
+// === PID-arrayer ===
 float pid_kp[3] = {1.7, 1.7, 1.7};
 float pid_ki[3] = {2.5, 2.5, 2.5};
 float pid_kd[3] = {0.00001, 0.00001, 0.00001};
+float pid_integral[3] = {0};
+float pid_lastError[3] = {0};
 
-float pid_integral[3]   = {0, 0, 0};
-float pid_lastError[3]  = {0, 0, 0};
+// === Kiwi setpoints ===
+float setpointSpeed[3] = {0};
 
-// === Kiwi setpoints (beregnes i setKiwiDrive) ===
-float setpointSpeed[3] = {0, 0, 0}; // mm/s
+// === Encoder-teller ===
+volatile long encoderTicks[3] = {0};
 
-// === Encoderteller for hvert hjul ===
-volatile long encoderTicks[3] = {0, 0, 0};
-
-// === Konstanter for konvertering av encoder-ticks ===
-//  (tilpass til dine motorer/encodere/hjul)
-static const int   ENCODER_COUNTS_PER_REV = 720; // encoder "pulses" per full omdreining
-static const float GEAR_RATIO             = 75.8; // f.eks. 0.5 hvis du har 2:1 utveksling
+// === Encoder-konfig ===
+static const int   ENCODER_COUNTS_PER_REV = 720;
+static const float GEAR_RATIO             = 75.8;
 static const float WHEEL_DIAMETER_MM      = 58.0;
 static const float WHEEL_CIRCUM_MM        = WHEEL_DIAMETER_MM * PI;
 
-// === Tidsstyring av PID-løkka ===
-static const unsigned long CONTROL_INTERVAL = 100; // ms
+// === Tidsstyring ===
+static const unsigned long CONTROL_INTERVAL = 100; // PID-loop
+static const unsigned long STOP_PWM_DELAY   = 500; // ms idle før PWM kuttes
+unsigned long lastControlTime = 0;
+unsigned long lastMotionTime  = 0;
+bool pwmDisabled = false;
 
-// ==========================================================
-//  INTERRUPT-FUNKSJONER for hver av de 3 encoderne
-// ==========================================================
+// === Interrupt-rutiner ===
 void IRAM_ATTR encoderInterrupt1() {
-  bool A = digitalRead(ENCODER_A1_PIN);
-  bool B = digitalRead(ENCODER_B1_PIN);
+  bool A = digitalRead(ENCODER_A1_PIN), B = digitalRead(ENCODER_B1_PIN);
   encoderTicks[0] += (A == B) ? 1 : -1;
 }
-
 void IRAM_ATTR encoderInterrupt2() {
-  bool A = digitalRead(ENCODER_A2_PIN);
-  bool B = digitalRead(ENCODER_B2_PIN);
+  bool A = digitalRead(ENCODER_A2_PIN), B = digitalRead(ENCODER_B2_PIN);
   encoderTicks[1] += (A == B) ? 1 : -1;
 }
-
 void IRAM_ATTR encoderInterrupt3() {
-  bool A = digitalRead(ENCODER_A3_PIN);
-  bool B = digitalRead(ENCODER_B3_PIN);
+  bool A = digitalRead(ENCODER_A3_PIN), B = digitalRead(ENCODER_B3_PIN);
   encoderTicks[2] += (A == B) ? 1 : -1;
 }
 
-// ----------------------------------------------------------
 void setup() {
   Serial.begin(115200);
-
-  // Motorpinner
   motorSetup();
-
-  // Kiwi init (hvis du trenger noe her)
   kiwiSetup();
-
-  // IR init
   IRSetup();
 
-  // Encoderpinner + interrupts
+  // Encoder interrupts
   pinMode(ENCODER_A1_PIN, INPUT_PULLUP);
-  pinMode(ENCODER_B1_PIN, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(ENCODER_A1_PIN), encoderInterrupt1, CHANGE);
-
   pinMode(ENCODER_A2_PIN, INPUT_PULLUP);
-  pinMode(ENCODER_B2_PIN, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(ENCODER_A2_PIN), encoderInterrupt2, CHANGE);
-
   pinMode(ENCODER_A3_PIN, INPUT_PULLUP);
-  pinMode(ENCODER_B3_PIN, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(ENCODER_A1_PIN), encoderInterrupt1, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(ENCODER_A2_PIN), encoderInterrupt2, CHANGE);
   attachInterrupt(digitalPinToInterrupt(ENCODER_A3_PIN), encoderInterrupt3, CHANGE);
 
   Serial.println("Setup complete!");
 }
 
-// ----------------------------------------------------------
 void loop() {
-  // 1) Les IR for å bestemme speedX, speedY, rotation
   handleIRInput();
   readSerialCommands();
+  // Etter handleIRInput() og readSerialCommands()
+  debugPrintStatus(speedX, speedY, rotation, pwmDisabled);
 
-  // 2) Kjør PID hver CONTROL_INTERVAL ms
-  static unsigned long lastControlTime = 0;
   unsigned long now = millis();
-  unsigned long deltaTime = now - lastControlTime;
-
-  if (deltaTime >= CONTROL_INTERVAL) {
-    // a) Bruk KiwiDrive for å finne setpoint-hastighet (mm/s) for hvert hjul
+  if (now - lastControlTime >= CONTROL_INTERVAL) {
+    // Kalkuler ønsket hjulhastighet
     setKiwiDrive(speedX, speedY, rotation);
 
-    // b) For hver av de 3 hjulene: Mål hastighet, beregn PID, kjør motor
-    float dt_seconds = (float)deltaTime / 1000.0;
-    for (byte i = 0; i < 3; i++) {
-      // ---- Beskyttet avlesning av encoderTicks ----
-      noInterrupts();
-      long count = encoderTicks[i];
-      encoderTicks[i] = 0; // nullstill for neste periode
-      interrupts();
-
-      // ---- Beregn faktisk hastighet i mm/s ----
-      //  'count' = antall "pulses" denne perioden
-      float revs = (float)count / ENCODER_COUNTS_PER_REV; // antall omdreininger
-      // Ta hensyn til giring (om encoder sitter på motoraksling).
-      float revsWheel = revs / GEAR_RATIO;
-      // RPM = revsWheel / dt (sek) * 60
-      float rpm = (revsWheel / dt_seconds) * 60.0;
-      // mm/s = (RPM * hjulomkrets) / 60
-      float speed_mms = (rpm * WHEEL_CIRCUM_MM) / 60.0;
-
-      // ---- Kjør PID-regning (med anti-windup) ----
-      float pwm = computePID_withAntiWindup(i, setpointSpeed[i], speed_mms, dt_seconds);
-
-      // ---- Kjør motoren ----
-      switch (i) {
-        case 0:
-          setMotorSpeed(MOTOR_1_FORWARD_PIN, MOTOR_1_BACKWARD_PIN, (int)pwm);
-          break;
-        case 1:
-          setMotorSpeed(MOTOR_2_FORWARD_PIN, MOTOR_2_BACKWARD_PIN, (int)pwm);
-          break;
-        case 2:
-          setMotorSpeed(MOTOR_3_FORWARD_PIN, MOTOR_3_BACKWARD_PIN, (int)pwm);
-          break;
+    // Hvis alle bevegelser er null → vurder idle-timer
+    if (speedX == 0 && speedY == 0 && rotation == 0) {
+      if (lastMotionTime == 0) lastMotionTime = now;
+      if (!pwmDisabled && now - lastMotionTime >= STOP_PWM_DELAY) {
+        // Kutt PWM
+        for (int i=0; i<3; i++) {
+          setMotorSpeed((i==0?MOTOR_1_FORWARD_PIN:(i==1?MOTOR_2_FORWARD_PIN:MOTOR_3_FORWARD_PIN)),
+                        (i==0?MOTOR_1_BACKWARD_PIN:(i==1?MOTOR_2_BACKWARD_PIN:MOTOR_3_BACKWARD_PIN)), 0);
+        }
+        pwmDisabled = true;
       }
-
-      // ---- (Valgfritt) litt debug for motor 0: ----
-      if (i == 0) {
-        Serial.print("[M1] SP=");  Serial.print(setpointSpeed[0], 1);
-        Serial.print("  Act=");    Serial.print(speed_mms, 1);
-        Serial.print("  Err=");    Serial.print(setpointSpeed[0] - speed_mms, 1);
-        Serial.print("  PWM=");    Serial.println(pwm, 1);
-      }
+    } else {
+      // Ny kommando → reset og kjør PID
+      lastMotionTime = 0;
+      pwmDisabled = false;
+      runPIDLoop(now - lastControlTime);
     }
-
     lastControlTime = now;
   }
 }
+
+void runPIDLoop(unsigned long deltaMs) {
+  float dt = deltaMs / 1000.0;
+  float actualSpeed[3];
+  float pwmVals[3];
+
+  for (byte i = 0; i < 3; i++) {
+    noInterrupts();
+    long ticks = encoderTicks[i];
+    encoderTicks[i] = 0;
+    interrupts();
+
+    float revsWheel = (ticks / (float)ENCODER_COUNTS_PER_REV) / GEAR_RATIO;
+    float speed_mms = (revsWheel / dt) * (WHEEL_CIRCUM_MM / 60.0);
+    actualSpeed[i] = speed_mms;
+
+    float pwm = computePID_withAntiWindup(i, setpointSpeed[i], speed_mms, dt);
+    pwmVals[i] = pwm;
+
+    int fwdPin = (i==0?MOTOR_1_FORWARD_PIN:(i==1?MOTOR_2_FORWARD_PIN:MOTOR_3_FORWARD_PIN));
+    int bwdPin = (i==0?MOTOR_1_BACKWARD_PIN:(i==1?MOTOR_2_BACKWARD_PIN:MOTOR_3_BACKWARD_PIN));
+    setMotorSpeed(fwdPin, bwdPin, (int)pwm);
+  }
+
+  // Debug PID for alle hjul
+  debugPrintPID(setpointSpeed, actualSpeed, pwmVals, dt);
+    
+  }
+
