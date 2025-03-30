@@ -12,8 +12,8 @@ extern float pid_integral[3];
 extern float pid_lastError[3];
 
 // Funksjon med anti-windup
-inline float computePID_withAntiWindup(byte i, float setpoint, float actualSpeed, float dt) {
-  float error = setpoint - actualSpeed;
+inline float computePID_withAntiWindup(byte i, float setpoint, float actual, float dt) {
+  float error = setpoint - actual;
 
   // Oppdater integral
   pid_integral[i] += error * dt;
