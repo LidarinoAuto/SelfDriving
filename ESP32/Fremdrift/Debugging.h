@@ -6,7 +6,7 @@
 
 // Toggle debugging output
 bool debugStatusEnabled = false;
-bool debugPIDEnabled    = false;
+bool debugPIDEnabled    = true;
 
 
 /**
