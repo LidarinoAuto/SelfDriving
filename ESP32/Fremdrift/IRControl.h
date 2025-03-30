@@ -33,29 +33,29 @@ inline void handleIRInput() {
     switch (IrReceiver.decodedIRData.command) {
       case 0x18: // Forward
         if (robotStarted) {
-          speedX = 50;    
-          speedY = 0;  
+          speedX = 0;    
+          speedY = 300;  
           rotation = 0;
         }
         break;
       case 0x52: // Backward
         if (robotStarted) {
-          speedX = -50;
-          speedY = 0;
+          speedX = 0;
+          speedY = -300;
           rotation = 0;
         }
         break;
       case 0x8:  // Left
         if (robotStarted) {
-          speedX = 0;
-          speedY = 50;
+          speedX = -300;
+          speedY = 0;
           rotation = 0;
         }
         break;
       case 0x5A: // Right
         if (robotStarted) {
-          speedX = 0;
-          speedY = -50;
+          speedX = 300;
+          speedY = 0;
           rotation = 0;
         }
         break;
@@ -75,9 +75,11 @@ inline void handleIRInput() {
         break;
       case 0x1C: // Start (med 2 sek delay)
         Serial.println("Starting robot in 2 sec...");
+        Serial.println("START_LIDAR");
         delay(2000);
         robotStarted = true;
         Serial.println("Robot started!");
+        Serial.println("ROBOT_START");
         break;
       case 0x19: // Stop (stopper også Lidar)
         robotStarted = false;
@@ -85,6 +87,7 @@ inline void handleIRInput() {
         speedY = 0;
         rotation = 0;
         Serial.println("Robot stopped!");
+        Serial.println("ROBOT_STOP");
  
         // Stopp også Lidar hvis den var på
         if (lidarStarted) {
