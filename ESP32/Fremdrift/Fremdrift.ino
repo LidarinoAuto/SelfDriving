@@ -130,7 +130,7 @@ void loop() {
  */
 void runPIDLoop(unsigned long deltaMs) {
   float dt = deltaMs / 1000.0;
-  float actualSpeed[3];
+  float actual[3];
   float pwmVals[3];
 
   for (byte i = 0; i < 3; i++) {
@@ -151,7 +151,7 @@ void runPIDLoop(unsigned long deltaMs) {
     // 3) mm/s = dist_mm / dt
     //    Fjern "/ 60.0" for å faktisk få mm/s (ikke mm/min).
     float speed_mms = dist_mm / dt;
-    actualSpeed[i] = speed_mms;
+    actual[i] = speed_mms;
 
     // 4) Beregn PID-output
     float pwm = computePID_withAntiWindup(i, setpointSpeed[i], speed_mms, dt);
