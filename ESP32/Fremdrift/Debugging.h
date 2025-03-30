@@ -28,17 +28,17 @@ inline void debugPrintStatus(int speedX, int speedY, int rotation, bool pwmDisab
  * - P-, I-, D-bidrag
  * - Total PWM
  */
-inline void debugPrintPID(const float setpoint[], const float actual[], const float pwm[], float dt) {
+inline void debugPrintPID(const float setpoint[], const float actualSpeed[], const float pwm[], float dt) {
   if (!debugPIDEnabled) return;
   Serial.println("=== PID DEBUG ===");
   for (uint8_t i = 0; i < 3; i++) {
-    float error = setpoint[i] - actual[i];
+    float error = setpoint[i] - actualSpeed[i];
     float p = pid_kp[i] * error;
     float i_term = pid_ki[i] * pid_integral[i];
     float d = pid_kd[i] * ((error - pid_lastError[i]) / dt);
     Serial.print("Wheel "); Serial.print(i);
     Serial.print(" | SP="); Serial.print(setpoint[i], 2);
-    Serial.print(" Act="); Serial.print(actual[i], 2);
+    Serial.print(" Act="); Serial.print(actualSpeed[i], 2);
     Serial.print(" Err="); Serial.print(error, 2);
     Serial.print(" P="); Serial.print(p, 2);
     Serial.print(" I="); Serial.print(i_term, 2);
