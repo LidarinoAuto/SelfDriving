@@ -3,6 +3,8 @@ import serial
 import time
 import threading
 import random
+import math
+import smbus
 from rplidar import RPLidar
 
 # ----------------- LIDAR-konfigurasjon -----------------
@@ -15,8 +17,8 @@ esp = serial.Serial(ESP_PORT, 115200, timeout=1)
 time.sleep(2)  # La ESP32 starte opp
 
 # ----------------- Parametere for hindringsdeteksjon -----------------
-STOP_DISTANCE_LIDAR =  250 # Lidar:100 cm  (5 cm)
-STOP_DISTANCE_ULTRASOUND = 15    # Ultralyd: 100 cm (10 cm)
+STOP_DISTANCE_LIDAR = 250       # Lidar: 250 mm
+STOP_DISTANCE_ULTRASOUND = 15     # Ultralyd: 15 cm
 SPEED = 100                       # mm/s, fremoverhastighet
 FORWARD_DISTANCE_AFTER_TURN = 10  # mm, kort strekning etter rotasjon
 TIME_TO_MOVE_1M = FORWARD_DISTANCE_AFTER_TURN / SPEED  # sekunder
@@ -78,16 +80,12 @@ def get_best_ultrasound_direction():
         distances.append(d)
         print(f"{sensor_names[i]}: {d:.2f} cm")
     
-    # Start med � anta at den f�rste sensorens verdi er best (hvis gyldig)
     best_index = 0
     best_distance = distances[0] if distances[0] > 0 else 0
-    
     for i, d in enumerate(distances):
         if d > best_distance:
             best_distance = d
             best_index = i
-
-    # Returner n�yaktig to verdier
     return best_index, best_distance
 
 def check_ultrasound():
@@ -139,13 +137,9 @@ def rotate_by_angle(angle):
 
 def choose_direction_and_rotate():
     """
-    Velger den retningen med minst hindring basert p� ultralydsensorene og roterer
-    roboten i den retningen.
+    Velger den retningen med minst hindring basert p� ultralydsensorene og roterer roboten i den retningen.
     """
     best_index, best_distance = get_best_ultrasound_direction()
-    # Kartlegging av sensorindeks til �nsket rotasjonsvinkel:
-    # front_left -> sving ca. 30� venstre, front_right -> sving ca. 30� h�yre
-    # back_left -> sving ca. 150� venstre, back_right -> sving ca. 150� h�yre
     if best_index == 0:
         angle = -30
     elif best_index == 1:
@@ -172,32 +166,92 @@ def move_forward_distance():
     send_command(f"{SPEED} 0 0\n")
     time.sleep(TIME_TO_MOVE_1M)
     send_command("0 0 0\n")
+    
+import smbus
+import time
+import math
+
+# ----------------- Kompass (QMC5883L) -----------------
+QMC5883L_ADDRESS = 0x0D  # Standard I2C-adresse for QMC5883L
+bus = smbus.SMBus(1)    # Bruk I2C-buss 1
+
+# Registeradresser for QMC5883L
+QMC5883L_CTRL1 = 0x09
+QMC5883L_SET_RESET = 0x0B
+QMC5883L_DATA = 0x00   # Data starter her (6 bytes)
+
+def setup_hmc5883l():
+    """Initialiserer QMC5883L med riktige innstillinger."""
+    # Soft reset
+    bus.write_byte_data(QMC5883L_ADDRESS, QMC5883L_SET_RESET, 0x01)
+    # 0b00011101: 10Hz oppdatering, 128x oversampling, kontinuerlig m�ling
+    bus.write_byte_data(QMC5883L_ADDRESS, QMC5883L_CTRL1, 0b00011101)
+    time.sleep(0.5)
+
+def read_compass():
+    """Leser 6 bytes fra QMC5883L og beregner heading i grader."""
+    data = bus.read_i2c_block_data(QMC5883L_ADDRESS, QMC5883L_DATA, 6)
+    # QMC5883L sender data i LITTLE-ENDIAN rekkef�lge
+    x = (data[1] << 8) | data[0]
+    y = (data[3] << 8) | data[2]
+    z = (data[5] << 8) | data[4]
+    
+    # H�ndterer to-komplement for negative verdier
+    if x > 32767: 
+        x -= 65536
+    if y > 32767: 
+        y -= 65536
+    if z > 32767: 
+        z -= 65536
+    
+    heading = math.atan2(y, x) * (180 / math.pi)
+    if heading < 0:
+        heading += 360
+    return heading
+
+def get_cardinal_direction(heading):
+    """Konverterer grader til en kardinalretning (Nord, �st, S�r, Vest)."""
+    if heading >= 315 or heading < 45:
+        return "Nord"
+    elif heading >= 45 and heading < 135:
+        return "�st"
+    elif heading >= 135 and heading < 225:
+        return "S�r"
+    else:
+        return "Vest"
+
 
 # ----------------- HOVEDPROGRAM -----------------
 try:
     setup_ultrasound()
+    setup_hmc5883l()  # Initialiserer kompasset
     lidar_thread_obj = threading.Thread(target=lidar_thread)
     lidar_thread_obj.daemon = True
     lidar_thread_obj.start()
     
-    # Start med � kj�re fremover
+    # Starter med � kj�re roboten fremover
     move_forward()
     
     while True:
-        # Prioriter ultralyd: Hvis en hindring oppdages, stopp og finn fri retning
+        # Les og presenter kompassretning
+        compass_heading = read_compass()
+        cardinal = get_cardinal_direction(compass_heading)
+        print(f"Kompassretning: {compass_heading:.2f}� ({cardinal})")
+        
+        # Prioriterer ultralyd: Hvis en hindring oppdages, stopp og korriger retning
         if check_ultrasound():
             stop_robot()
-            time.sleep(1)
+            time.sleep(2)  # �kt ventetid for stabilisering av sensoravlesningene
             choose_direction_and_rotate()
             move_forward_distance()
             move_forward()
             continue
         
-        # Sjekk LIDAR hvis ingen hindring oppdages med ultralyd
+        # Sjekker LIDAR dersom ingen hindring oppdages med ultralyd
         print(f"LIDAR-avstand: {current_distance_lidar:.1f} mm")
         if current_distance_lidar <= STOP_DISTANCE_LIDAR:
             stop_robot()
-            time.sleep(1)
+            time.sleep(2)  # �kt ventetid f�r korrigerende man�ver
             choose_direction_and_rotate()
             move_forward_distance()
             move_forward()
@@ -210,8 +264,8 @@ except KeyboardInterrupt:
     
 finally:
     running = False
-    lidar.stop()
-    lidar.stop_motor()
-    lidar.disconnect()
-    esp.close()
-    GPIO.cleanup()
+    lidar.stop()          # Stopper LIDAR-skanningen
+    lidar.stop_motor()    # Stopper LIDAR-motoren
+    lidar.disconnect()    # Koble fra LIDAR
+    esp.close()           # Lukker seriekoblingen til ESP32
+    GPIO.cleanup()        # Rydder opp i GPIO-innstillingene
