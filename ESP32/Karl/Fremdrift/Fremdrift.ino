@@ -1,7 +1,5 @@
 /*******************************************************
-    HOVEDFIL: Fremdrift_3.ino (Kombinasjon av A-kode og B-kode)
-    - Måler hastighet med "A-kodens" rpm-logikk
-    - Stopper PWM etter 500 ms inaktivitet (B-kodens idle-stopp)
+    HOVEDFIL: Fremdrift_3.ino
  *******************************************************/
 #include <Arduino.h>
 #include "PinConfig.h"
@@ -40,11 +38,6 @@ static const float WHEEL_CIRCUM_MM        = WHEEL_DIAMETER_MM * PI;
 // === Tidsstyring av PID-løkka ===
 static const unsigned long CONTROL_INTERVAL = 100; // ms
 
-// === Idle-stopp fra B-kode ===
-static const unsigned long STOP_PWM_DELAY   = 500; // ms idle før PWM kuttes
-unsigned long lastMotionTime  = 0;
-bool pwmDisabled = false;
-
 // ==========================================================
 //  INTERRUPT-FUNKSJONER for hver av de 3 encoderne
 // ==========================================================
@@ -73,8 +66,7 @@ void setup() {
   // Motorpinner
   motorSetup();
 
-
-  // Kiwi init
+  // Kiwi init (hvis du trenger noe her)
   kiwiSetup();
 
   // IR init
@@ -102,74 +94,56 @@ void loop() {
   handleIRInput();
   readSerialCommands();
 
-  // 2) Kjør PID (eller stopp) hver CONTROL_INTERVAL ms
+  // 2) Kjør PID hver CONTROL_INTERVAL ms
   static unsigned long lastControlTime = 0;
   unsigned long now = millis();
   unsigned long deltaTime = now - lastControlTime;
 
   if (deltaTime >= CONTROL_INTERVAL) {
-    // a) Oppdater Kiwi-setpoints
+    // a) Bruk KiwiDrive for å finne setpoint-hastighet (mm/s) for hvert hjul
     setKiwiDrive(speedX, speedY, rotation);
 
-    // =============== IDLE-STOPP-LOGIKK (fra B-koden) ===============
-    if (speedX == 0 && speedY == 0 && rotation == 0) {
-      // Robot "inaktiv" (ingen bevegelseskommando)
-      if (lastMotionTime == 0) {
-        lastMotionTime = now;  // start teller
+    // b) For hver av de 3 hjulene: Mål hastighet, beregn PID, kjør motor
+    float dt_seconds = (float)deltaTime / 1000.0;
+    for (byte i = 0; i < 3; i++) {
+      // ---- Beskyttet avlesning av encoderTicks ----
+      noInterrupts();
+      long count = encoderTicks[i];
+      encoderTicks[i] = 0; // nullstill for neste periode
+      interrupts();
+
+      // ---- Beregn faktisk hastighet i mm/s ----
+      //  'count' = antall "pulses" denne perioden
+      float revs = (float)count / ENCODER_COUNTS_PER_REV; // antall omdreininger
+      // Ta hensyn til giring (om encoder sitter på motoraksling).
+      float revsWheel = revs / GEAR_RATIO;
+      // RPM = revsWheel / dt (sek) * 60
+      float rpm = (revsWheel / dt_seconds) * 60.0;
+      // mm/s = (RPM * hjulomkrets) / 60
+      float speed_mms = (rpm * WHEEL_CIRCUM_MM) / 60.0;
+
+      // ---- Kjør PID-regning (med anti-windup) ----
+      float pwm = computePID_withAntiWindup(i, setpointSpeed[i], speed_mms, dt_seconds);
+
+      // ---- Kjør motoren ----
+      switch (i) {
+        case 0:
+          setMotorSpeed(MOTOR_1_FORWARD_PIN, MOTOR_1_BACKWARD_PIN, (int)pwm);
+          break;
+        case 1:
+          setMotorSpeed(MOTOR_2_FORWARD_PIN, MOTOR_2_BACKWARD_PIN, (int)pwm);
+          break;
+        case 2:
+          setMotorSpeed(MOTOR_3_FORWARD_PIN, MOTOR_3_BACKWARD_PIN, (int)pwm);
+          break;
       }
-      // Hvis vi ikke allerede har deaktivert PWM,
-      // og det har gått STOP_PWM_DELAY ms, stopp motorene helt
-      if (!pwmDisabled && (now - lastMotionTime >= STOP_PWM_DELAY)) {
-        // Kutt PWM
-        for (int i = 0; i < 3; i++) {
-          setMotorSpeed(
-            (i == 0 ? MOTOR_1_FORWARD_PIN : (i == 1 ? MOTOR_2_FORWARD_PIN : MOTOR_3_FORWARD_PIN)),
-            (i == 0 ? MOTOR_1_BACKWARD_PIN : (i == 1 ? MOTOR_2_BACKWARD_PIN : MOTOR_3_BACKWARD_PIN)),
-            0
-          );
-        }
-        pwmDisabled = true;
-        Serial.println("[INFO] PWM disabled after idle");
-      }
-    } else {
-      // Vi har en ny bevegelseskommando
-      lastMotionTime = 0;  // nullstill idle-teller
-      pwmDisabled = false; // re-aktiver PWM
-      // ============== KJØR PID-LØKKA (fra A-koden) ==============
-      float dt_seconds = deltaTime / 1000.0;
-      for (byte i = 0; i < 3; i++) {
-        noInterrupts();
-        long count = encoderTicks[i];
-        encoderTicks[i] = 0;
-        interrupts();
 
-        // Beregn antall hjul-omdreininger
-        float revs = (float)count / ENCODER_COUNTS_PER_REV;
-        float revsWheel = revs / GEAR_RATIO;
-
-        // RPM = (revsWheel / dt) * 60
-        float rpm = (revsWheel / dt_seconds) * 60.0;
-
-        // speed_mms = (rpm * WHEEL_CIRCUM_MM) / 60 => mm/s
-        float speed_mms = (rpm * WHEEL_CIRCUM_MM) / 60.0;
-
-        // Kall PID
-        float pwm = computePID_withAntiWindup(i, setpointSpeed[i], speed_mms, dt_seconds);
-
-        // Kjør motor
-        int fwdPin = (i == 0 ? MOTOR_1_FORWARD_PIN
-                     : (i == 1 ? MOTOR_2_FORWARD_PIN : MOTOR_3_FORWARD_PIN));
-        int bwdPin = (i == 0 ? MOTOR_1_BACKWARD_PIN
-                     : (i == 1 ? MOTOR_2_BACKWARD_PIN : MOTOR_3_BACKWARD_PIN));
-        setMotorSpeed(fwdPin, bwdPin, (int)pwm);
-
-        // (Valgfritt) enkel debug for hjul 0
-        if (i == 0) {
-          Serial.print("[M1] SP=");  Serial.print(setpointSpeed[0], 1);
-          Serial.print("  Act=");    Serial.print(speed_mms, 1);
-          Serial.print("  Err=");    Serial.print(setpointSpeed[0] - speed_mms, 1);
-          Serial.print("  PWM=");    Serial.println(pwm, 1);
-        }
+      // ---- (Valgfritt) litt debug for motor 0: ----
+      if (i == 0) {
+        Serial.print("[M1] SP=");  Serial.print(setpointSpeed[0], 1);
+        Serial.print("  Act=");    Serial.print(speed_mms, 1);
+        Serial.print("  Err=");    Serial.print(setpointSpeed[0] - speed_mms, 1);
+        Serial.print("  PWM=");    Serial.println(pwm, 1);
       }
     }
 
