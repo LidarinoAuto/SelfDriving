@@ -64,7 +64,7 @@ TIME_TO_STRAFE = AVOID_MOVE_DISTANCE / AVOID_SPEED  # sekunder
 
  
 
-# Ultralydsensor-pinner (rekkef�lge: front_left, front_right, back_left, back_right) 
+# Ultralydsensor-pinner (rekkefølge: front_left, front_right, back_left, back_right) 
 
 ULTRASOUND_TRIG_PINS = [9, 7, 23, 10] 
 
@@ -76,7 +76,7 @@ ULTRASOUND_SENSOR_NAMES = ["front_left", "front_right", "back_left", "back_right
 
 # Mapping av ultrasonicsensorer til monteringsvinkler (i radianer) 
 
-# For eksempel: front_left: 45�, front_right: -45�, back_left: 135�, back_right: -135� 
+# For eksempel: front_left: 45°, front_right: -45°, back_left: 135°, back_right: -135° 
 
 ULTRASOUND_SENSOR_ANGLES = { 
 
@@ -96,7 +96,7 @@ ULTRASOUND_SENSOR_ANGLES = {
 
 IMU_ADDRESS = 0x68 
 
-GYRO_SENSITIVITY = 131.0         # LSB/(�/s) 
+GYRO_SENSITIVITY = 131.0         # LSB/(°/s) 
 
  
 
@@ -202,7 +202,7 @@ class UltrasoundSensor:
 
             else: 
 
-                logging.info(f"{self.sensor_names[i]}: ingen m�ling") 
+                logging.info(f"{self.sensor_names[i]}: ingen måling") 
 
         return distances 
 
@@ -236,7 +236,7 @@ class UltrasoundSensor:
 
             if d > 0 and d < stop_distance: 
 
-                logging.info(f"Hindring oppdaget av sensor {i} ({self.sensor_names[i]}) p� {d:.2f} cm") 
+                logging.info(f"Hindring oppdaget av sensor {i} ({self.sensor_names[i]}) på {d:.2f} cm") 
 
                 return True 
 
@@ -244,7 +244,7 @@ class UltrasoundSensor:
 
  
 
-# ----------------- LIDAR-H�NDTERING ----------------- 
+# ----------------- LIDAR-HÅNDTERING ----------------- 
 
 class LiDARHandler: 
 
@@ -280,7 +280,7 @@ class LiDARHandler:
 
                 break 
 
-            # Filtrer m�linger rett foran roboten (ca. �30�) 
+            # Filtrer målinger rett foran roboten (ca. ±30°) 
 
             front_distances = [ 
 
@@ -310,7 +310,7 @@ class LiDARHandler:
 
  
 
-# ----------------- IMU-H�NDTERING ----------------- 
+# ----------------- IMU-HÅNDTERING ----------------- 
 
 class IMUHandler: 
 
@@ -408,7 +408,7 @@ class RobotController:
 
     def rotate_by_angle(self, angle): 
 
-        rotation_time = (abs(angle) / 90.0) * 1.5  # Basert p� 1.5 s for 90� 
+        rotation_time = (abs(angle) / 90.0) * 1.5  # Basert på 1.5 s for 90° 
 
         if angle < 0: 
 
@@ -440,7 +440,7 @@ class RobotController:
 
         self.motor.send_command(0, 0, 0) 
 
-        logging.info(f"Integrert rotasjon (m�lt av gyro): {integrated_angle:.2f} grader") 
+        logging.info(f"Integrert rotasjon (målt av gyro): {integrated_angle:.2f} grader") 
 
  
 
@@ -450,7 +450,7 @@ class RobotController:
 
         if best_index is None: 
 
-            logging.info("Ingen sensor ga p�litelig verdi. Bruker standard fremover.") 
+            logging.info("Ingen sensor ga pålitelig verdi. Bruker standard fremover.") 
 
             return SPEED, 0 
 
@@ -460,7 +460,7 @@ class RobotController:
 
         v_y = AVOID_SPEED * math.sin(sensor_angle) 
 
-        logging.info(f"Valgt retning: sensor {best_index} (vinkel: {math.degrees(sensor_angle):.1f}�), beveg: {v_x:.1f} mm/s, {v_y:.1f} mm/s") 
+        logging.info(f"Valgt retning: sensor {best_index} (vinkel: {math.degrees(sensor_angle):.1f}°), beveg: {v_x:.1f} mm/s, {v_y:.1f} mm/s") 
 
         return v_x, v_y 
 
@@ -468,7 +468,7 @@ class RobotController:
 
     def move_forward(self): 
 
-        logging.info("Kj�rer fremover") 
+        logging.info("Kjører fremover") 
 
         self.motor.send_command(SPEED, 0, 0) 
 
@@ -476,7 +476,7 @@ class RobotController:
 
     def move_strafe(self, v_x, v_y, duration): 
 
-        logging.info(f"Utf�rer sidelengs bevegelse: v_x={v_x:.1f} mm/s, v_y={v_y:.1f} mm/s i {duration:.2f} s") 
+        logging.info(f"Utfører sidelengs bevegelse: v_x={v_x:.1f} mm/s, v_y={v_y:.1f} mm/s i {duration:.2f} s") 
 
         self.motor.send_command(v_x, v_y, 0) 
 
@@ -496,7 +496,7 @@ class RobotController:
 
     def move_forward_distance(self): 
 
-        logging.info("Kj�rer et kort stykke fremover etter unnamaning") 
+        logging.info("Kjører et kort stykke fremover etter unnamaning") 
 
         self.motor.send_command(SPEED, 0, 0) 
 
@@ -514,72 +514,64 @@ class RobotController:
 
         v_x, v_y = self.choose_direction_and_strafe() 
 
-        self.move_strafe(v_x, v_y, TIME_     -import RPi.GPIO as GPIO 
+        self.move_strafe(v_x, v_y, TIME_TO_STRAFE) 
 
-import serial 
+        self.move_forward_distance() 
 
-import time 
-
-import threading 
-
-import logging 
-
-from rplidar import RPLidar 
-
-import smbus 
-
-import math 
+        self.move_forward() 
 
  
 
-# Konfigurer logging 
+    def run(self): 
 
-logging.basicConfig(level=logging.INFO) 
+        self.lidar_handler.start() 
+
+        self.move_forward() 
+
+        try: 
+
+            while True: 
+
+                # Sjekk hindringer via ultralyd (for sensor 0 og 1) 
+
+                if self.ultrasound.check_obstacle(STOP_DISTANCE_ULTRASOUND, sensor_indices=[0, 1]): 
+
+                    logging.info("Hindring oppdaget av ultralyd! Utfører unnamaning.") 
+
+                    self.avoid_obstacle() 
+
+                    continue 
+
+                current_distance = self.lidar_handler.current_distance 
+
+                logging.info(f"LIDAR-avstand: {current_distance:.1f} mm") 
+
+                if current_distance <= STOP_DISTANCE_LIDAR: 
+
+                    logging.info("Hindring oppdaget av LiDAR! Utfører unnamaning.") 
+
+                    self.avoid_obstacle() 
+
+                time.sleep(0.1) 
+
+        except KeyboardInterrupt: 
+
+            logging.info("Avslutter programmet...") 
+
+            self.stop_robot() 
+
+        finally: 
+
+            self.lidar_handler.stop() 
+
+            self.motor.close() 
+
+            GPIO.cleanup() 
 
  
 
-# ----------------- KONSTANTER ----------------- 
+if __name__ == "__main__": 
 
-PORT_NAME = "/dev/ttyUSB1"         # Port for RPLidar 
+    robot = RobotController() 
 
-ESP_PORT = "/dev/ttyUSB0"           # Port for ESP32 
-
-LIDAR_BAUDRATE = 115200 
-
-SERIAL_BAUDRATE = 115200 
-
- 
-
-# Hindringsdeteksjon 
-
-STOP_DISTANCE_LIDAR = 250          # mm 
-
-STOP_DISTANCE_ULTRASOUND = 15      # cm 
-
- 
-
-# Bevegelsesparametere (verdier i mm/s og rad/s) 
-
-SPEED = 100                      # mm/s (standard fremoverhastighet) 
-
-ROTATION_SPEED = 2               # Rotasjonshastighet for eventuelle justeringer 
-
-FORWARD_DISTANCE_AFTER_AVOID = 50   # mm (avstand etter unnamaning) 
-
-TIME_TO_MOVE_FORWARD = FORWARD_DISTANCE_AFTER_AVOID / SPEED  # sekunder 
-
- 
-
-# For omni-baserte sidestreifinger 
-
-AVOID_SPEED = 100              # mm/s (bruk samme som SPEED) 
-
-AVOID_MOVE_DISTANCE = 50       # mm (avstand for sidelengs bevegelse) 
-
-TIME_TO_STRAFE = AVOID_MOVE_DISTANCE / AVOID_SPEED  # sekunder 
-
- 
-
-# Ultralydsensor-pinner (rekkef�lge: front_left, front_right, back_left, back_right) 
-
-ULT
+    robot.run() 
