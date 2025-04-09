@@ -8,11 +8,11 @@ import smbus
 from rplidar import RPLidar
 
 # ----------------- LIDAR-konfigurasjon -----------------
-PORT_NAME = "/dev/ttyUSB1"  # Riktig port for LIDAR
+PORT_NAME = "/dev/ttyUSB0"  # Riktig port for LIDAR
 lidar = RPLidar(PORT_NAME, baudrate=115200)
 
 # ----------------- Serial til ESP32 -----------------
-ESP_PORT = "/dev/ttyUSB0"  # Riktig port for ESP32
+ESP_PORT = "/dev/ttyUSB1"  # Riktig port for ESP32
 esp = serial.Serial(ESP_PORT, 115200, timeout=1)
 time.sleep(2)  # La ESP32 starte opp
 
@@ -207,6 +207,7 @@ def read_compass():
     heading = math.atan2(y, x) * (180 / math.pi)
     if heading < 0:
         heading += 360
+    heading =(heading-218) %300   
     return heading
 
 def get_cardinal_direction(heading):

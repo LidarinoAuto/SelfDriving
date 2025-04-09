@@ -6,21 +6,21 @@ import random
 from rplidar import RPLidar
 
 # ----------------- LIDAR-konfigurasjon -----------------
-PORT_NAME = "/dev/ttyUSB0"  # Riktig port for LIDAR
+PORT_NAME = "/dev/ttyUSB1"  # Riktig port for LIDAR
 lidar = RPLidar(PORT_NAME, baudrate=115200)
 
 # ----------------- Serial til ESP32 -----------------
-ESP_PORT = "/dev/ttyUSB1"  # Riktig port for ESP32
+ESP_PORT = "/dev/ttyUSB0"  # Riktig port for ESP32
 esp = serial.Serial(ESP_PORT, 115200, timeout=1)
 time.sleep(2)  # La ESP32 starte opp
 
 # ----------------- Parametere for hindringsdeteksjon -----------------
-STOP_DISTANCE_LIDAR =    250 # Lidar: 250 mmm (25 cm)
-STOP_DISTANCE_ULTRASOUND = 100    # Ultralyd: 100 cm (10 cm)
+STOP_DISTANCE_LIDAR =  250 # Lidar:100 cm  (5 cm)
+STOP_DISTANCE_ULTRASOUND = 5    # Ultralyd: 100 cm (10 cm)
 SPEED = 100                       # mm/s, fremoverhastighet
 FORWARD_DISTANCE_AFTER_TURN = 10  # mm, kort strekning etter rotasjon
 TIME_TO_MOVE_1M = FORWARD_DISTANCE_AFTER_TURN / SPEED  # sekunder
-ROTATION_SPEED = 2                # Rotasjonshastighet (brukes i kommandoer til ESP32)
+ROTATION_SPEED = 1              # Rotasjonshastighet (brukes i kommandoer til ESP32)
 ROTATION_TIME_90_DEG = 1.5        # Tid for en 90� rotasjon
 
 current_distance_lidar = 9999
@@ -78,13 +78,16 @@ def get_best_ultrasound_direction():
         distances.append(d)
         print(f"{sensor_names[i]}: {d:.2f} cm")
     
+    # Start med � anta at den f�rste sensorens verdi er best (hvis gyldig)
     best_index = 0
     best_distance = distances[0] if distances[0] > 0 else 0
+    
     for i, d in enumerate(distances):
         if d > best_distance:
             best_distance = d
             best_index = i
 
+    # Returner n�yaktig to verdier
     return best_index, best_distance
 
 def check_ultrasound():
@@ -204,10 +207,7 @@ try:
 except KeyboardInterrupt:
     print("Avslutter programmet...")
     stop_robot()
-    # Legg inn en forsinkelse p� 5 sekunder f�r LIDAR-rotasjonen stoppes
-    print("Venter 5 sekunder f�r LIDAR-rotasjonen stopper...")
-    time.sleep(5)
-
+    
 finally:
     running = False
     lidar.stop()

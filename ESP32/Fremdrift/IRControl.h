@@ -33,29 +33,29 @@ inline void handleIRInput() {
     switch (IrReceiver.decodedIRData.command) {
       case 0x18: // Forward
         if (robotStarted) {
-          speedX = 0;    
-          speedY = 300;  
+          speedX = 150;    
+          speedY = 0;
           rotation = 0;
         }
         break;
       case 0x52: // Backward
         if (robotStarted) {
-          speedX = 0;
-          speedY = -300;
+          speedX = -150;
+          speedY = 0;
           rotation = 0;
         }
         break;
       case 0x8:  // Left
         if (robotStarted) {
-          speedX = -300;
-          speedY = 0;
+          speedX = 0;
+          speedY = 150;
           rotation = 0;
         }
         break;
       case 0x5A: // Right
         if (robotStarted) {
-          speedX = 300;
-          speedY = 0;
+          speedX = 0;
+          speedY = -150;
           rotation = 0;
         }
         break;
@@ -63,14 +63,14 @@ inline void handleIRInput() {
         if (robotStarted) {
           speedX = 0;
           speedY = 0;
-          rotation = -2;
+          rotation = 1;
         }
         break;
       case 0xD: // Rotate right
         if (robotStarted) {
           speedX = 0;
           speedY = 0;
-          rotation = 2;
+          rotation = -1;
         }
         break;
       case 0x1C: // Start (med 2 sek delay)

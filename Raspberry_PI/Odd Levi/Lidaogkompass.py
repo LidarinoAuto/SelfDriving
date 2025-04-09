@@ -4,6 +4,8 @@ import time
 import threading
 import random
 from rplidar import RPLidar
+import smbus
+import math
 
 # ----------------- LIDAR-konfigurasjon -----------------
 PORT_NAME = "/dev/ttyUSB1"  # Riktig port for LIDAR
@@ -15,9 +17,9 @@ esp = serial.Serial(ESP_PORT, 115200, timeout=1)
 time.sleep(2)  # La ESP32 starte opp
 
 # ----------------- Parametere for hindringsdeteksjon -----------------
-STOP_DISTANCE_LIDAR =    250 # Lidar: 250 mmm (25 cm)
-STOP_DISTANCE_ULTRASOUND = 100    # Ultralyd: 100 cm (10 cm)
-SPEED = 100                       # mm/s, fremoverhastighet
+STOP_DISTANCE_LIDAR =  200  # Lidar:100 cm  (5 cm)
+STOP_DISTANCE_ULTRASOUND = 10   # Ultralyd: 100 mm (10 cm)
+SPEED = 200                       # mm/s, fremoverhastighet
 FORWARD_DISTANCE_AFTER_TURN = 10  # mm, kort strekning etter rotasjon
 TIME_TO_MOVE_1M = FORWARD_DISTANCE_AFTER_TURN / SPEED  # sekunder
 ROTATION_SPEED = 2                # Rotasjonshastighet (brukes i kommandoer til ESP32)
@@ -80,6 +82,7 @@ def get_best_ultrasound_direction():
     
     best_index = 0
     best_distance = distances[0] if distances[0] > 0 else 0
+    
     for i, d in enumerate(distances):
         if d > best_distance:
             best_distance = d
@@ -120,19 +123,67 @@ def send_command(command):
     print(f"Sender til ESP32: {command.strip()}")
     esp.write(command.encode())
 
+# ----------------- IMU-konfigurasjon (MPU6050 p� adresse 0x68) -----------------
+IMU_ADDRESS = 0x68
+bus = smbus.SMBus(1)
+
+def init_imu():
+    """
+    Initialiserer MPU6050 ved � skrive til registeret 0x6B for � v�kne opp sensoren.
+    """
+    bus.write_byte_data(IMU_ADDRESS, 0x6B, 0)
+    time.sleep(0.1)
+
+def read_word(adr):
+    high = bus.read_byte_data(IMU_ADDRESS, adr)
+    low = bus.read_byte_data(IMU_ADDRESS, adr + 1)
+    val = (high << 8) + low
+    return val
+
+def read_word_2c(adr):
+    val = read_word(adr)
+    if val >= 0x8000:
+        return -((65535 - val) + 1)
+    else:
+        return val
+
+def get_gyro_z():
+    """
+    Leser gyroskopdata for z-aksen (yaw). Standard f�lsomhet er 131 LSB/(�/s)
+    s� vi konverterer til grader per sekund.
+    """
+    gyro_z = read_word_2c(0x47)
+    return gyro_z / 131.0
+
 def rotate_by_angle(angle):
     """
     Roterer roboten med angitt vinkel i grader.
+    Bruker gyroskopdata fra MPU6050 for � estimere den faktiske rotasjonen.
     Negativ verdi = venstresving, positiv = h�yresving.
     Rotasjonstiden beregnes proporsjonalt med 90�.
     """
     rotation_time = (abs(angle) / 90) * ROTATION_TIME_90_DEG
+    # Start rotasjonen
     if angle < 0:
         send_command(f"0 0 {ROTATION_SPEED}\n")
     else:
         send_command(f"0 0 {-ROTATION_SPEED}\n")
-    time.sleep(rotation_time)
+
+    start_time = time.time()
+    last_time = start_time
+    integrated_angle = 0.0
+
+    # Integrer gyroskopens z-verdi for � estimere rotasjonsvinkelen
+    while time.time() < start_time + rotation_time:
+        current_time = time.time()
+        dt = current_time - last_time
+        last_time = current_time
+        angular_rate = get_gyro_z()  # grader per sekund
+        integrated_angle += angular_rate * dt
+        time.sleep(0.01)  # liten delay for � lette CPU-belastningen
+
     send_command("0 0 0\n")
+    print(f"Integrert rotasjon m�lt av gyroskop: {integrated_angle:.2f} grader")
 
 def choose_direction_and_rotate():
     """
@@ -141,8 +192,8 @@ def choose_direction_and_rotate():
     """
     best_index, best_distance = get_best_ultrasound_direction()
     # Kartlegging av sensorindeks til �nsket rotasjonsvinkel:
-    # front_left -> sving ca. 30� venstre, front_right -> sving ca. 30� h�yre
-    # back_left -> sving ca. 150� venstre, back_right -> sving ca. 150� h�yre
+    # front_left ? sving ca. 30� venstre, front_right ? sving ca. 30� h�yre
+    # back_left ? sving ca. 150� venstre, back_right ? sving ca. 150� h�yre
     if best_index == 0:
         angle = -30
     elif best_index == 1:
@@ -173,6 +224,7 @@ def move_forward_distance():
 # ----------------- HOVEDPROGRAM -----------------
 try:
     setup_ultrasound()
+    init_imu()  # Initialiser IMU (MPU6050) for � m�le rotasjon
     lidar_thread_obj = threading.Thread(target=lidar_thread)
     lidar_thread_obj.daemon = True
     lidar_thread_obj.start()
@@ -190,7 +242,7 @@ try:
             move_forward()
             continue
         
-        # Sjekk LIDAR hvis ingen hindring oppdages med ultralyd
+        # Sjekk LIDAR dersom ingen hindring oppdages med ultralyd
         print(f"LIDAR-avstand: {current_distance_lidar:.1f} mm")
         if current_distance_lidar <= STOP_DISTANCE_LIDAR:
             stop_robot()
@@ -203,21 +255,11 @@ try:
 
 except KeyboardInterrupt:
     print("Avslutter programmet...")
-        
-    # Legg inn en forsinkelse p� 5 sekunder f�r LIDAR-rotasjonen stoppes
-    print("Venter 5 sekunder f�r LIDAR-rotasjonen stopper...")
-    time.sleep(5)
-    
-    #lidar.disconnect()
-    lidar.stop()
-    lidar.stop_motor()
     stop_robot()
-
+    
 finally:
-    running = False  # Stopp LIDAR-tr�den f�rst
-    lidar_thread_obj.join()  # Vent til tr�den avslutter
+    running = False
     lidar.stop()
     lidar.disconnect()
-    #esp.close()
-   # GPIO.cleanup()
-
+    esp.close()
+    GPIO.cleanup()
