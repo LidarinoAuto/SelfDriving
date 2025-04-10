@@ -5,6 +5,7 @@ import threading
 import random
 from rplidar import RPLidar
 import smbus
+import math
 
 # ----------------- LIDAR-konfigurasjon -----------------
 PORT_NAME = "/dev/ttyUSB1"
@@ -15,11 +16,11 @@ ESP_PORT = "/dev/ttyUSB0"
 esp = serial.Serial(ESP_PORT, 115200, timeout=1)
 time.sleep(2)
 
-# ----------------- Parametere -----------------
-STOP_DISTANCE_LIDAR = 250  # mm
-STOP_DISTANCE_ULTRASOUND = 100  # mm
+# ----------------- Parametere for hindringsdeteksjon -----------------
+STOP_DISTANCE_LIDAR = 250
+STOP_DISTANCE_ULTRASOUND = 15
 SPEED = 100
-FORWARD_DISTANCE_AFTER_TURN = 100
+FORWARD_DISTANCE_AFTER_TURN = 10
 TIME_TO_MOVE_1M = FORWARD_DISTANCE_AFTER_TURN / SPEED
 ROTATION_SPEED = 2
 ROTATION_TIME_90_DEG = 1.5
@@ -27,7 +28,7 @@ ROTATION_TIME_90_DEG = 1.5
 current_distance_lidar = 9999
 running = True
 
-# ----------------- Ultralydsensor -----------------
+# ----------------- Ultralydsensor-konfigurasjon -----------------
 trig_pins = [9, 7, 23, 10]
 echo_pins = [8, 6, 24, 11]
 
@@ -46,7 +47,7 @@ def les_avstand(trig, echo):
     GPIO.output(trig, True)
     time.sleep(0.00001)
     GPIO.output(trig, False)
-
+    
     timeout_start = time.time()
     while GPIO.input(echo) == 0:
         pulse_start = time.time()
@@ -60,53 +61,52 @@ def les_avstand(trig, echo):
             return -1
 
     duration = (pulse_end - pulse_start) * 1e6
-    if duration >= 38000:
-        return -1
-    else:
-        return (duration / 58) * 10  # mm
+    return -1 if duration >= 38000 else duration / 58.0
 
-def check_front_ultrasound():
-    for i in [0, 1]:
-        d = les_avstand(trig_pins[i], echo_pins[i])
-        if d > 0 and d < STOP_DISTANCE_ULTRASOUND:
-            print(f"Ultralydsensor {i} oppdager hindring: {d:.0f} mm")
-            return True
-    return False
+def get_best_ultrasound_direction():
+    """
+    Leser kun de fremre ultralydsensorene (front_left og front_right)
+    og returnerer (best_index, best_distance).
+    """
+    sensor_names = ["front_left", "front_right"]
+    front_trig_pins = trig_pins[:2]
+    front_echo_pins = echo_pins[:2]
+
+    distances = []
+    for i in range(len(front_trig_pins)):
+        d = les_avstand(front_trig_pins[i], front_echo_pins[i])
+        distances.append(d)
+        print(f"{sensor_names[i]}: {d:.2f} cm")
+    
+    best_index = 0
+    best_distance = distances[0] if distances[0] > 0 else 0
+    
+    for i, d in enumerate(distances):
+        if d > best_distance:
+            best_distance = d
+            best_index = i
+
+    return best_index, best_distance
+
+def check_ultrasound():
+    return any(0 < les_avstand(trig_pins[i], echo_pins[i]) < STOP_DISTANCE_ULTRASOUND for i in range(len(trig_pins)))
 
 # ----------------- LIDAR-tr�d -----------------
 def lidar_thread():
     global current_distance_lidar, running
     for scan in lidar.iter_scans():
-        distances = []
-        for measurement in scan:
-            angle = measurement[1]
-            distance = measurement[2]
-            if abs(angle - 0) <= 30 or abs(angle - 360) <= 30:
-                distances.append(distance)
+        distances = [measurement[2] for measurement in scan if abs(measurement[1] - 0) <= 30 or abs(measurement[1] - 360) <= 30]
         if distances:
             current_distance_lidar = min(distances)
         if not running:
             break
 
-# ----------------- ESP32 Motorstyring -----------------
+# ----------------- Motorstyring -----------------
 def send_command(command):
     print(f"Sender til ESP32: {command.strip()}")
     esp.write(command.encode())
 
-def move_forward():
-    print("Kj�rer fremover")
-    send_command("100 0 0\n")
-
-def stop_robot():
-    print("Stopper roboten")
-    send_command("0 0 0\n")
-
-def move_forward_distance():
-    send_command(f"{SPEED} 0 0\n")
-    time.sleep(TIME_TO_MOVE_1M)
-    send_command("0 0 0\n")
-
-# ----------------- IMU -----------------
+# ----------------- IMU-konfigurasjon -----------------
 IMU_ADDRESS = 0x68
 bus = smbus.SMBus(1)
 
@@ -114,13 +114,8 @@ def init_imu():
     bus.write_byte_data(IMU_ADDRESS, 0x6B, 0)
     time.sleep(0.1)
 
-def read_word(adr):
-    high = bus.read_byte_data(IMU_ADDRESS, adr)
-    low = bus.read_byte_data(IMU_ADDRESS, adr + 1)
-    return (high << 8) + low
-
 def read_word_2c(adr):
-    val = read_word(adr)
+    val = (bus.read_byte_data(IMU_ADDRESS, adr) << 8) + bus.read_byte_data(IMU_ADDRESS, adr + 1)
     return -((65535 - val) + 1) if val >= 0x8000 else val
 
 def get_gyro_z():
@@ -129,6 +124,7 @@ def get_gyro_z():
 def rotate_by_angle(angle):
     rotation_time = (abs(angle) / 90) * ROTATION_TIME_90_DEG
     send_command(f"0 0 {ROTATION_SPEED if angle < 0 else -ROTATION_SPEED}\n")
+    
     start_time = time.time()
     last_time = start_time
     integrated_angle = 0.0
@@ -139,85 +135,52 @@ def rotate_by_angle(angle):
         integrated_angle += get_gyro_z() * dt
         time.sleep(0.01)
 
-    stop_robot()
-    print(f"Rotert: {integrated_angle:.1f} grader")
+    send_command("0 0 0\n")
+    print(f"Integrert rotasjon m�lt av gyroskop: {integrated_angle:.2f} grader")
 
-def choose_direction_with_lidar():
-    scan_data = {"left": [], "right": [], "front": []}
-    for scan in lidar.iter_scans(max_buf_meas=500):
-        for measurement in scan:
-            angle = measurement[1]
-            distance = measurement[2]
-            if 60 <= angle <= 120:
-                scan_data["left"].append(distance)
-            elif 240 <= angle <= 300:
-                scan_data["right"].append(distance)
-            elif angle <= 30 or angle >= 330:
-                scan_data["front"].append(distance)
-        if all(len(scan_data[key]) > 10 for key in scan_data):
-            break
+def choose_direction_and_rotate():
+    best_index, best_distance = get_best_ultrasound_direction()
+    angle = -30 if best_index == 0 else 30
+    print(f"Beste retning: sensor {best_index} med {best_distance:.2f} cm, roterer {angle}�")
+    rotate_by_angle(angle)
 
-    avg_left = sum(scan_data["left"]) / len(scan_data["left"])
-    avg_right = sum(scan_data["right"]) / len(scan_data["right"])
-    avg_front = sum(scan_data["front"]) / len(scan_data["front"])
+def move_forward():
+    print("Kj�rer fremover")
+    send_command("100 0 0\n")
 
-    print(f"LIDAR: Front: {avg_front:.1f}mm, Venstre: {avg_left:.1f}mm, H�yre: {avg_right:.1f}mm")
+def stop_robot():
+    print("Stopper roboten")
+    send_command("0 0 0\n")
 
-    if avg_left < 300 and avg_right < 300:
-        print("Begge sider blokkert. Rygger.")
-        send_command("-100 0 0\n")
-        time.sleep(0.5)
-        stop_robot()
-        time.sleep(0.2)
-        new_front_distances = []
-        for scan in lidar.iter_scans(max_buf_meas=200):
-            for m in scan:
-                a = m[1]
-                d = m[2]
-                if a <= 30 or a >= 330:
-                    new_front_distances.append(d)
-            if len(new_front_distances) > 10:
-                break
+def move_forward_distance():
+    print("Kj�rer et kort stykke fremover etter rotasjon")
+    send_command(f"{SPEED} 0 0\n")
+    time.sleep(TIME_TO_MOVE_1M)
+    send_command("0 0 0\n")
 
-        new_avg_front = sum(new_front_distances) / len(new_front_distances)
-        print(f"Ny front: {new_avg_front:.1f} mm")
-        if new_avg_front > 400:
-            print("Fritt foran. Fremover.")
-            move_forward()
-            return
-        else:
-            angle = random.choice([-90, 90])
-            rotate_by_angle(angle)
-            return
-
-    if avg_left > avg_right:
-        rotate_by_angle(-45)
-    else:
-        rotate_by_angle(45)
-
-# ----------------- MAIN -----------------
+# ----------------- HOVEDPROGRAM -----------------
 try:
     setup_ultrasound()
     init_imu()
-    lidar_thread_obj = threading.Thread(target=lidar_thread)
-    lidar_thread_obj.daemon = True
+    lidar_thread_obj = threading.Thread(target=lidar_thread, daemon=True)
     lidar_thread_obj.start()
-
+    
     move_forward()
 
     while True:
-        if check_front_ultrasound():
+        if check_ultrasound():
             stop_robot()
             time.sleep(1)
-            choose_direction_with_lidar()
+            choose_direction_and_rotate()
             move_forward_distance()
             move_forward()
             continue
-
+        
+        print(f"LIDAR-avstand: {current_distance_lidar:.1f} mm")
         if current_distance_lidar <= STOP_DISTANCE_LIDAR:
             stop_robot()
             time.sleep(1)
-            choose_direction_with_lidar()
+            choose_direction_and_rotate()
             move_forward_distance()
             move_forward()
 
