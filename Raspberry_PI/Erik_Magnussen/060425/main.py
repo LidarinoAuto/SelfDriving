@@ -18,11 +18,11 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 STOP_DISTANCE_ULTRASOUND = 15  # cm
 STOP_DISTANCE_LIDAR = 250      # mm
 
-ESP_PORT = "/dev/ttyUSB0"
+ESP_PORT = "/dev/esp32"
 esp = serial.Serial(ESP_PORT, 115200, timeout=1)
 time.sleep(2)
 
-LIDAR_PORT = "/dev/ttyUSB1"
+LIDAR_PORT = "/dev/rplidar"
 lidar = init_lidar(LIDAR_PORT)
 current_distance_lidar = [9999]  # Delt mellom tr�der (liste med ett element)
 running_flag = [True]
