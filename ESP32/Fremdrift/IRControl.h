@@ -54,13 +54,13 @@ inline void handleIRInput() {
     case 0x16:  // Rotate left
       speedX   = 0;
       speedY   = 0;
-      rotation = 1;
+      rotation = 20;
       break;
 
     case 0x0D:  // Rotate right (0xD = 0x0D)
       speedX   = 0;
       speedY   = 0;
-      rotation = -1;
+      rotation = -20;
       break;
 
     case 0x1C:  // Start (med 2 sek delay)

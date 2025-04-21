@@ -3,63 +3,51 @@
 
 #include <Arduino.h>
 
-// Dette arrayet vil lagre målhastigheten (mm/s) for hvert hjul
-// f.eks. setpointSpeed[0] = hastighet for hjul 1
-//       setpointSpeed[1] = hastighet for hjul 2
-//       setpointSpeed[2] = hastighet for hjul 3
+// Dette arrayet vil lagre m�lhastigheten (mm/s) for hvert hjul
 extern float setpointSpeed[3];
 
-// Evt. justeringskonstanter
-static const float KIWI_SCALE_LINEAR   = 1.0;  
-static const float KIWI_SCALE_ROTATION = 1.0;
+// Skaleringskonstanter
+static const float KIWI_SCALE_LINEAR   = 1.0f;
+static const float KIWI_SCALE_ROTATION = 1.0f;
 
-// 3 hjul, 120° mellom hver. Her er en vanlig definisjon:
-// (60°, 180°, 300°) justert -90° for orientering.
-static const float ANGLE_1 = (150.0  - 90.0) * DEG_TO_RAD; // = -30° i rad
-static const float ANGLE_2 = (270.0 - 90.0) * DEG_TO_RAD; // =  90° i rad
-static const float ANGLE_3 = (390.0 - 90.0) * DEG_TO_RAD; // = 210° i rad;
+// Hjulvinkler (i radianer)
+static const float ANGLE_1 = (150.0f - 90.0f) * DEG_TO_RAD; // -30�
+static const float ANGLE_2 = (270.0f - 90.0f) * DEG_TO_RAD; //  90�
+static const float ANGLE_3 = (390.0f - 90.0f) * DEG_TO_RAD; // 210�
 
-// Hvis du vil bruke en radius for rotasjon (mm):
-// [Du kan justere til 75 mm, 100 mm e.l. avhengig av robotens geometri]
-static const float ROTATION_RADIUS = 155.0;
+static const float ROTATION_RADIUS = 155.0f; // mm
 
 inline void kiwiSetup() {
-  // Evt. spesielle init-rutiner for KiwiDrive. 
-  // Akkurat nå: ingen.
+  // Ingen init n�dvendig per n�
 }
 
 /**
- * setKiwiDrive(speedX, speedY, rotation)
+ * setKiwiDrive(speedX, speedY, rotation_dps)
  *
- *  speedX, speedY: translasjon i mm/s (eller en vilkårlig skala)
- *  rotation:       rotasjon i rad/s (eller en vilkårlig skala)
- *
- * Resultat: setter setpointSpeed[] for hvert av de 3 hjulene.
+ *  speedX, speedY: translasjon i mm/s  (float gir finere kontroll)
+ *  rotation_dps:  rotasjon i grader/s (float, 0?360+)
  */
-inline void setKiwiDrive(int speedX, int speedY, int rotation)
+inline void setKiwiDrive(float speedX, float speedY, float rotation_dps)
 {
-  // Konverter til float og ev. skaler
-  float vx = speedX   * KIWI_SCALE_LINEAR;
-  float vy = speedY   * KIWI_SCALE_LINEAR;
-  float vr = rotation * KIWI_SCALE_ROTATION; // rotasjon
+  // 1) Skaler line�rhastigheter
+  float vx = speedX * KIWI_SCALE_LINEAR;
+  float vy = speedY * KIWI_SCALE_LINEAR;
 
-  // Translasjonskomponent for hvert hjul
-  float t1 = (-sin(ANGLE_1) * vx) + (cos(ANGLE_1) * -vy);
-  float t2 = (-sin(ANGLE_2) * vx) + (cos(ANGLE_2) * -vy);
-  float t3 = (-sin(ANGLE_3) * vx) + (cos(ANGLE_3) * -vy);
+  // 2) Konverter grader/s til rad/s
+  float vr = rotation_dps * DEG_TO_RAD * KIWI_SCALE_ROTATION;
 
-  // Regn om rotasjon (rad/s) til lineær hastighet (mm/s)
+  // 3) Translasjonskomponenter per hjul
+  float t1 = -sin(ANGLE_1) * vx + cos(ANGLE_1) * -vy;
+  float t2 = -sin(ANGLE_2) * vx + cos(ANGLE_2) * -vy;
+  float t3 = -sin(ANGLE_3) * vx + cos(ANGLE_3) * -vy;
+
+  // 4) Omregn rotasjon (rad/s) ? line�r hastighet (mm/s)
   float rotation_linear = vr * ROTATION_RADIUS;
 
-  // Summér translasjon + rotasjon
-  float w1 = t1 - rotation_linear;
-  float w2 = t2 - rotation_linear;
-  float w3 = t3 - rotation_linear;
-
-  // Disse hastighetene (mm/s) vil vi at hvert hjul skal oppnå:
-  setpointSpeed[0] = w1;
-  setpointSpeed[1] = w2;
-  setpointSpeed[2] = w3;
+  // 5) Sum translasjon + rotasjon
+  setpointSpeed[0] = t1 - rotation_linear;
+  setpointSpeed[1] = t2 - rotation_linear;
+  setpointSpeed[2] = t3 - rotation_linear;
 }
 
 #endif // KIWI_DRIVE_H
