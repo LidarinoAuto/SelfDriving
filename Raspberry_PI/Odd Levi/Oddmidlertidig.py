@@ -8,11 +8,11 @@ import smbus
 import math
 
 # ----------------- LIDAR-konfigurasjon -----------------
-PORT_NAME = "/dev/ttyUSB1"
+PORT_NAME = "/dev/rplidar"
 lidar = RPLidar(PORT_NAME, baudrate=115200)
 
 # ----------------- Serial til ESP32 -----------------
-ESP_PORT = "/dev/ttyUSB0"
+ESP_PORT = "/dev/esp32"
 esp = serial.Serial(ESP_PORT, 115200, timeout=1)
 time.sleep(2)
 

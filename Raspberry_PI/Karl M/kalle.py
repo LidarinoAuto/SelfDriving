@@ -11,8 +11,8 @@ import math
 logging.basicConfig(level=logging.INFO)
 
 # ----------------- KONSTANTER -----------------
-PORT_NAME = "/dev/ttyUSB1"         # Port for RPLidar
-ESP_PORT = "/dev/ttyUSB0"            # Port for ESP32
+PORT_NAME = "/dev/rplidar"         # Port for RPLidar
+ESP_PORT = "/dev/esp32"            # Port for ESP32
 LIDAR_BAUDRATE = 115200
 SERIAL_BAUDRATE = 115200
 
