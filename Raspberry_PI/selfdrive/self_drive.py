@@ -39,6 +39,17 @@ def main():
         stop(esp)
         time.sleep(0.5)
         
+        # Sidelengs h�yre i 2 sek (positiv y)
+        send_command(esp, 0, SPEED, 0.0)
+        time.sleep(2)
+        stop(esp)
+        time.sleep(0.5)
+
+        # Sidelengs venstre i 2 sek (negativ y)
+        send_command(esp, 0, -SPEED, 0.0)
+        time.sleep(2)
+        stop(esp)
+        
         # H�yre (rotasjon) i 2 sek
         # Negativ w = h�yresving
         send_command(esp, 0, 0, -ROT_SPEED)
