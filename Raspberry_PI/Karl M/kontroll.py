@@ -1,45 +1,55 @@
-# kontroll.py
-import curses
+import pygame
 from motorsignal import send_movement_command
 
-STEP = 100     # mm/s
-ROTATE = 30    # grader/s
+STEP = 100
+ROTATE = 45.5
 
-def main(stdscr):
-    curses.curs_set(0)
-    stdscr.nodelay(True)
-    stdscr.clear()
-    
-    x = 0
-    y = 0
-    omega = 0
+def main():
+    pygame.init()
+    screen = pygame.display.set_mode((300, 200))
+    pygame.display.set_caption("Robotkontroll")
+    clock = pygame.time.Clock()
 
-    stdscr.addstr(0, 0, "Bruk piltaster til å styre. Trykk q for å avslutte.")
-    
-    while True:
-        key = stdscr.getch()
-        
-        if key == curses.KEY_UP:
-            y = STEP
-        elif key == curses.KEY_DOWN:
-            y = -STEP
-        elif key == curses.KEY_LEFT:
-            x = -STEP
-        elif key == curses.KEY_RIGHT:
+    x = y = omega = 0
+    prev_command = (0, 0, 0.0)
+
+    running = True
+    while running:
+        x = y = omega = 0
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        keys = pygame.key.get_pressed()
+
+        # X = frem/bak
+        if keys[pygame.K_w]:
             x = STEP
-        elif key == ord('a'):
-            omega = ROTATE
-        elif key == ord('d'):
-            omega = -ROTATE
-        elif key == ord(' '):  # Stopp
-            x = y = omega = 0
-        elif key == ord('q'):
-            break
-        else:
-            continue
+        elif keys[pygame.K_s]:
+            x = -STEP
 
-        send_movement_command(x, y, omega)
-        stdscr.addstr(2, 0, f"x: {x}, y: {y}, omega: {omega}       ")
+        # Y = sideveis (n� riktig vei)
+        if keys[pygame.K_a]:
+            y = STEP       # venstre
+        elif keys[pygame.K_d]:
+            y = -STEP      # h�yre
+
+        if keys[pygame.K_q]:
+            omega = ROTATE
+        elif keys[pygame.K_e]:
+            omega = -ROTATE
+
+        current_command = (x, y, omega)
+
+        if current_command != prev_command:
+            send_movement_command(x, y, omega)
+            prev_command = current_command
+
+        clock.tick(20)
+
+    send_movement_command(0, 0, 0.0)
+    pygame.quit()
 
 if __name__ == "__main__":
-    curses.wrapper(main)
+    main()
