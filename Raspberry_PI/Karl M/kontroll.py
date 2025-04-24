@@ -2,7 +2,7 @@ import pygame
 from motorsignal import send_movement_command
 
 STEP = 100
-ROTATE = 45.5
+ROTATE = 25.0
 
 def main():
     pygame.init()
