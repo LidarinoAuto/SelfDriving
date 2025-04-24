@@ -6,7 +6,7 @@ IMU_ADDRESS = 0x68
 ROTATION_SPEED = 35
 
 def init_imu():
-    bus.write_byte_data(IMU_ADDRESS, 0x6B, 0)
+    bus.write_byte_data(IMU_ADDRESS, 0x68, 0)
     time.sleep(0.1)
 
 def read_word(adr):

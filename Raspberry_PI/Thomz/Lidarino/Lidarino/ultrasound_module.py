@@ -94,7 +94,7 @@ def les_avstand(trig, echo):
     # Hvis varigheten er for lang (f.eks. over 38ms = 6.5 meter), anses den som "out of range"
     # eller en feil m�ling. 38000 �s er ca 6.5 meter.
     if duration_us >= 38000 or duration_us <= 0: # Sjekk ogs� for null eller negativ varighet
-        # print(f"Out of range eller feil for trig={trig}, echo={echo}: {duration_us:.2f} us") # Debugging
+        # print(f"Out of range eller feil for trig={trig}, echo={echo}: {duration_us:.2f} �s") # Debugging
         return -1
     else:
         # Beregn avstand i cm. Lydens hastighet er ca 343 m/s = 0.0343 cm/�s.
@@ -107,15 +107,11 @@ def les_avstand(trig, echo):
 
 def check_ultrasound_all():
     """
-    Leser avstand fra alle definerte ultralydsensorer sekvensielt
-    med en liten pause mellom hver.
-    Returnerer True hvis ENHVER sensor m�ler avstand under
-    STOP_DISTANCE_ULTRASOUND (15 cm), ellers False.
+    Leser avstand fra alle definerte ultralydsensorer sekvensielt.
+    Returnerer indeksen (0-3) til den F�RSTE sensoren i listen
+    som m�ler avstand under STOP_DISTANCE_ULTRASOUND (15 cm).
+    Returnerer -1 hvis ingen sensor detekterer en n�r hindring.
     """
-    # Liste for � lagre avstander (ikke n�dvendig for logikken her, men nyttig for debugging)
-    distances = []
-    obstacle_detected = False
-
     # G� gjennom alle sensorpar
     for i in range(len(all_trig_pins)):
         trig = all_trig_pins[i]
@@ -123,39 +119,36 @@ def check_ultrasound_all():
 
         # Les avstand fra denne sensoren
         d = les_avstand(trig, echo)
-        distances.append(d) # Lagre avstanden
 
-        # Skriv ut m�lingen (valgfritt, kan v�re mye output)
+        # Skriv ut m�lingen (valgfritt)
         # if d > 0:
         #    print(f"Sensor {i} ({trig}/{echo}): {d:.2f} cm")
         # else:
         #    print(f"Sensor {i} ({trig}/{echo}): Out range / Feil")
 
-
         # Sjekk om avstanden indikerer en n�r hindring
-        # Sjekker kun positiv avstand (< > -1) og at den er under terskelen
         if d > 0 and d < STOP_DISTANCE_ULTRASOUND:
-            # Vi fant en hindring som er n�r nok
-            print(f"Ultralydsensor {i} ({trig}/{echo}) hindring: {d:.2f} cm! Stopper.")
-            obstacle_detected = True
-            # return True # Hvis du vil stoppe � sjekke s� fort du finner �n
+            # Vi fant en hindring som er n�r nok.
+            # Skriv ut hvilken sensor som trigget
+            print(f"Ultralydsensor {i} ({trig}/{echo}) hindring: {d:.2f} cm! Trigget unnvikelse.")
+            # Returner indeksen til sensoren som trigget f�rst
+            return i # <-- Returnerer indeksen
 
         # Legg til en liten pause mellom avlesningene for � redusere interferens
-        # Denne pausen (0.05s = 50ms) er fra din "fungerende" testkode sin loop().
-        time.sleep(0.05)
+        time.sleep(0.05) # Denne pausen er viktig!
 
-    # G� gjennom de lagrede avstandene ETTER at alle er lest (alternativ logikk)
-    # Hvis du kommenterte ut 'return True' over, kan du sjekke her etter alle m�linger er gjort.
-    # For n� holder vi oss til � returnere True s� snart �n er funnet.
-    # Men vi fortsetter l�kken for � lese ALLE sensorer f�rst, med pause mellom.
-    # Returnerer til slutt om en hindring ble funnet n�r alle er sjekket.
-    return obstacle_detected # Returnerer True hvis minst �n hindring ble funnet underveis
+    # Hvis l�kken fullf�res uten � finne noen n�r hindring
+    return -1 # <-- Returnerer -1 hvis ingen hindring ble funnet under terskelen
 
 
-# Funksjon for opprydding - viktig for � unng� GPIO-feil ved neste kj�ring
 def cleanup_ultrasound():
+    """Funksjon for � rydde opp GPIO-pinner brukt av ultralydsensorene."""
     print("Rydder opp GPIO for ultralyd...")
-    GPIO.cleanup(all_trig_pins + all_echo_pins) # Rense kun pinnene vi brukte her
-    print("GPIO opprydding fullf�rt.")
+    try:
+        # Rense kun pinnene vi brukte her
+        GPIO.cleanup(all_trig_pins + all_echo_pins)
+        print("GPIO opprydding fullf�rt.")
+    except Exception as e:
+        print(f"Feil under GPIO opprydding: {e}")
 
 # Merk: Ingen if __name__ == "__main__": blokk her. Denne modulen kalles fra main.py.
