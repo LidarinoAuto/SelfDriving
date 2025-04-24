@@ -1,17 +1,26 @@
 import pygame
 from motorsignal import send_movement_command
+import time
 
 STEP = 100
-ROTATE = 25.0
+ROTATE = 45.5
+
+def autonom_logikk():
+    """
+    Dummy-autonom logikk. Kan byttes ut med sensordata senere.
+    """
+    # Eksempel: kj�r fremover
+    return (STEP, 0, 0.0)
 
 def main():
     pygame.init()
-    screen = pygame.display.set_mode((300, 200))
-    pygame.display.set_caption("Robotkontroll")
+    screen = pygame.display.set_mode((400, 200))
+    pygame.display.set_caption("Robotkontroll (Manuell/Autonom)")
     clock = pygame.time.Clock()
 
     x = y = omega = 0
     prev_command = (0, 0, 0.0)
+    modus = "manuell"
 
     running = True
     while running:
@@ -20,25 +29,32 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_TAB:
+                    modus = "autonom" if modus == "manuell" else "manuell"
+                    print(f"Byttet til: {modus.upper()}")
+                    time.sleep(0.2)
 
         keys = pygame.key.get_pressed()
 
-        # X = frem/bak
-        if keys[pygame.K_w]:
-            x = STEP
-        elif keys[pygame.K_s]:
-            x = -STEP
+        if modus == "manuell":
+            if keys[pygame.K_w]:
+                x = STEP
+            elif keys[pygame.K_s]:
+                x = -STEP
 
-        # Y = sideveis (n� riktig vei)
-        if keys[pygame.K_a]:
-            y = STEP       # venstre
-        elif keys[pygame.K_d]:
-            y = -STEP      # h�yre
+            if keys[pygame.K_a]:
+                y = STEP
+            elif keys[pygame.K_d]:
+                y = -STEP
 
-        if keys[pygame.K_q]:
-            omega = ROTATE
-        elif keys[pygame.K_e]:
-            omega = -ROTATE
+            if keys[pygame.K_q]:
+                omega = ROTATE
+            elif keys[pygame.K_e]:
+                omega = -ROTATE
+
+        elif modus == "autonom":
+            x, y, omega = autonom_logikk()
 
         current_command = (x, y, omega)
 

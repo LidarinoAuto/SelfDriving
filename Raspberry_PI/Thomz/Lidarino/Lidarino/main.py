@@ -69,54 +69,67 @@ def main():
             direction = get_compass_direction(heading)
             # print(f"Kompass: {heading:.1f}� ({direction})") # Valgfri utskrift
 
+
             # Sjekk LiDAR for hindringer foran (under 10 cm)
             lidar_distance = get_median_lidar_reading()
             # print(f"LiDAR: {lidar_distance:.1f} cm") # Valgfri utskrift
 
             # Sjekk ULTRALYD for hindringer (under 15 cm i ultrasound_module).
-            # F�r n� indeksen til sensoren som trigget, eller -1.
-            ultrasound_sensor_index = check_ultrasound_all()
+            # F�r n� en LISTE over indekser til sensorer som trigget. Listen er tom hvis ingen trigget.
+            triggered_ultrasound_sensors = check_ultrasound_all() # <-- Denne variabelen er korrekt her
 
 
             # --- Beslutningslogikk ---
 
-            # Sjekk om det er en hindring fra LiDAR ELLER en hindring fra Ultralyd
-            if lidar_distance <= 10 or ultrasound_sensor_index != -1:
+            # Sjekk om det er en hindring fra LiDAR ELLER om ULTRALYD-listen IKKE er tom
+            if lidar_distance <= 10 or triggered_ultrasound_sensors: # En liste er True hvis den ikke er tom
                 print("Hindring detektert! Stopper og snur...")
                 stop_robot()
 
                 # --- Start Unn�vikelseslogikk ---
-                # Bestem rotasjonsvinkelen basert p� sensoren som trigget
+                # Bestem rotasjonsvinkelen basert p� hvilke sensorer som trigget
 
-                turn_angle = 0 # Start med 0, s� vet vi om en spesifikk US-regel ble brukt
-                base_turn_angle = 45 # Standard svingvinkel for spesifikke US-triggere (f.eks. 45 eller 90 grader)
+                turn_angle = 0 # Start med 0
+                base_turn_angle = 45 # Standard svingvinkel for spesifikke US-triggere
+
+                # Rekkef�lge i all_trig_pins (fra ultrasound_module): 0=FV, 1=FH, 2=BV, 3=BH
+
+                # Spesifikk logikk basert p� hvilke front-sensorer (0 og 1) som trigget
+                # Bruk KORREKT variabelnavn her: triggered_ultrasound_sensors
+                is_fl_triggered = 0 in triggered_ultrasound_sensors # <-- Riktig navn
+                is_fh_triggered = 1 in triggered_ultrasound_sensors # <-- Riktig navn
+                is_back_triggered = any(idx in triggered_ultrasound_sensors for idx in [2, 3]) # <-- Riktig navn
 
 
-                # Hvis en ULTRALYDsensor trigget:
-                if ultrasound_sensor_index != -1:
-                    print(f"Trigget av ultralydsensor index: {ultrasound_sensor_index}")
-                    # Rekkef�lge i all_trig_pins (fra ultrasound_module): 0=FV, 1=FH, 2=BV, 3=BH
+                turn_angle = 0 # Start med 0
+                base_turn_angle = 45 # Standard svingvinkel for spesifikke US-triggere
 
-                    if ultrasound_sensor_index == 0: # Front Venstre trigget
-                        # Sving til h�yre (positiv vinkel)
-                        turn_angle = base_turn_angle
-                        print("Hindring FV -> Svinger h�yre")
-                    elif ultrasound_sensor_index == 1: # Front H�yre trigget
-                         # Sving til venstre (negativ vinkel)
-                        turn_angle = -base_turn_angle
-                        print("Hindring FH -> Svinger venstre")
-                    elif ultrasound_sensor_index == 2 or ultrasound_sensor_index == 3: # Bak sensor trigget
-                         # Dette kan indikere et problem (kj�rer baklengs inn i noe?).
-                         # Kanskje rygge litt f�rst, eller snu 180 grader?
-                         # For n�, la oss bare bruke fallback-logikken (vekslende sving).
-                         print("Hindring bak -> Bruker fallback sving")
-                         pass # turn_angle forblir 0, triggrer fallback under
 
-                # Hvis INGEN spesifikk ultralydregel ble brukt (enten LiDAR trigget,
-                # eller en baksensor trigget, eller ingen US trigget men LiDAR gjorde det):
-                # turn_angle er fortsatt 0 hvis ingen front-US regel matchet
+                # --- KORRIGERT LOGIKK FOR � SVINGE VEKK FRA HINDRINGEN (GITT FYSISK KOBLINGSBYTTE) ---
+                # Hvis din fysisk venstre sensor (index 1) trigget, sving H�YRE
+                if is_fh_triggered and not is_fl_triggered and not is_back_triggered:
+                    turn_angle = base_turn_angle # Setter positiv vinkel (+45)
+                    print("Hindring KUN Fysisk VENSTRE (index 1) -> Svinger h�yre") # Oppdatert print-tekst
+
+                # Hvis din fysisk h�yre sensor (index 0) trigget, sving VENSTRE
+                elif is_fl_triggered and not is_fh_triggered and not is_back_triggered:
+                    turn_angle = -base_turn_angle # Setter NEGATIV vinkel (-45)
+                    print("Hindring KUN Fysisk H�YRE (index 0) -> Svinger venstre") # Oppdatert print-tekst
+
+                # --- SLUTT KORRIGERT LOGIKK ---
+
+
+                elif is_fl_triggered or is_fh_triggered or is_back_triggered:
+                    # B�DE Front Venstre (0) og Front H�yre (1) trigget, eller Bak (2/3) trigget, eller kombinasjon
+                    print("ULTRALYD (kombinert/bak) -> Bruker fallback sving")
+                    # turn_angle forblir 0, triggrer fallback under
+                # ... (resten av logikken for fallback) ...
+
+
+                # Hvis turn_angle fortsatt er 0 (betyr ingen spesifikk US-regel matchet, f.eks. LiDAR trigget alene,
+                # eller begge front-US trigget, eller bak-US trigget, etc.):
                 if turn_angle == 0:
-                     print("LiDAR trigget eller Bak-US/Ingen spesifikk US -> Bruker vekslende sving")
+                     print("Ingen spesifikk US-regel matchet ELLER KUN LiDAR -> Bruker vekslende sving")
                      # Bruk fallback vekslende sving
                      global last_turn_dir # M� declareres som global for � endre verdien
                      base_fallback_angle = 60 # Kan bruke annen vinkel for fallback, f.eks. st�rre sving
@@ -125,9 +138,15 @@ def main():
 
 
                 # Utf�r rotasjonen med den bestemte vinkelen
-                print(f"Roterer {turn_angle}� for � unnvike...")
-                rotate_by_gyro(turn_angle)
-                print("Rotasjon fullf�rt.")
+                # Pass p� at turn_angle ikke blir 0 hvis vi faktisk skal snu
+                # Dette skal v�re h�ndtert av logikken, men en ekstra sjekk skader ikke
+                if turn_angle != 0:
+                    print(f"Roterer {turn_angle}� for � unnvike...")
+                    rotate_by_gyro(turn_angle)
+                    print("Rotasjon fullf�rt.")
+                else:
+                     print("Ingen rotasjon n�dvendig? Dette skal normalt ikke skje ved hindring.") # Skal i teorien ikke skje hvis if-betingelsen for hindring er sann
+
 
                 # Gi sensorene et �yeblikk til � stabilisere seg etter sving
                 time.sleep(0.5) # Gi sensorer og robot tid etter sving
@@ -151,7 +170,7 @@ def main():
 
 
 # --- Programmet starter her ---
-# Variabel for � veksle svingretning hvis �nskelig (m� defineres utenfor funksjoner)
+# Variabel for � veksle svingretning hvis fallback-logikken brukes
 # M� DEFINERES UTENFOR FUNKSJONER og M� IKKE V�RE KOMMENTERT UT!
 last_turn_dir = 1 # Initial retning for veksling (1 for h�yre, -1 for venstre)
 

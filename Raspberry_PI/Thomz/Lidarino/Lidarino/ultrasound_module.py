@@ -24,7 +24,7 @@ echo_pins_back.append(11)
 all_trig_pins = trig_pins_front + trig_pins_back
 all_echo_pins = echo_pins_front + echo_pins_back
 
-STOP_DISTANCE_ULTRASOUND = 15 # Avstand i cm for � trigge stopp
+STOP_DISTANCE_ULTRASOUND = 5 # Avstand i cm for � trigge stopp
 
 def setup_ultrasound():
     """Konfigurerer GPIO-pinner for ultralydsensorene."""
@@ -108,10 +108,12 @@ def les_avstand(trig, echo):
 def check_ultrasound_all():
     """
     Leser avstand fra alle definerte ultralydsensorer sekvensielt.
-    Returnerer indeksen (0-3) til den F�RSTE sensoren i listen
+    Returnerer en LISTE over indekser (0-3) til alle sensorer i listen
     som m�ler avstand under STOP_DISTANCE_ULTRASOUND (15 cm).
-    Returnerer -1 hvis ingen sensor detekterer en n�r hindring.
+    Returnerer en tom liste hvis ingen sensor detekterer en n�r hindring.
     """
+    triggered_sensors = [] # Liste for � samle indekser som detekterer
+
     # G� gjennom alle sensorpar
     for i in range(len(all_trig_pins)):
         trig = all_trig_pins[i]
@@ -128,17 +130,15 @@ def check_ultrasound_all():
 
         # Sjekk om avstanden indikerer en n�r hindring
         if d > 0 and d < STOP_DISTANCE_ULTRASOUND:
-            # Vi fant en hindring som er n�r nok.
-            # Skriv ut hvilken sensor som trigget
-            print(f"Ultralydsensor {i} ({trig}/{echo}) hindring: {d:.2f} cm! Trigget unnvikelse.")
-            # Returner indeksen til sensoren som trigget f�rst
-            return i # <-- Returnerer indeksen
+            # Vi fant en hindring som er n�r nok. Legg til indeksen i listen.
+            triggered_sensors.append(i)
+            print(f"Ultralydsensor {i} ({trig}/{echo}) hindring: {d:.2f} cm!")
 
         # Legg til en liten pause mellom avlesningene for � redusere interferens
         time.sleep(0.05) # Denne pausen er viktig!
 
-    # Hvis l�kken fullf�res uten � finne noen n�r hindring
-    return -1 # <-- Returnerer -1 hvis ingen hindring ble funnet under terskelen
+    # Returner listen over alle triggede sensor-indekser
+    return triggered_sensors
 
 
 def cleanup_ultrasound():
