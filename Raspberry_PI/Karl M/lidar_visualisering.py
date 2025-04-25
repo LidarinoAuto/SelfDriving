@@ -7,7 +7,7 @@ import time
 WIDTH = 600
 HEIGHT = 600
 CENTER = (WIDTH // 2, HEIGHT // 2)
-SCALE = 0.5  # mm til pixel (eks. 1 mm = 0.5 pixel)
+SCALE = 0.5  # mm til pixel
 
 def polar_to_cartesian(angle_deg, distance_mm):
     angle_rad = math.radians(angle_deg)
@@ -32,20 +32,14 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
-        # Tegne alle punktene vi får fra lidar
-        # Bruk siste tilgjengelige scan
-        latest_scan = lidar.lidar_buffer[-1:] if lidar.lidar_buffer else []
-
-        if latest_scan:
-            stable_distance = lidar.get_median_lidar_reading()
-
-            # Her kan vi simulere 0 grader (rett frem) og noen vinkler rundt
-            for angle in range(-30, 31, 5):  # fra -30° til 30° i 5° steg
-                x, y = polar_to_cartesian(angle, stable_distance)
-                pygame.draw.circle(screen, (255, 255, 255), (x, y), 3)
+        # Tegne ALLE målinger
+        for angle, distance in lidar.scan_data:
+            if distance > 0:  # Noen LIDAR gir 0 på ugyldige målinger
+                x, y = polar_to_cartesian(angle, distance)
+                pygame.draw.circle(screen, (255, 255, 255), (x, y), 2)
 
         pygame.display.update()
-        clock.tick(10)
+        clock.tick(20)
 
     lidar.stop_lidar()
     pygame.quit()
