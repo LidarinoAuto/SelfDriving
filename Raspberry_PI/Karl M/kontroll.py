@@ -1,16 +1,17 @@
+# kontroll.py
 import pygame
 from motorsignal import send_movement_command
+import lidar
 import time
 
 STEP = 100
 ROTATE = 45.5
 
 def autonom_logikk():
-    """
-    Dummy-autonom logikk. Kan byttes ut med sensordata senere.
-    """
-    # Eksempel: kj�r fremover
-    return (STEP, 0, 0.0)
+    if lidar.is_path_clear():
+        return (STEP, 0, 0.0)  # Kjør fremover
+    else:
+        return (0, 0, 0.0)      # Stopp
 
 def main():
     pygame.init()
@@ -21,6 +22,8 @@ def main():
     x = y = omega = 0
     prev_command = (0, 0, 0.0)
     modus = "manuell"
+
+    lidar.start_lidar()
 
     running = True
     while running:
@@ -65,6 +68,7 @@ def main():
         clock.tick(20)
 
     send_movement_command(0, 0, 0.0)
+    lidar.stop_lidar()
     pygame.quit()
 
 if __name__ == "__main__":
