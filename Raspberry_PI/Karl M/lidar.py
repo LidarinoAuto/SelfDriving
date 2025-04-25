@@ -25,11 +25,20 @@ def stop_lidar():
         lidar.stop()
         lidar.disconnect()
 
+scan_data = []  # (vinkel, avstand) tuples
+
 def _lidar_thread():
-    global current_distance_lidar, running, lidar_buffer
+    global current_distance_lidar, running, lidar_buffer, scan_data
     for scan in lidar.iter_scans():
-        distances = [measurement[2] for measurement in scan
-                     if abs(measurement[1] - 0) <= 30 or abs(measurement[1] - 360) <= 30]
+        temp_scan = []
+        for measurement in scan:
+            angle = measurement[1]
+            distance = measurement[2]
+            temp_scan.append((angle, distance))
+        scan_data = temp_scan  # Overwrite med siste komplette skanning
+
+        # For eksisterende logikk (fremover-målinger)
+        distances = [d for a, d in temp_scan if abs(a - 0) <= 30 or abs(a - 360) <= 30]
         if distances:
             min_distance = min(distances)
             current_distance_lidar = min_distance
