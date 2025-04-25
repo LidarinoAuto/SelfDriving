@@ -4,9 +4,9 @@ import threading
 import time
 
 PORT_NAME = "/dev/rplidar"
-STOP_DISTANCE_LIDAR = 250  # mm
+STOP_DISTANCE_LIDAR = 250  # mm (trygg minimums-avstand)
+ROBOT_RADIUS = 117.5       # mm (halv diameter på roboten)
 
-# Globale variabler
 current_distance_lidar = 9999
 lidar_buffer = []
 running = False
@@ -50,8 +50,6 @@ def get_median_lidar_reading():
         return (sorted_buffer[n // 2 - 1] + sorted_buffer[n // 2]) / 2
 
 def is_path_clear():
-    """
-    Returnerer True hvis avstanden foran er større enn STOP_DISTANCE_LIDAR.
-    """
     stable_distance = get_median_lidar_reading()
-    return stable_distance > STOP_DISTANCE_LIDAR
+    adjusted_distance = stable_distance - ROBOT_RADIUS
+    return adjusted_distance > STOP_DISTANCE_LIDAR
