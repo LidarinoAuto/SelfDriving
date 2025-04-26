@@ -14,6 +14,7 @@ def polar_to_cartesian(angle_deg, distance_cm):
     angle_rad = math.radians(-angle_deg)
     x = math.cos(angle_rad) * distance_cm * SCALE
     y = math.sin(angle_rad) * distance_cm * SCALE
+
     return int(CENTER[0] + x), int(CENTER[1] - y)
 
 def main():
