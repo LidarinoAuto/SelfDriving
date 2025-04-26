@@ -19,5 +19,5 @@ def read_gyro_z():
         value = -((65535 - value) + 1)
     
     # Skaler til grader/sekund (MPU6050 default 250dps range)
-    gyro_z = value / 131.0
+    gyro_z = -(value / 131.0)
     return gyro_z
