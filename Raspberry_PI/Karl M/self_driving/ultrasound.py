@@ -34,29 +34,37 @@ def setup_ultrasound():
     time.sleep(2)
 
 def read_distance(trig, echo):
-    GPIO.output(trig, False)
-    time.sleep(0.000002)
+    import RPi.GPIO as GPIO
+
+    # Send kort triggerpuls
     GPIO.output(trig, True)
     time.sleep(0.00001)
     GPIO.output(trig, False)
-    
+
     timeout_start = time.time()
+    timeout = 0.02  # maks 20 ms venting på start av ekko
+
+    # Vent på ekko start (echo blir HIGH)
     while GPIO.input(echo) == 0:
         pulse_start = time.time()
-        if pulse_start - timeout_start > 0.03:
-            return -1
+        if pulse_start - timeout_start > timeout:
+            return -1  # Timeout
 
+    # Vent på ekko slutt (echo blir LOW)
+    timeout_start = time.time()
     while GPIO.input(echo) == 1:
         pulse_end = time.time()
-        if pulse_end - timeout_start > 0.03:
-            return -1
+        if pulse_end - timeout_start > timeout:
+            return -1  # Timeout
 
-    pulse_duration = (pulse_end - pulse_start) * 1e6
-    distance_cm = pulse_duration / 58.0
-    return distance_cm
+    pulse_duration = (pulse_end - pulse_start) * 1e6  # mikrosekunder
+    distance = pulse_duration * 0.0343 / 2  # lydhastighet, tur/retur
+    return distance
 
 def update_ultrasound_readings():
-    for i, (trig, echo) in enumerate(zip(trig_pins, echo_pins)):
-        name = sensor_names[i]
-        distance = read_distance(trig, echo)
-        sensor_distances[name] = distance
+    for sensor, (trig, echo) in sensors.items():
+    distance = read_distance(trig, echo)
+    if distance > 0:
+        sensor_distances[sensor] = distance
+    else:
+        sensor_distances[sensor] = 0  # Eller kanskje None hvis du vil ignorere
