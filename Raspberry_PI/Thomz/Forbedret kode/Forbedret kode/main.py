@@ -1,276 +1,182 @@
 # -*- coding: utf-8 -*-
-
 # Filename: main.py
-
 # Main program for robot navigation with sensors and motor control
- 
+
 # --- IMPORT NECESSARY MODULES ---
-
 import time
-
 import sys
-
 import threading  # Import threading if needed
- 
+
 # Import your own modules
-
 import motor_control
-
 import imu_module
-
 import compass_module
-
 import ultrasound_module
+import lidar_module  # Explicit import to use lidar_module.lidar
 
-# Import the specific functions from the NEW lidar_module structure
-
+# Import the specific functions from the lidar_module
 from lidar_module import start_lidar, get_median_lidar_reading_cm, stop_lidar
- 
- 
-# --- NAVIGATION CONFIGURATION ---
 
+# --- NAVIGATION CONFIGURATION ---
 FORWARD_SPEED = 100  # Standard forward speed
 
-# Detection thresholds (adjust as needed)
+# Detection thresholds
+LIDAR_STOP_DISTANCE_CM = 27.0  # Adjusted for robot radius (15 cm + 11.75 cm)
+ULTRASOUND_STOP_DISTANCE_CM = 8.0  # Reliable stop distance for ultrasound
 
-LIDAR_STOP_DISTANCE_CM = 15.0  # Stop distance for Lidar in cm (Increased slightly for safety)
+# Global variable to track last fallback turn direction
+last_turn_dir = 1  # 1 = Right, -1 = Left
 
-ULTRASOUND_STOP_DISTANCE_CM = 8.0  # Stop distance for Ultrasound in cm (Increased slightly for safety)
- 
-# Global variable to keep track of the last fallback turn direction (1 for right, -1 for left)
-
-last_turn_dir = 1
- 
- 
 # --- SYSTEM INITIALIZATION ---
-
 def initialize_systems():
-
     """Initializes all sensors and systems."""
-
     print("Starting robot systems initialization...")
 
     try:
-
-        # Initialize Ultrasound sensors (using the updated function name)
-
         print("Setting up ultrasound sensors...")
+        us_initialized = ultrasound_module.setup_ultrasound_gpio()
+        if us_initialized:
+            print("Ultrasound sensors set up.")
+        else:
+            print("Warning: Ultrasound sensors failed to set up. Navigation might be unreliable.")
 
-        ultrasound_module.setup_ultrasound_gpio()
-
-        print("Ultrasound sensors set up.")
- 
-        # Initialize IMU (assuming this version includes gyro bias calibration)
-
+        print("Initializing IMU...")
         imu_module.init_imu()
- 
-        # Initialize Compass (assuming this version includes upside-down compensation)
+        print("IMU initialized.")
 
+        print("Initializing QMC5883L...")
         compass_module.init_compass()
- 
-        # Start Lidar (using the new start function from updated lidar_module)
+        print("QMC5883L initialized successfully.")
 
+        print("Starting Lidar...")
         lidar_initialized = start_lidar()
-
         if not lidar_initialized:
+            print("Warning: Lidar failed to initialize or connect.")
 
-            print("Warning: Lidar failed to initialize or connect. Lidar data will not be available for navigation.")
- 
         print("Initialization complete.")
- 
+
     except Exception as e:
-
         print(f"Critical error during system initialization: {e}")
-
         cleanup_systems()
+        sys.exit(f"Initialization failed due to: {e}")
 
-        sys.exit("Initialization failed.")
- 
- 
 # --- MAIN NAVIGATION LOOP ---
-
 def main():
-
     """Main navigation loop."""
-
     global last_turn_dir
- 
-    # Initial calibration or heading check (optional)
 
+    # Optional: Initial heading alignment
     try:
-
+        print("Performing initial heading check and rotation...")
         current_heading = compass_module.read_compass()
 
         if current_heading != -1.0:
-
-            print(f"Current heading: {current_heading:.1f}°")
-
+            print(f"Current heading: {current_heading:.1f}�")
             target_heading = 0.0
-
             angle_to_rotate = (target_heading - current_heading + 360) % 360
-
             if angle_to_rotate > 180:
-
                 angle_to_rotate -= 360
 
-            print(f"Rotating {angle_to_rotate:.1f}° towards North...")
-
-            imu_module.rotate_by_gyro(angle_to_rotate)
-
-            current_heading = compass_module.read_compass()
-
-            print(f"New heading after rotation: {current_heading:.1f}°")
-
+            if abs(angle_to_rotate) > 1.0:
+                print(f"Executing rotation of {angle_to_rotate:.1f}�...")
+                imu_module.rotate_by_gyro(angle_to_rotate)
+                print("Initial rotation completed.")
+                current_heading = compass_module.read_compass()
+                print(f"New heading after rotation: {current_heading:.1f}�")
+            else:
+                print("Initial heading is already close to North.")
         else:
-
-            print("Initial compass reading failed.")
- 
+            print("Initial compass reading failed. Skipping initial rotation.")
     except Exception as e:
+        print(f"Error during initial heading rotation: {e}")
 
-        print(f"Error during initial rotation or heading check: {e}")
- 
-    # Main navigation loop
+    print("Starting continuous forward movement loop...")
+    motor_control.send_command(f"{FORWARD_SPEED} 0 0\n")
 
     try:
-
         while True:
-
             # --- READ SENSOR DATA ---
-
             lidar_distance = get_median_lidar_reading_cm()
+            triggered_us_info = ultrasound_module.get_triggered_ultrasound_info(ULTRASOUND_STOP_DISTANCE_CM)
+            triggered_us_sensors = triggered_us_info[0]
+            us_distances = triggered_us_info[1]
 
-            triggered_ultrasound_info = ultrasound_module.get_triggered_ultrasound_info(ULTRASOUND_STOP_DISTANCE_CM)
+            # --- DEBUG PRINTS ---
+            if lidar_distance != float('inf'):
+                print(f"LiDAR: {lidar_distance:.2f} cm (Threshold: {LIDAR_STOP_DISTANCE_CM:.2f})")
+            elif lidar_module.lidar is not None:
+                pass  # Lidar exists but returned infinity
 
-            triggered_ultrasound_sensors = triggered_ultrasound_info[0]
+            if triggered_us_sensors:
+                details = ", ".join([f"US {i}: {us_distances[i]:.2f}cm" for i in triggered_us_sensors])
+                print(f"US triggered: {details} (Threshold: {ULTRASOUND_STOP_DISTANCE_CM:.2f})")
 
-            ultrasound_distances = triggered_ultrasound_info[1]
- 
             # --- OBSTACLE DETECTION ---
+            lidar_detected = lidar_distance < LIDAR_STOP_DISTANCE_CM if lidar_distance != float('inf') else False
+            us_detected = len(triggered_us_sensors) > 0
 
-            lidar_obstacle_detected = lidar_distance < LIDAR_STOP_DISTANCE_CM
-
-            ultrasound_obstacle_detected = len(triggered_ultrasound_sensors) > 0
- 
-            if lidar_obstacle_detected or ultrasound_obstacle_detected:
-
-                print("Obstacle detected! Stopping and planning avoidance...")
-
+            if lidar_detected or us_detected:
+                print("Obstacle detected! Stopping...")
                 motor_control.send_command("0 0 0\n")
- 
-                # --- OBSTACLE AVOIDANCE LOGIC ---
 
                 turn_angle = 0
-
                 base_turn_angle = 45
-
                 base_fallback_angle = 25
- 
-                is_us_0_triggered = 0 in triggered_ultrasound_sensors
 
-                is_us_1_triggered = 1 in triggered_ultrasound_sensors
+                is_us_0 = 0 in triggered_us_sensors
+                is_us_1 = 1 in triggered_us_sensors
+                is_back = any(i in triggered_us_sensors for i in [2, 3])
 
-                is_back_triggered = (2 in triggered_ultrasound_sensors) or (3 in triggered_ultrasound_sensors)
- 
-                if is_us_1_triggered and not is_us_0_triggered and not is_back_triggered:
-
+                if is_us_1 and not is_us_0 and not is_back:
                     turn_angle = base_turn_angle
-
-                    print(f"US Index 1 triggered: Turning Right (+{base_turn_angle} degrees)")
-
-                elif is_us_0_triggered and not is_us_1_triggered and not is_back_triggered:
-
+                    print(f"Turning Right (+{turn_angle}�)")
+                elif is_us_0 and not is_us_1 and not is_back:
                     turn_angle = -base_turn_angle
-
-                    print(f"US Index 0 triggered: Turning Left (-{base_turn_angle} degrees)")
-
-                elif lidar_obstacle_detected or is_back_triggered or (is_us_0_triggered and is_us_1_triggered):
-
-                    print("Fallback triggered: Alternating rotation used.")
-
+                    print(f"Turning Left ({turn_angle}�)")
+                elif lidar_detected or is_back or (is_us_0 and is_us_1):
                     turn_angle = base_fallback_angle * last_turn_dir
-
                     last_turn_dir *= -1
-
-                    print(f"Fallback turn by {abs(turn_angle)} degrees ({'Right' if turn_angle > 0 else 'Left'})")
-
+                    print(f"Fallback turn: {turn_angle:+}�")
                 else:
-
-                    print("Obstacle detected, but no specific avoidance rule matched. Stopping.")
-
-                    motor_control.send_command("0 0 0\n")
-
+                    print("Obstacle detected, but no rule matched.")
                     time.sleep(1.0)
- 
+
                 if turn_angle != 0:
-
                     try:
-
-                        print(f"Executing rotation of {turn_angle:.1f} degrees...")
-
+                        print(f"Executing turn of {turn_angle}�...")
                         imu_module.rotate_by_gyro(turn_angle)
-
-                        print("Avoidance maneuver completed. Continuing forward.")
-
+                        print("Avoidance maneuver done.")
                     except Exception as e:
-
-                        print(f"Error during rotation execution: {e}")
-
+                        print(f"Error during turn: {e}")
                         motor_control.send_command("0 0 0\n")
-
                         time.sleep(1.0)
- 
-            else:
 
+                print("Resuming forward movement...")
+                time.sleep(0.5)
                 motor_control.send_command(f"{FORWARD_SPEED} 0 0\n")
 
-                time.sleep(0.01)
- 
+            time.sleep(0.01)  # Control loop delay (~100 Hz)
+
     except KeyboardInterrupt:
-
-        print("User interrupted the program (Ctrl+C).")
-
+        print("Program interrupted by user.")
     except Exception as e:
-
-        print(f"An unexpected error occurred in the main loop: {e}")
-
+        print(f"Unexpected error: {e}")
     finally:
-
         cleanup_systems()
- 
- 
+
 # --- CLEANUP FUNCTION ---
-
 def cleanup_systems():
-
     """Clean up sensor connections and stop motors."""
-
     print("Cleaning up before exit...")
-
     motor_control.send_command("0 0 0\n")
-
     ultrasound_module.cleanup_ultrasound_gpio()
-
     stop_lidar()
-
     print("Cleanup completed. Program finished.")
- 
- 
+
 # --- PROGRAM ENTRY POINT ---
-
 if __name__ == "__main__":
-
     initialize_systems()
-
     try:
-
         main()
-
     except Exception as e:
-
-        print(f"Program terminated due to an error: {e}")
-
-    finally:
-
-        pass
-
- 
+        print(f"Unhandled error: {e}")
