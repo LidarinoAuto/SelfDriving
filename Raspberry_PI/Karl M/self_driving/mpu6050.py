@@ -10,7 +10,7 @@ offset_z = 0
 
 def setup_mpu6050():
     global offset_z
-    bus.write_byte_data(MPU6050_ADDR, 0x6B, 0x00)
+    bus.write_byte_data(MPU6050_ADDR, 0x6B, 0x00)  # Wake up sensor
     time.sleep(0.1)
 
     # Last inn offset hvis fil finnes
@@ -33,7 +33,7 @@ def read_gyro_z():
     value = (high << 8) | low
     if value >= 0x8000:
         value = -((65535 - value) + 1)
-    
+
     gyro_z = -(value / 131.0)
-    gyro_z -= offset_z  # Fjern offset
+    gyro_z -= offset_z  # Fjern offset for korrigert måling
     return gyro_z
