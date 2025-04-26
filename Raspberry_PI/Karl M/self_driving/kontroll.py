@@ -155,7 +155,7 @@ def main():
         # Tegn LIDAR
         for angle, distance in lidar.scan_data:
             if distance > 0:
-                x, y = polar_to_cartesian(angle - fused_heading, distance / 10.0)
+                x, y = polar_to_cartesian(angle, distance / 10.0)  #IKKE trekke fra fused_heading
                 pygame.draw.circle(screen, (255, 255, 255), (x, y), 2)
 
         
@@ -163,9 +163,10 @@ def main():
         for sensor, distance in ultrasound.sensor_distances.items():
             if distance > 0:
                 angle = ultrasound.sensor_angles[sensor]
-                x, y = polar_to_cartesian(angle - fused_heading, distance)
+                x, y = polar_to_cartesian(angle, distance)  #IKKE trekke fra fused_heading
                 color = (255, 0, 0) if distance < 30 else (0, 255, 0)
                 pygame.draw.line(screen, color, CENTER, (x, y), 3)
+
 
 
 
