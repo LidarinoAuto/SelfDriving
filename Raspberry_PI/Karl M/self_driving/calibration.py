@@ -3,6 +3,8 @@ import time
 import mpu6050
 import kompas
 import motorsignal
+import pygame
+
 
 gyro_offset = 0
 compass_offset_x = 0
@@ -33,6 +35,7 @@ def calibrate_compass():
     kompas.setup_compass()
 
     rotation_speed = 30  # grader/s
+    rotation_duration = 7  # sekunder for ca 360 grader
 
     min_x = min_y = 32767
     max_x = max_y = -32768
@@ -41,7 +44,6 @@ def calibrate_compass():
     motorsignal.send_movement_command(0, 0, rotation_speed)
 
     start_time = time.time()
-    rotation_duration = 7  # sekunder for 360 grader (juster om nødvendig)
 
     while (time.time() - start_time) < rotation_duration:
         x, y = kompas.read_raw_xy()
@@ -49,12 +51,14 @@ def calibrate_compass():
         max_x = max(max_x, x)
         min_y = min(min_y, y)
         max_y = max(max_y, y)
+
+        pygame.event.pump()  # <- HOLDER GUIEN I LIVE
         time.sleep(0.01)
 
     motorsignal.send_movement_command(0, 0, 0.0)
     time.sleep(1)
 
-    # Nå snu andre vei
+    # Nå roter andre vei
     motorsignal.send_movement_command(0, 0, -rotation_speed)
 
     start_time = time.time()
@@ -65,6 +69,8 @@ def calibrate_compass():
         max_x = max(max_x, x)
         min_y = min(min_y, y)
         max_y = max(max_y, y)
+
+        pygame.event.pump()  # <- HOLDER GUIEN I LIVE
         time.sleep(0.01)
 
     motorsignal.send_movement_command(0, 0, 0.0)
