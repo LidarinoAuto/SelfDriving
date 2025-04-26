@@ -3,19 +3,24 @@ import pygame
 import lidar
 import ultrasound
 import kompas
+import mpu6050
 from motorsignal import send_movement_command
 import math
 import time
+import os
 
 # Konstanter
-STEP = 100  # mm/s
-ROTATE = 15.0  # grader/s
+STEP = 100
+ROTATE = 15.0
 WIDTH = 600
 HEIGHT = 600
 CENTER = (WIDTH // 2, HEIGHT // 2)
-SCALE = 2.0  # 1 cm = 2 pixels for visualisering
+SCALE = 2.0  # 1 cm = 2 pixels
+KOMPASS_JUSTERING = 270  # Hvis nødvendig for montering
 
-KOMPASS_JUSTERING = 270  # Endre til 90, 180 eller 270 om kompasset peker feil
+# Filter-konstanter
+GYRO_WEIGHT = 0.98  # Hvor mye vi stoler på gyro (0.0–1.0)
+COMPASS_WEIGHT = 1.0 - GYRO_WEIGHT
 
 def polar_to_cartesian(angle_deg, distance_cm):
     angle_rad = math.radians(-angle_deg)
@@ -33,14 +38,14 @@ def autonom_logikk():
         front_blocked = True
 
     if path_clear and not front_blocked:
-        return (STEP, 0, 0.0)  # Kjør fremover
+        return (STEP, 0, 0.0)
     else:
-        return (0, 0, 0.0)     # Stopp
+        return (0, 0, 0.0)
 
 def main():
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("Robotkontroll + Kart + Kompass")
+    pygame.display.set_caption("Robotkontroll + Kart + Kombinert Kompass/Gyro")
     clock = pygame.time.Clock()
     font = pygame.font.SysFont(None, 24)
 
@@ -51,10 +56,20 @@ def main():
     lidar.start_lidar()
     ultrasound.setup_ultrasound()
     kompas.setup_compass()
+    mpu6050.setup_mpu6050()
+
+    last_time = time.time()
+
+    # Start med heading fra kompass
+    fused_heading = kompas.read_heading()
+    if fused_heading != -1:
+        fused_heading = (fused_heading + KOMPASS_JUSTERING) % 360
+    else:
+        fused_heading = 0
 
     running = True
     while running:
-        screen.fill((0, 0, 0))  # Svart bakgrunn
+        screen.fill((0, 0, 0))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -95,31 +110,43 @@ def main():
             send_movement_command(x, y, omega)
             prev_command = current_command
 
-        # --- Tegn kartet ---
+        # --- Kombiner gyro og kompass for heading ---
+        current_time = time.time()
+        dt = current_time - last_time
+        last_time = current_time
+
+        gyro_z = mpu6050.read_gyro_z()  # grader/sekund
+        fused_heading += gyro_z * dt
+        fused_heading %= 360
+
+        # Kompass-korreksjon (slow update)
+        compass_heading = kompas.read_heading()
+        if compass_heading != -1:
+            compass_heading = (compass_heading + KOMPASS_JUSTERING) % 360
+            # Komplementært filter
+            fused_heading = (GYRO_WEIGHT * fused_heading + COMPASS_WEIGHT * compass_heading) % 360
+
         # Tegn robotens sentrum
         pygame.draw.circle(screen, (0, 255, 0), CENTER, 5)
 
-        # Tegn kompasspil
-        heading = kompas.read_heading()
-        if heading != -1:
-            heading = (heading + KOMPASS_JUSTERING) % 360
-            heading_rad = math.radians(-heading)
-            arrow_length = 50
-            end_x = int(CENTER[0] + math.cos(heading_rad) * arrow_length)
-            end_y = int(CENTER[1] - math.sin(heading_rad) * arrow_length)
-            pygame.draw.line(screen, (0, 0, 255), CENTER, (end_x, end_y), 4)  # Blå pil for heading
+        # Tegn heading-pil
+        heading_rad = math.radians(-fused_heading)
+        arrow_length = 50
+        end_x = int(CENTER[0] + math.cos(heading_rad) * arrow_length)
+        end_y = int(CENTER[1] - math.sin(heading_rad) * arrow_length)
+        pygame.draw.line(screen, (0, 0, 255), CENTER, (end_x, end_y), 4)
 
-        # Tegn 'N' (Nord) øverst
+        # Tegn 'N' for nord på toppen
         north_text = font.render('N', True, (255, 0, 0))
         screen.blit(north_text, (WIDTH//2 - 10, 10))
 
-        # Tegn LIDAR-målinger
+        # Tegn LIDAR-punkter
         for angle, distance in lidar.scan_data:
             if distance > 0:
-                x_l, y_l = polar_to_cartesian(angle, distance / 10.0)  # mm -> cm
+                x_l, y_l = polar_to_cartesian(angle, distance / 10.0)
                 pygame.draw.circle(screen, (255, 255, 255), (x_l, y_l), 2)
 
-        # Tegn ultralydsensor-målinger
+        # Tegn ultralydmålinger
         for sensor, distance in ultrasound.sensor_distances.items():
             if distance > 0:
                 angle = ultrasound.sensor_angles[sensor]
@@ -128,9 +155,8 @@ def main():
                 pygame.draw.line(screen, color, CENTER, (x_u, y_u), 3)
 
         pygame.display.update()
-        clock.tick(20)
+        clock.tick(30)
 
-    # --- Avslutt ---
     send_movement_command(0, 0, 0.0)
     lidar.stop_lidar()
     pygame.quit()
