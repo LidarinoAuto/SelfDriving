@@ -134,15 +134,18 @@ def main():
         current_time = time.time()
         dt = current_time - last_time
         last_time = current_time
-
+        
         gyro_z = mpu6050.read_gyro_z()
-        fused_heading += gyro_z * dt
-        fused_heading %= 360
-
+        fused_heading = (fused_heading + gyro_z * dt) % 360
+        
         compass_heading = kompas.read_heading()
         if compass_heading != -1:
             compass_heading = (compass_heading + KOMPASS_JUSTERING) % 360
-            fused_heading = (GYRO_WEIGHT * fused_heading + COMPASS_WEIGHT * compass_heading) % 360
+        
+            # --- Riktig blending av gyro og kompass ---
+            delta = ((compass_heading - fused_heading + 540) % 360) - 180
+            fused_heading = (fused_heading + delta * (1.0 - GYRO_WEIGHT)) % 360
+
 
         # --- Tegning ---
         pygame.draw.circle(screen, (0, 255, 0), CENTER, 5)
