@@ -1,7 +1,8 @@
-# kontroll.py (kombinert styring + kart)
+# kontroll.py
 import pygame
 import lidar
 import ultrasound
+import kompas
 from motorsignal import send_movement_command
 import math
 import time
@@ -39,7 +40,7 @@ def autonom_logikk():
 def main():
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("Robotkontroll + Kart (Manuell/Autonom)")
+    pygame.display.set_caption("Robotkontroll + Kart + Kompass")
     clock = pygame.time.Clock()
 
     x = y = omega = 0
@@ -48,6 +49,7 @@ def main():
 
     lidar.start_lidar()
     ultrasound.setup_ultrasound()
+    kompas.setup_compass()
 
     running = True
     while running:
@@ -92,8 +94,18 @@ def main():
             send_movement_command(x, y, omega)
             prev_command = current_command
 
-        # Tegn roboten
-        pygame.draw.circle(screen, (0, 255, 0), CENTER, 5)  # Grønn prikk for robot-senter
+        # --- Tegn kartet ---
+        # Tegn robotens sentrum
+        pygame.draw.circle(screen, (0, 255, 0), CENTER, 5)
+
+        # Tegn kompasspil
+        heading = kompas.read_heading()
+        if heading != -1:
+            heading_rad = math.radians(-heading)
+            arrow_length = 50
+            end_x = int(CENTER[0] + math.cos(heading_rad) * arrow_length)
+            end_y = int(CENTER[1] - math.sin(heading_rad) * arrow_length)
+            pygame.draw.line(screen, (0, 0, 255), CENTER, (end_x, end_y), 4)  # Blå pil for heading
 
         # Tegn LIDAR-målinger
         for angle, distance in lidar.scan_data:
@@ -112,6 +124,7 @@ def main():
         pygame.display.update()
         clock.tick(20)
 
+    # --- Avslutt ---
     send_movement_command(0, 0, 0.0)
     lidar.stop_lidar()
     pygame.quit()

@@ -1,34 +1,44 @@
-# kompas.py
+# kompas.py (for QMC5883L)
 import smbus
 import time
 import math
 
-# Forutsetter en vanlig HMC5883L, LSM303, eller lignende magnetometer
-DEVICE_ADDRESS = 0x1E  # Endre hvis ditt kompass har annen adresse
+QMC5883L_ADDRESS = 0x0d  # Standard adresse
 bus = smbus.SMBus(1)
 
+QMC5883L_CTRL1 = 0x09
+QMC5883L_SET_RESET = 0x0B
+QMC5883L_DATA = 0x00
+
 def setup_compass():
-    # Konfigurer kompasset
-    bus.write_byte_data(DEVICE_ADDRESS, 0x00, 0x70)  # Configuration Register A
-    bus.write_byte_data(DEVICE_ADDRESS, 0x01, 0xA0)  # Configuration Register B (gain)
-    bus.write_byte_data(DEVICE_ADDRESS, 0x02, 0x00)  # Mode Register (continuous mode)
-    time.sleep(0.5)
+    try:
+        bus.write_byte_data(QMC5883L_ADDRESS, QMC5883L_SET_RESET, 0x01)
+        time.sleep(0.1)
+        bus.write_byte_data(QMC5883L_ADDRESS, QMC5883L_CTRL1, 0b00011101)
+        time.sleep(0.1)
+        print("QMC5883L initialisert.")
+    except Exception as e:
+        print(f"Feil ved initiering av kompass: {e}")
 
-def read_raw_data(addr):
-    high = bus.read_byte_data(DEVICE_ADDRESS, addr)
-    low = bus.read_byte_data(DEVICE_ADDRESS, addr+1)
-    value = ((high << 8) | low)
-    if value > 32768:
-        value = value - 65536
-    return value
+def read_heading():
+    try:
+        data = bus.read_i2c_block_data(QMC5883L_ADDRESS, QMC5883L_DATA, 6)
 
-def get_heading():
-    x = read_raw_data(0x03)
-    z = read_raw_data(0x05)
-    y = read_raw_data(0x07)
+        x_raw = (data[1] << 8) | data[0]
+        y_raw = (data[3] << 8) | data[2]
+        z_raw = (data[5] << 8) | data[4]
 
-    heading_rad = math.atan2(y, x)
-    heading_deg = math.degrees(heading_rad)
-    if heading_deg < 0:
-        heading_deg += 360
-    return heading_deg
+        x = x_raw - 65536 if x_raw > 32767 else x_raw
+        y = y_raw - 65536 if y_raw > 32767 else y_raw
+        z = z_raw - 65536 if z_raw > 32767 else z_raw
+
+        heading_rad = math.atan2(y, x)
+        heading_deg = math.degrees(heading_rad)
+
+        if heading_deg < 0:
+            heading_deg += 360
+
+        return heading_deg
+    except Exception as e:
+        print(f"Feil ved lesing av kompass: {e}")
+        return -1
