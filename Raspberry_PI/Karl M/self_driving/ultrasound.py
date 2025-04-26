@@ -64,7 +64,7 @@ def read_distance(trig, echo):
 def update_ultrasound_readings():
     for sensor, (trig, echo) in sensors.items():
     distance = read_distance(trig, echo)
-    if distance > 0:
-        sensor_distances[sensor] = distance
-    else:
-        sensor_distances[sensor] = 0  # Eller kanskje None hvis du vil ignorere
+        if distance > 0:
+            sensor_distances[sensor] = distance
+        else:
+            sensor_distances[sensor] = 0  # Eller kanskje None hvis du vil ignorere
