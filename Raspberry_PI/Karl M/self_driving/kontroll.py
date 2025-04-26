@@ -15,7 +15,7 @@ HEIGHT = 600
 CENTER = (WIDTH // 2, HEIGHT // 2)
 SCALE = 2.0  # 1 cm = 2 pixels for visualisering
 
-KOMPASS_JUSTERING = 0  # Endre til 90, 180 eller 270 om kompasset peker feil
+KOMPASS_JUSTERING = 270  # Endre til 90, 180 eller 270 om kompasset peker feil
 
 def polar_to_cartesian(angle_deg, distance_cm):
     angle_rad = math.radians(-angle_deg)
