@@ -4,6 +4,7 @@ import lidar
 import ultrasound
 import kompas
 import mpu6050
+import calibration
 from motorsignal import send_movement_command
 import math
 import time
@@ -16,10 +17,10 @@ WIDTH = 600
 HEIGHT = 600
 CENTER = (WIDTH // 2, HEIGHT // 2)
 SCALE = 2.0  # 1 cm = 2 pixels
-KOMPASS_JUSTERING = 270  # Hvis nødvendig for montering
+KOMPASS_JUSTERING = 270  # Hvis nødvendig
 
 # Filter-konstanter
-GYRO_WEIGHT = 0.98  # Hvor mye vi stoler på gyro (0.0–1.0)
+GYRO_WEIGHT = 0.98
 COMPASS_WEIGHT = 1.0 - GYRO_WEIGHT
 
 def polar_to_cartesian(angle_deg, distance_cm):
@@ -49,7 +50,7 @@ def main():
     clock = pygame.time.Clock()
     font = pygame.font.SysFont(None, 24)
 
-    # --- KALIBRER før noe annet ---
+    # --- KALIBRERING ---
     screen.fill((0, 0, 0))
     text = font.render('Kalibrerer gyro...', True, (255, 255, 0))
     screen.blit(text, (150, 250))
@@ -68,13 +69,14 @@ def main():
     pygame.display.update()
     time.sleep(2)
 
-    # --- Så starter normal drift ---
+    # --- NORMAL DRIFT ---
     lidar.start_lidar()
     ultrasound.setup_ultrasound()
     kompas.setup_compass()
     mpu6050.setup_mpu6050()
 
     last_time = time.time()
+    prev_command = (0, 0, 0.0)
 
     # Start med heading fra kompass
     fused_heading = kompas.read_heading()
@@ -83,6 +85,7 @@ def main():
     else:
         fused_heading = 0
 
+    modus = "manuell"
     running = True
     while running:
         screen.fill((0, 0, 0))
@@ -97,7 +100,6 @@ def main():
                     time.sleep(0.2)
 
         keys = pygame.key.get_pressed()
-
         x = y = omega = 0
 
         if modus == "manuell":
@@ -105,12 +107,10 @@ def main():
                 x = STEP
             elif keys[pygame.K_s]:
                 x = -STEP
-
             if keys[pygame.K_a]:
                 y = STEP
             elif keys[pygame.K_d]:
                 y = -STEP
-
             if keys[pygame.K_q]:
                 omega = ROTATE
             elif keys[pygame.K_e]:
@@ -126,43 +126,37 @@ def main():
             send_movement_command(x, y, omega)
             prev_command = current_command
 
-        # --- Kombiner gyro og kompass for heading ---
+        # --- Oppdater heading ---
         current_time = time.time()
         dt = current_time - last_time
         last_time = current_time
 
-        gyro_z = mpu6050.read_gyro_z()  # grader/sekund
+        gyro_z = mpu6050.read_gyro_z()
         fused_heading += gyro_z * dt
         fused_heading %= 360
 
-        # Kompass-korreksjon (slow update)
         compass_heading = kompas.read_heading()
         if compass_heading != -1:
             compass_heading = (compass_heading + KOMPASS_JUSTERING) % 360
-            # Komplementært filter
             fused_heading = (GYRO_WEIGHT * fused_heading + COMPASS_WEIGHT * compass_heading) % 360
 
-        # Tegn robotens sentrum
+        # --- Tegning ---
         pygame.draw.circle(screen, (0, 255, 0), CENTER, 5)
 
-        # Tegn heading-pil
         heading_rad = math.radians(-fused_heading)
         arrow_length = 50
         end_x = int(CENTER[0] + math.cos(heading_rad) * arrow_length)
         end_y = int(CENTER[1] - math.sin(heading_rad) * arrow_length)
         pygame.draw.line(screen, (0, 0, 255), CENTER, (end_x, end_y), 4)
 
-        # Tegn 'N' for nord på toppen
         north_text = font.render('N', True, (255, 0, 0))
         screen.blit(north_text, (WIDTH//2 - 10, 10))
 
-        # Tegn LIDAR-punkter
         for angle, distance in lidar.scan_data:
             if distance > 0:
                 x_l, y_l = polar_to_cartesian(angle, distance / 10.0)
                 pygame.draw.circle(screen, (255, 255, 255), (x_l, y_l), 2)
 
-        # Tegn ultralydmålinger
         for sensor, distance in ultrasound.sensor_distances.items():
             if distance > 0:
                 angle = ultrasound.sensor_angles[sensor]
