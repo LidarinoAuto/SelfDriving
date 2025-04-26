@@ -57,3 +57,17 @@ def read_heading():
     except Exception as e:
         print(f"Feil ved lesing av kompass: {e}")
         return -1
+def read_raw_xy():
+    """Les rå X og Y fra QMC5883L."""
+    try:
+        data = bus.read_i2c_block_data(QMC5883L_ADDRESS, 0x00, 6)
+        x_raw = (data[1] << 8) | data[0]
+        y_raw = (data[3] << 8) | data[2]
+
+        x = x_raw - 65536 if x_raw > 32767 else x_raw
+        y = y_raw - 65536 if y_raw > 32767 else y_raw
+
+        return x, y
+    except Exception as e:
+        print(f"Feil under lesing av raw X/Y: {e}")
+        return 0, 0
