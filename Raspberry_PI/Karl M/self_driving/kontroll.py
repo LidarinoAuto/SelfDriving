@@ -9,7 +9,7 @@ import time
 
 # Konstanter
 STEP = 100  # mm/s
-ROTATE = 45.5  # grader/s
+ROTATE = 15.0  # grader/s
 WIDTH = 600
 HEIGHT = 600
 CENTER = (WIDTH // 2, HEIGHT // 2)
