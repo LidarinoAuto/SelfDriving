@@ -20,8 +20,8 @@ SCALE = 2.0  # 1 cm = 2 pixels
 KOMPASS_JUSTERING = 270  # Hvis nødvendig
 
 # Filter-konstanter
-GYRO_WEIGHT = 0.98
-COMPASS_WEIGHT = 1.0 - GYRO_WEIGHT
+GYRO_WEIGHT = 1.0
+COMPASS_WEIGHT = 0.0 - GYRO_WEIGHT
 
 def polar_to_cartesian(angle_deg, distance_cm, robot_heading_deg=0):
     # Korriger vinkel i verdenskoordinater
