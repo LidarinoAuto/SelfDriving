@@ -16,7 +16,7 @@ def calibrate_gyro():
     total = 0
 
     for _ in range(samples):
-        gz = mpu6050.read_gyro_z_raw()  # OBS: raw uten offset-korreksjon
+        gz = mpu6050.read_gyro_z_raw()
         total += gz
         time.sleep(0.005)
 
@@ -26,12 +26,12 @@ def calibrate_gyro():
 
     with open("gyro_offset.txt", "w") as f:
         f.write(f"{gyro_offset}\n")
+    print("Gyro-offset lagret til gyro_offset.txt.")
 
 def calibrate_compass():
     print("Starter kompass-kalibrering...")
     kompas.setup_compass()
 
-    # Forbered rotasjon
     rotation_speed = 30  # grader/s
     target_angle = 360
 
@@ -44,12 +44,14 @@ def calibrate_compass():
     # Start rotasjon 360° mot venstre
     motorsignal.send_movement_command(0, 0, rotation_speed)
 
-    while abs(integrated_angle) < target_angle:
+    start_time = time.time()
+
+    while abs(integrated_angle) < target_angle and (time.time() - start_time) < 10:
         current_time = time.time()
         dt = current_time - last_time
         last_time = current_time
 
-        gz = mpu6050.read_gyro_z_raw() - gyro_offset  # Korrigert
+        gz = mpu6050.read_gyro_z_raw()
         integrated_angle += abs(gz * dt)
 
         x, y = kompas.read_raw_xy()
@@ -68,12 +70,14 @@ def calibrate_compass():
     motorsignal.send_movement_command(0, 0, -rotation_speed)
 
     last_time = time.time()
-    while abs(integrated_angle) < target_angle:
+    start_time = time.time()
+
+    while abs(integrated_angle) < target_angle and (time.time() - start_time) < 10:
         current_time = time.time()
         dt = current_time - last_time
         last_time = current_time
 
-        gz = mpu6050.read_gyro_z_raw() - gyro_offset
+        gz = mpu6050.read_gyro_z_raw()
         integrated_angle += abs(gz * dt)
 
         x, y = kompas.read_raw_xy()
@@ -96,6 +100,7 @@ def calibrate_compass():
     with open("kompas_offset.txt", "w") as f:
         f.write(f"{compass_offset_x}\n")
         f.write(f"{compass_offset_y}\n")
+    print("Kompass-offset lagret til kompas_offset.txt.")
 
 def full_calibration():
     calibrate_gyro()
