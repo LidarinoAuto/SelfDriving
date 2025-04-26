@@ -15,6 +15,8 @@ HEIGHT = 600
 CENTER = (WIDTH // 2, HEIGHT // 2)
 SCALE = 2.0  # 1 cm = 2 pixels for visualisering
 
+KOMPASS_JUSTERING = 0  # Endre til 90, 180 eller 270 om kompasset peker feil
+
 def polar_to_cartesian(angle_deg, distance_cm):
     angle_rad = math.radians(-angle_deg)
     x = math.cos(angle_rad) * distance_cm * SCALE
@@ -22,10 +24,8 @@ def polar_to_cartesian(angle_deg, distance_cm):
     return int(CENTER[0] + x), int(CENTER[1] - y)
 
 def autonom_logikk():
-    # Sjekk LIDAR
     path_clear = lidar.is_path_clear()
 
-    # Sjekk ultralydsensorene foran
     front_blocked = False
     if ultrasound.sensor_distances["front_left"] > 0 and ultrasound.sensor_distances["front_left"] < 30:
         front_blocked = True
@@ -42,6 +42,7 @@ def main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Robotkontroll + Kart + Kompass")
     clock = pygame.time.Clock()
+    font = pygame.font.SysFont(None, 24)
 
     x = y = omega = 0
     prev_command = (0, 0, 0.0)
@@ -101,11 +102,16 @@ def main():
         # Tegn kompasspil
         heading = kompas.read_heading()
         if heading != -1:
+            heading = (heading + KOMPASS_JUSTERING) % 360
             heading_rad = math.radians(-heading)
             arrow_length = 50
             end_x = int(CENTER[0] + math.cos(heading_rad) * arrow_length)
             end_y = int(CENTER[1] - math.sin(heading_rad) * arrow_length)
             pygame.draw.line(screen, (0, 0, 255), CENTER, (end_x, end_y), 4)  # Blå pil for heading
+
+        # Tegn 'N' (Nord) øverst
+        north_text = font.render('N', True, (255, 0, 0))
+        screen.blit(north_text, (WIDTH//2 - 10, 10))
 
         # Tegn LIDAR-målinger
         for angle, distance in lidar.scan_data:
