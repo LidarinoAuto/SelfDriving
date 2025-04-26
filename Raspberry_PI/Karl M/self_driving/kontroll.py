@@ -1,15 +1,27 @@
-# kontroll.py
+# kontroll.py (kombinert styring + kart)
 import pygame
 import lidar
 import ultrasound
 from motorsignal import send_movement_command
+import math
 import time
 
+# Konstanter
 STEP = 100  # mm/s
 ROTATE = 45.5  # grader/s
+WIDTH = 600
+HEIGHT = 600
+CENTER = (WIDTH // 2, HEIGHT // 2)
+SCALE = 2.0  # 1 cm = 2 pixels for visualisering
+
+def polar_to_cartesian(angle_deg, distance_cm):
+    angle_rad = math.radians(-angle_deg)
+    x = math.cos(angle_rad) * distance_cm * SCALE
+    y = math.sin(angle_rad) * distance_cm * SCALE
+    return int(CENTER[0] + x), int(CENTER[1] - y)
 
 def autonom_logikk():
-    # Sjekk om veien er fri ifølge LIDAR
+    # Sjekk LIDAR
     path_clear = lidar.is_path_clear()
 
     # Sjekk ultralydsensorene foran
@@ -22,12 +34,12 @@ def autonom_logikk():
     if path_clear and not front_blocked:
         return (STEP, 0, 0.0)  # Kjør fremover
     else:
-        return (0, 0, 0.0)  # Stopp
+        return (0, 0, 0.0)     # Stopp
 
 def main():
     pygame.init()
-    screen = pygame.display.set_mode((400, 200))
-    pygame.display.set_caption("Robotkontroll (Manuell/Autonom)")
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption("Robotkontroll + Kart (Manuell/Autonom)")
     clock = pygame.time.Clock()
 
     x = y = omega = 0
@@ -39,7 +51,7 @@ def main():
 
     running = True
     while running:
-        x = y = omega = 0
+        screen.fill((0, 0, 0))  # Svart bakgrunn
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -51,6 +63,8 @@ def main():
                     time.sleep(0.2)
 
         keys = pygame.key.get_pressed()
+
+        x = y = omega = 0
 
         if modus == "manuell":
             if keys[pygame.K_w]:
@@ -69,9 +83,7 @@ def main():
                 omega = -ROTATE
 
         elif modus == "autonom":
-            # Oppdater ultralydavlesninger
             ultrasound.update_ultrasound_readings()
-            # Kjør autonom logikk
             x, y, omega = autonom_logikk()
 
         current_command = (x, y, omega)
@@ -80,6 +92,24 @@ def main():
             send_movement_command(x, y, omega)
             prev_command = current_command
 
+        # Tegn roboten
+        pygame.draw.circle(screen, (0, 255, 0), CENTER, 5)  # Grønn prikk for robot-senter
+
+        # Tegn LIDAR-målinger
+        for angle, distance in lidar.scan_data:
+            if distance > 0:
+                x_l, y_l = polar_to_cartesian(angle, distance / 10.0)  # mm -> cm
+                pygame.draw.circle(screen, (255, 255, 255), (x_l, y_l), 2)
+
+        # Tegn ultralydsensor-målinger
+        for sensor, distance in ultrasound.sensor_distances.items():
+            if distance > 0:
+                angle = ultrasound.sensor_angles[sensor]
+                x_u, y_u = polar_to_cartesian(angle, distance)
+                color = (255, 0, 0) if distance < 30 else (0, 255, 0)
+                pygame.draw.line(screen, color, CENTER, (x_u, y_u), 3)
+
+        pygame.display.update()
         clock.tick(20)
 
     send_movement_command(0, 0, 0.0)
