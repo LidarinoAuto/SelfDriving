@@ -91,7 +91,7 @@ def main():
     running = True
     while running:
         screen.fill((0, 0, 0))
-
+    
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -100,10 +100,12 @@ def main():
                     modus = "autonom" if modus == "manuell" else "manuell"
                     print(f"Byttet til: {modus.upper()}")
                     time.sleep(0.2)
-
+    
         keys = pygame.key.get_pressed()
         x = y = omega = 0
-
+    
+        ultrasound.update_ultrasound_readings()  # <-- Kjør denne her!
+    
         if modus == "manuell":
             if keys[pygame.K_w]:
                 x = STEP
@@ -117,10 +119,10 @@ def main():
                 omega = ROTATE
             elif keys[pygame.K_e]:
                 omega = -ROTATE
-
+    
         elif modus == "autonom":
-            ultrasound.update_ultrasound_readings()
             x, y, omega = autonom_logikk()
+
 
         current_command = (x, y, omega)
 
