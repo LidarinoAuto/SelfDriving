@@ -23,13 +23,10 @@ KOMPASS_JUSTERING = 270  # Hvis nødvendig
 GYRO_WEIGHT = 0.98
 COMPASS_WEIGHT = 1.0 - GYRO_WEIGHT
 
-def polar_to_cartesian(angle_deg, distance_cm, robot_angle_deg=0):
-    # Korriger vinkelen for robotens rotasjon
-    corrected_angle = -angle_deg + robot_angle_deg
-    angle_rad = math.radians(corrected_angle)
+def polar_to_cartesian(angle_deg, distance_cm):
+    angle_rad = math.radians(-angle_deg)
     x = math.cos(angle_rad) * distance_cm * SCALE
     y = math.sin(angle_rad) * distance_cm * SCALE
-
     return int(CENTER[0] + x), int(CENTER[1] - y)
 
 def autonom_logikk():
@@ -158,16 +155,17 @@ def main():
         # Tegn LIDAR
         for angle, distance in lidar.scan_data:
             if distance > 0:
-                x, y = polar_to_cartesian(angle, distance / 10.0, fused_heading)
+                x, y = polar_to_cartesian(angle, distance / 10.0)
                 pygame.draw.circle(screen, (255, 255, 255), (x, y), 2)
         
         # Tegn ultralyd-sensoravlesninger
         for sensor, distance in ultrasound.sensor_distances.items():
             if distance > 0:
                 angle = ultrasound.sensor_angles[sensor]
-                x, y = polar_to_cartesian(angle, distance, fused_heading)
+                x, y = polar_to_cartesian(angle, distance)
                 color = (255, 0, 0) if distance < 30 else (0, 255, 0)
                 pygame.draw.line(screen, color, CENTER, (x, y), 3)
+
 
 
         pygame.display.update()
