@@ -5,6 +5,12 @@ import kompas
 import motorsignal
 import pygame
 
+def logg(melding):
+    """Skriver en melding med tidstempel til loggfil."""
+    with open("kalibreringslogg.txt", "a") as f:
+        tidspunkt = time.strftime("%Y-%m-%d %H:%M:%S")
+        f.write(f"[{tidspunkt}] {melding}\n")
+
 
 gyro_offset = 0
 compass_offset_x = 0
