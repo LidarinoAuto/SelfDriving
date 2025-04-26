@@ -1,17 +1,28 @@
 # kontroll.py
 import pygame
-from motorsignal import send_movement_command
 import lidar
+import ultrasound
+from motorsignal import send_movement_command
 import time
 
-STEP = 100
-ROTATE = 45.5
+STEP = 100  # mm/s
+ROTATE = 45.5  # grader/s
 
 def autonom_logikk():
-    if lidar.is_path_clear():
+    # Sjekk om veien er fri ifølge LIDAR
+    path_clear = lidar.is_path_clear()
+
+    # Sjekk ultralydsensorene foran
+    front_blocked = False
+    if ultrasound.sensor_distances["front_left"] > 0 and ultrasound.sensor_distances["front_left"] < 30:
+        front_blocked = True
+    if ultrasound.sensor_distances["front_right"] > 0 and ultrasound.sensor_distances["front_right"] < 30:
+        front_blocked = True
+
+    if path_clear and not front_blocked:
         return (STEP, 0, 0.0)  # Kjør fremover
     else:
-        return (0, 0, 0.0)      # Stopp
+        return (0, 0, 0.0)  # Stopp
 
 def main():
     pygame.init()
@@ -24,6 +35,7 @@ def main():
     modus = "manuell"
 
     lidar.start_lidar()
+    ultrasound.setup_ultrasound()
 
     running = True
     while running:
@@ -57,6 +69,9 @@ def main():
                 omega = -ROTATE
 
         elif modus == "autonom":
+            # Oppdater ultralydavlesninger
+            ultrasound.update_ultrasound_readings()
+            # Kjør autonom logikk
             x, y, omega = autonom_logikk()
 
         current_command = (x, y, omega)
