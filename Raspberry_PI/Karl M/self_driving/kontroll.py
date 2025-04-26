@@ -45,14 +45,30 @@ def autonom_logikk():
 def main():
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("Robotkontroll + Kart + Kombinert Kompass/Gyro")
+    pygame.display.set_caption("Robotkontroll + Kart + Kalibrering")
     clock = pygame.time.Clock()
     font = pygame.font.SysFont(None, 24)
 
-    x = y = omega = 0
-    prev_command = (0, 0, 0.0)
-    modus = "manuell"
+    # --- KALIBRER før noe annet ---
+    screen.fill((0, 0, 0))
+    text = font.render('Kalibrerer gyro...', True, (255, 255, 0))
+    screen.blit(text, (150, 250))
+    pygame.display.update()
+    calibration.calibrate_gyro()
 
+    screen.fill((0, 0, 0))
+    text = font.render('Kalibrerer kompass...', True, (255, 255, 0))
+    screen.blit(text, (150, 250))
+    pygame.display.update()
+    calibration.calibrate_compass()
+
+    screen.fill((0, 0, 0))
+    text = font.render('Kalibrering ferdig!', True, (0, 255, 0))
+    screen.blit(text, (150, 250))
+    pygame.display.update()
+    time.sleep(2)
+
+    # --- Så starter normal drift ---
     lidar.start_lidar()
     ultrasound.setup_ultrasound()
     kompas.setup_compass()
