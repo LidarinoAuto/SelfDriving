@@ -23,6 +23,14 @@ sensor_distances = {
     "back_right": -1
 }
 
+# Samle alle trig/echo-par i en dict
+sensors = {
+    "front_left": (trig_pins[0], echo_pins[0]),
+    "front_right": (trig_pins[1], echo_pins[1]),
+    "back_left": (trig_pins[2], echo_pins[2]),
+    "back_right": (trig_pins[3], echo_pins[3]),
+}
+
 def setup_ultrasound():
     GPIO.setmode(GPIO.BCM)
     for trig in trig_pins:
@@ -34,8 +42,6 @@ def setup_ultrasound():
     time.sleep(2)
 
 def read_distance(trig, echo):
-    import RPi.GPIO as GPIO
-
     # Send kort triggerpuls
     GPIO.output(trig, True)
     time.sleep(0.00001)
@@ -63,8 +69,8 @@ def read_distance(trig, echo):
 
 def update_ultrasound_readings():
     for sensor, (trig, echo) in sensors.items():
-    distance = read_distance(trig, echo)
+        distance = read_distance(trig, echo)
         if distance > 0:
             sensor_distances[sensor] = distance
         else:
-            sensor_distances[sensor] = 0  # Eller kanskje None hvis du vil ignorere
+            sensor_distances[sensor] = 0  # Eller -1 hvis du heller vil ignorere det
