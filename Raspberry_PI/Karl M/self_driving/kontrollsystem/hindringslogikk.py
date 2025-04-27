@@ -9,8 +9,8 @@ import logging
 # Bevegelse-konstanter
 STEP = 100
 ROTATE_SPEED = 30.0  # grader per sekund
-SAFE_DISTANCE_LIDAR = 50  # cm
-SAFE_DISTANCE_ULTRASOUND = 20  # cm
+SAFE_DISTANCE_LIDAR = 19  # cm
+SAFE_DISTANCE_ULTRASOUND = 8  # cm
 SEARCH_TIMEOUT = 10  # sekunder
 
 # Intern tilstand
