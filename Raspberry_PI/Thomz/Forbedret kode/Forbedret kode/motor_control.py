@@ -9,7 +9,7 @@ time.sleep(2)  # Vent kort for � sikre at forbindelsen er klar
 
 # Sender en kommando til ESP32 over seriell
 def send_command(command):
-    print(f"Sender: {command.strip()}")
+    #print(f"Sender: {command.strip()}")
     esp.write(command.encode())
 
 # Beveg roboten fremover

@@ -1,0 +1,21 @@
+import time
+import os # Godt � importere os for � sjekke filstier
+
+def skriv_logg(melding):
+    """
+    Skriver en tidsstemplet melding til konsollen og en loggfil (logg.txt).
+    """
+    timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+    full_melding = f"[{timestamp}] {melding}"
+    print(full_melding) # Printer i terminalen/konsollen ogs�
+
+    logg_filnavn = "robot_log.txt" # Gir den et mer spesifikt navn
+
+    try:
+        # Bruker 'a' for append-modus, legger til p� slutten av filen.
+        # Lager filen om den ikke finnes.
+        with open(logg_filnavn, "a") as f:
+            f.write(full_melding + "\n")
+    except IOError as e:
+        # Hvis det skjer en feil med filskriving, print en feilmelding til konsollen.
+        print(f"FEIL: Kunne ikke skrive til loggfilen {logg_filnavn}: {e}")
