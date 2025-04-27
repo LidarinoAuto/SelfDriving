@@ -7,9 +7,10 @@ import mpu6050
 import calibration
 from motorsignal import send_movement_command
 from heading import HeadingTracker
-from visualisering import tegn_robot, tegn_lidar, tegn_ultrasound
+from visualisering import tegn_robot_sentrum, tegn_heading_pil, tegn_lidar, tegn_ultralyd
 from hindringslogikk import autonom_logikk
 import time
+import math
 
 # Konstanter
 STEP = 100
@@ -20,7 +21,7 @@ CENTER = (WIDTH // 2, HEIGHT // 2)
 SCALE = 2.0
 KOMPASS_JUSTERING = 270
 
-# LIDAR historikk
+# For LIDAR historikk
 lidar_points = []
 MAX_LIDAR_POINTS = 200
 
@@ -53,6 +54,8 @@ def main():
     # --- SENSOROPPSTART ---
     lidar.start_lidar()
     ultrasound.setup_ultrasound()
+    kompas.setup_compass()
+    mpu6050.setup_mpu6050()
     heading_tracker = HeadingTracker()
     heading_tracker.setup()
 
@@ -103,7 +106,8 @@ def main():
         fused_heading = heading_tracker.update()
 
         # --- TEGNING ---
-        tegn_robot(screen, fused_heading)
+        tegn_robot_sentrum(screen)
+        tegn_heading_pil(screen, fused_heading, font)
 
         for angle, distance in lidar.scan_data:
             if distance > 0:
@@ -113,7 +117,7 @@ def main():
             lidar_points[:] = lidar_points[-MAX_LIDAR_POINTS:]
 
         tegn_lidar(screen, lidar_points, fused_heading)
-        tegn_ultrasound(screen, ultrasound.sensor_distances, fused_heading)
+        tegn_ultralyd(screen, ultrasound.sensor_distances, ultrasound.sensor_angles, fused_heading)
 
         pygame.display.update()
         clock.tick(30)
