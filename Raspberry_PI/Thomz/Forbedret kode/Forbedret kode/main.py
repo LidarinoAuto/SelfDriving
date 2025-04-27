@@ -67,30 +67,30 @@ def main():
     global last_turn_dir
 
     # Optional: Initial heading alignment
-    try:
-        skriv_logg("Performing initial heading check and rotation...")
-        current_heading = compass_module.read_compass()
+#    try:
+#        skriv_logg("Performing initial heading check and rotation...")
+#        current_heading = compass_module.read_compass()
+#
+#        if current_heading != -1.0:
+#            skriv_logg(f"Current heading: {current_heading:.1f}�")
+#            target_heading = 0.0
+#            angle_to_rotate = (target_heading - current_heading + 360) % 360
+#            if angle_to_rotate > 180:
+#                angle_to_rotate -= 360
 
-        if current_heading != -1.0:
-            skriv_logg(f"Current heading: {current_heading:.1f}�")
-            target_heading = 0.0
-            angle_to_rotate = (target_heading - current_heading + 360) % 360
-            if angle_to_rotate > 180:
-                angle_to_rotate -= 360
-
-            if abs(angle_to_rotate) > 1.0:  # Unng� rotasjon for veldig sm� vinkler
-                skriv_logg(f"Executing rotation of {angle_to_rotate:.1f}�...")
-                #imu_module.rotate_by_gyro(angle_to_rotate)
-                imu_module.rotate_to_heading(target_heading)
-                skriv_logg("Initial rotation completed.")
-                current_heading = compass_module.read_compass()  # Les heading etter rotasjon
-                skriv_logg(f"New heading after rotation: {current_heading:.1f}�")
-            else:
-                skriv_logg("Initial heading is already close to North.")
-        else:
-            skriv_logg("Initial compass reading failed. Skipping initial rotation.")
-    except Exception as e:
-        skriv_logg(f"Error during initial heading rotation: {e}")
+#            if abs(angle_to_rotate) > 1.0:  # Unng� rotasjon for veldig sm� vinkler
+#               skriv_logg(f"Executing rotation of {angle_to_rotate:.1f}�...")
+#                #imu_module.rotate_by_gyro(angle_to_rotate)
+#                imu_module.rotate_to_heading(target_heading)
+#                skriv_logg("Initial rotation completed.")
+#                current_heading = compass_module.read_compass()  # Les heading etter rotasjon
+#                skriv_logg(f"New heading after rotation: {current_heading:.1f}�")
+#            else:
+#                skriv_logg("Initial heading is already close to North.")
+#        else:
+#            skriv_logg("Initial compass reading failed. Skipping initial rotation.")
+#    except Exception as e:
+#        skriv_logg(f"Error during initial heading rotation: {e}")
 
     skriv_logg("Starting continuous forward movement loop...")
     # Starter med � sende en bevegelsesskommando
