@@ -1,14 +1,20 @@
+# Filename: logging_utils.py
+# Simple logging utility to write timestamps to console and file
+
 import time
-import os # Godt � importere os for � sjekke filstier
+import os
 
 def skriv_logg(melding):
     """
-    Skriver en tidsstemplet melding til konsollen og en loggfil (logg.txt).
+    Skriver en tidsstemplet melding til konsollen og en loggfil (robot_log.txt).
     """
     timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
     full_melding = f"[{timestamp}] {melding}"
-    print(full_melding) # Printer i terminalen/konsollen ogs�
 
+    # Skriv til konsollen
+    print(full_melding)
+
+    # Skriv til fil
     logg_filnavn = "robot_log.txt" # Gir den et mer spesifikt navn
 
     try:

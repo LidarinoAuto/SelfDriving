@@ -6,6 +6,7 @@
 import smbus # For I2C communication
 import time # For time functions (time.sleep())
 import math # For mathematical functions (atan2, degrees)
+from logging_utils import skriv_logg
 
 # --- I2C Address and Register Addresses for QMC5883L ---
 QMC5883L_ADDRESS = 0x0d # Standard I2C address for QMC5883L
@@ -20,7 +21,7 @@ QMC5883L_DATA = 0x00 # Start register for X_L data (data begins here)
 # --- INITIALIZATION ---
 def init_compass():
     """Initializes the QMC5883L with the correct settings."""
-    print("Initializing QMC5883L...")
+    skriv_logg("Initializing QMC5883L...")
     try:
         # Perform a soft reset by writing to the reset register
         bus.write_byte_data(QMC5883L_ADDRESS, QMC5883L_SET_RESET, 0x01)
@@ -32,9 +33,9 @@ def init_compass():
         bus.write_byte_data(QMC5883L_ADDRESS, QMC5883L_CTRL1, 0b00011101) # Example configuration
         time.sleep(0.1) # Wait for the sensor to start measurements
 
-        print("QMC5883L initialized successfully.")
+        skriv_logg("QMC5883L initialized successfully.")
     except Exception as e:
-        print(f"Error during QMC5883L initialization: {e}")
+        skriv_logg(f"Error during QMC5883L initialization: {e}")
         # Consider handling the error further, e.g., exit or retry
 
 
@@ -95,7 +96,7 @@ def read_compass():
         return heading_deg # Return only the heading
 
     except Exception as e:
-        # print(f"Error reading QMC5883L: {e}") # Optional: Uncomment for debugging errors
+        # skriv_logg(f"Error reading QMC5883L: {e}") # Optional: Uncomment for debugging errors
         # Return -1 on error (can be handled in the main program)
         return -1
 

@@ -4,6 +4,7 @@
 import RPi.GPIO as GPIO
 import time
 import sys # Import sys for error handling
+from logging_utils import skriv_logg
 
 # --- GPIO Pin Configuration (BCM numbering) ---
 # Define the pins for each sensor (Trigger and Echo)
@@ -24,7 +25,7 @@ US_PINS = {
 # --- Setup GPIO ---
 def setup_ultrasound_gpio():
     """Sets up GPIO pins for all ultrasound sensors."""
-    print("Setting up Ultrasound GPIO pins...")
+    skriv_logg("Setting up Ultrasound GPIO pins...")
     try:
         GPIO.setmode(GPIO.BCM) # Use Broadcom pin-numbering scheme
         GPIO.setwarnings(False) # Disable GPIO warnings
@@ -44,16 +45,16 @@ def setup_ultrasound_gpio():
 
         # Give sensors a moment to settle
         time.sleep(0.5)
-        print("Ultrasound GPIO setup complete.")
+        skriv_logg("Ultrasound GPIO setup complete.")
         return True # Indicate success
 
     except Exception as e:
-        print(f"Error during Ultrasound GPIO setup: {e}")
+        skriv_logg(f"Error during Ultrasound GPIO setup: {e}")
         # Decide if this is a critical error forcing exit or just a warning
-        # For now, print error and allow program to continue if possible,
+        # For now, skriv_logg error and allow program to continue if possible,
         # but readings might be unreliable.
         # It might be better to raise the exception or return False and handle in main.
-        # For consistency with initialize_systems in main, let's print and return False on error
+        # For consistency with initialize_systems in main, let's skriv_logg and return False on error
         return False
 
 
@@ -64,7 +65,7 @@ def read_single_ultrasound(sensor_id, timeout=0.03):
     Returns the distance in centimeters or float('inf') on error or timeout.
     """
     if sensor_id not in US_PINS:
-        # print(f"Error: Invalid sensor ID {sensor_id}") # Optional debug print
+        # skriv_logg(f"Error: Invalid sensor ID {sensor_id}") # Optional debug skriv_logg
         return float('inf') # Return infinity for invalid ID
 
     trigger_pin, echo_pin = US_PINS[sensor_id]
@@ -87,7 +88,7 @@ def read_single_ultrasound(sensor_id, timeout=0.03):
         while GPIO.input(echo_pin) == 0:
             pulse_start = time.time()
             if time.time() - timeout_start > timeout:
-                # print(f"Timeout waiting for echo start on sensor {sensor_id}") # Optional debug
+                # skriv_logg(f"Timeout waiting for echo start on sensor {sensor_id}") # Optional debug
                 return float('inf') # Return infinity on timeout
 
         # Wait for echo end (pulse goes low)
@@ -95,7 +96,7 @@ def read_single_ultrasound(sensor_id, timeout=0.03):
         while GPIO.input(echo_pin) == 1:
             pulse_end = time.time()
             if time.time() - timeout_start > timeout:
-                 # print(f"Timeout waiting for echo end on sensor {sensor_id}") # Optional debug
+                 # skriv_logg(f"Timeout waiting for echo end on sensor {sensor_id}") # Optional debug
                  return float('inf') # Return infinity on timeout
 
         # Calculate pulse duration in seconds
@@ -107,14 +108,14 @@ def read_single_ultrasound(sensor_id, timeout=0.03):
 
         # Basic range check based on sensor capability (typically 2cm to 400cm)
         if distance_cm <= 2.0 or distance_cm > 400.0:
-             # print(f"Invalid range reading {distance_cm:.2f} cm from sensor {sensor_id}") # Optional debug
+             # skriv_logg(f"Invalid range reading {distance_cm:.2f} cm from sensor {sensor_id}") # Optional debug
              return float('inf') # Consider out-of-range as infinity
 
 
         return distance_cm
 
     except Exception as e:
-        # print(f"Error reading sensor {sensor_id}: {e}") # Optional debug
+        # skriv_logg(f"Error reading sensor {sensor_id}: {e}") # Optional debug
         return float('inf') # Return infinity on error
 
 
@@ -137,8 +138,8 @@ def get_triggered_ultrasound_info(threshold_cm):
         # Check if distance is below the threshold (and is a valid reading, not infinity)
         if distance != float('inf') and distance < threshold_cm:
             triggered_sensors.append(sensor_id)
-            # Optional: print which sensor triggered below threshold
-            # print(f"Ultrasound sensor {sensor_id} triggered! Distance: {distance:.2f} cm (Threshold: {threshold_cm:.2f} cm)")
+            # Optional: skriv_logg which sensor triggered below threshold
+            # skriv_logg(f"Ultrasound sensor {sensor_id} triggered! Distance: {distance:.2f} cm (Threshold: {threshold_cm:.2f} cm)")
 
         # Small delay between sensor readings to avoid interference
         time.sleep(0.06) # Delay based on sensor cycle time (min ~50ms)
@@ -149,14 +150,14 @@ def get_triggered_ultrasound_info(threshold_cm):
 # --- Cleanup GPIO ---
 def cleanup_ultrasound_gpio():
     """Cleans up GPIO pins used by ultrasound sensors."""
-    print("Cleaning up GPIO for ultrasound...")
+    skriv_logg("Cleaning up GPIO for ultrasound...")
     try:
         # Collect all pins to clean up
         all_pins = [pin for pins in US_PINS.values() for pin in pins]
         GPIO.cleanup(all_pins) # Clean up only the pins we used
-        print("Ultrasound GPIO cleanup complete.")
+        skriv_logg("Ultrasound GPIO cleanup complete.")
     except Exception as e:
-        print(f"Error during Ultrasound GPIO cleanup: {e}")
+        skriv_logg(f"Error during Ultrasound GPIO cleanup: {e}")
 
 
 # This module is designed to be imported and used by main.py.
