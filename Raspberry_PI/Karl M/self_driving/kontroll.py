@@ -1,4 +1,3 @@
-# kontroll.py
 import pygame
 import lidar
 import ultrasound
@@ -6,9 +5,11 @@ import kompas
 import mpu6050
 import calibration
 from motorsignal import send_movement_command
-import math
+from heading import oppdater_heading
+from visualisering import tegn_robot, tegn_lidar, tegn_ultrasound
+from hindringslogikk import autonom_logikk
 import time
-import os
+import math
 
 # Konstanter
 STEP = 100
@@ -16,34 +17,12 @@ ROTATE = 15.0
 WIDTH = 600
 HEIGHT = 600
 CENTER = (WIDTH // 2, HEIGHT // 2)
-SCALE = 2.0  # 1 cm = 2 pixels
-KOMPASS_JUSTERING = 270  # Hvis nødvendig
+SCALE = 2.0
+KOMPASS_JUSTERING = 270
 
-# Filter-konstanter
-GYRO_WEIGHT = 0.98
-COMPASS_WEIGHT = 1.0 - GYRO_WEIGHT
-
-def polar_to_cartesian(angle_deg, distance_cm, robot_heading_deg=0):
-    # Korriger vinkel i verdenskoordinater
-    corrected_angle = -(angle_deg + robot_heading_deg)
-    angle_rad = math.radians(corrected_angle)
-    x = math.cos(angle_rad) * distance_cm * SCALE
-    y = math.sin(angle_rad) * distance_cm * SCALE
-    return int(CENTER[0] + x), int(CENTER[1] - y)
-
-def autonom_logikk():
-    path_clear = lidar.is_path_clear()
-
-    front_blocked = False
-    if ultrasound.sensor_distances["front_left"] > 0 and ultrasound.sensor_distances["front_left"] < 30:
-        front_blocked = True
-    if ultrasound.sensor_distances["front_right"] > 0 and ultrasound.sensor_distances["front_right"] < 30:
-        front_blocked = True
-
-    if path_clear and not front_blocked:
-        return (STEP, 0, 0.0)
-    else:
-        return (0, 0, 0.0)
+# For LIDAR historikk
+lidar_points = []
+MAX_LIDAR_POINTS = 200
 
 def main():
     pygame.init()
@@ -71,29 +50,26 @@ def main():
     pygame.display.update()
     time.sleep(2)
 
-    # --- NORMAL DRIFT ---
+    # --- SENSOROPPSTART ---
     lidar.start_lidar()
-    lidar_points = []
-    MAX_LIDAR_POINTS = 200
     ultrasound.setup_ultrasound()
     kompas.setup_compass()
     mpu6050.setup_mpu6050()
 
-    last_time = time.time()
+    modus = "manuell"
     prev_command = (0, 0, 0.0)
-
-    # Start med heading fra kompass
     fused_heading = kompas.read_heading()
     if fused_heading != -1:
         fused_heading = (fused_heading + KOMPASS_JUSTERING) % 360
     else:
         fused_heading = 0
 
-    modus = "manuell"
+    last_time = time.time()
+
     running = True
     while running:
         screen.fill((0, 0, 0))
-    
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -102,12 +78,12 @@ def main():
                     modus = "autonom" if modus == "manuell" else "manuell"
                     print(f"Byttet til: {modus.upper()}")
                     time.sleep(0.2)
-    
+
         keys = pygame.key.get_pressed()
         x = y = omega = 0
-    
-        ultrasound.update_ultrasound_readings()  # <-- Kjør denne her!
-    
+
+        ultrasound.update_ultrasound_readings()
+
         if modus == "manuell":
             if keys[pygame.K_w]:
                 x = STEP
@@ -121,79 +97,30 @@ def main():
                 omega = ROTATE
             elif keys[pygame.K_e]:
                 omega = -ROTATE
-    
+
         elif modus == "autonom":
             x, y, omega = autonom_logikk()
 
-
         current_command = (x, y, omega)
-
         if current_command != prev_command:
             send_movement_command(x, y, omega)
             prev_command = current_command
 
-        # --- Oppdater heading ---
-        current_time = time.time()
-        dt = current_time - last_time
-        last_time = current_time
-        
-        gyro_z = mpu6050.read_gyro_z()
-        fused_heading = (fused_heading + gyro_z * dt) % 360
-        
-        compass_heading = kompas.read_heading()
-        if compass_heading != -1:
-            compass_heading = (compass_heading + KOMPASS_JUSTERING) % 360
-        
-            # --- Riktig blending av gyro og kompass ---
-            delta = ((compass_heading - fused_heading + 540) % 360) - 180
-            fused_heading = (fused_heading + delta * (1.0 - GYRO_WEIGHT)) % 360
+        # Oppdater heading
+        fused_heading, last_time = oppdater_heading(fused_heading, last_time)
 
+        # --- TEGNING ---
+        tegn_robot(screen, fused_heading)
 
-        # --- Tegning ---
-        pygame.draw.circle(screen, (0, 255, 0), CENTER, 5)
-
-        heading_rad = math.radians(-fused_heading)
-        arrow_length = 50
-        end_x = int(CENTER[0] + math.cos(heading_rad) * arrow_length)
-        end_y = int(CENTER[1] - math.sin(heading_rad) * arrow_length)
-        pygame.draw.line(screen, (0, 0, 255), CENTER, (end_x, end_y), 4)
-
-        north_text = font.render('N', True, (255, 0, 0))
-        screen.blit(north_text, (WIDTH//2 - 10, 10))
-
-        # Tegn LIDAR
-        # Legg til nye målinger i bufferen
         for angle, distance in lidar.scan_data:
             if distance > 0:
                 lidar_points.append((angle, distance))
-        
-        # Begrens antall punkter
+
         if len(lidar_points) > MAX_LIDAR_POINTS:
-            lidar_points = lidar_points[-MAX_LIDAR_POINTS:]
-        
-        # Tegn alle punktene i bufferen
-        for angle, distance in lidar_points:
-            x, y = polar_to_cartesian(angle, distance / 10.0, fused_heading)
-        
-            # Velg farge basert på avstand
-            if distance < 500:  # Under 50 cm
-                color = (0, 191, 255)  # Lys blå
-            elif distance < 1500:  # 50 cm - 150 cm
-                color = (0, 255, 255)  # Turkis (cyan)
-            else:  # Over 150 cm
-                color = (0, 255, 0)  # Grønn
-        
-            pygame.draw.circle(screen, color, (x, y), 2)
+            lidar_points[:] = lidar_points[-MAX_LIDAR_POINTS:]
 
-
-        
-        # Tegn ultralyd
-        for sensor, distance in ultrasound.sensor_distances.items():
-            if distance > 0:
-                angle = ultrasound.sensor_angles[sensor]
-                x, y = polar_to_cartesian(angle, distance, fused_heading)
-                color = (255, 0, 0) if distance < 30 else (0, 255, 0)
-                pygame.draw.line(screen, color, CENTER, (x, y), 3)
+        tegn_lidar(screen, lidar_points, fused_heading)
+        tegn_ultrasound(screen, ultrasound.sensor_distances, fused_heading)
 
         pygame.display.update()
         clock.tick(30)
