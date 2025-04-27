@@ -1,14 +1,14 @@
 # kontroll.py
 import pygame
-import lidar
-import ultrasound
-import kompas
-import mpu6050
-import calibration
-from motorsignal import send_movement_command
-from heading import HeadingTracker
-from visualisering import tegn_robot_sentrum, tegn_heading_pil, tegn_lidar, tegn_ultralyd
-from hindringslogikk import autonom_logikk
+from sensorer import lidar
+from sensorer import ultrasound
+from sensorer import kompas
+from sensorer import mpu6050
+from kontrollsystem import calibration
+from kontrollsystem.motorsignal import send_movement_command
+from kontrollsystem.heading import HeadingTracker
+from visning.visualisering import tegn_robot_sentrum, tegn_heading_pil, tegn_lidar, tegn_ultralyd
+from kontrollsystem.hindringslogikk import autonom_logikk
 import time
 import math
 
