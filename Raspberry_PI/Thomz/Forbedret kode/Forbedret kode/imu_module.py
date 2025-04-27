@@ -1,10 +1,11 @@
-# -*- coding: utf-8 -*-
 # Filename: imu_module.py
 # Module for interfacing with the IMU (Gyroscope) sensor
 # Includes bias calibration and basic proportional rotation control.
 
 import smbus      # For I2C communication
 import time
+# Removed math import as it's not explicitly used in this simplified version
+
 import motor_control # Import motor_control module
 
 
@@ -25,16 +26,18 @@ integrated_angle = 0.0  # Integrated angle for current rotation
 last_time = 0.0         # Time of the last IMU reading for integration
 gyro_bias_z = 0.0       # Calculated Z-axis gyro bias
 bias_calibration_done = False # Flag
+imu_initialized = False # Added initialization flag
 
 
 # --- Initialization ---
+# Updated to set global flag and return status
 def init_imu():
     """
     Initializes the IMU sensor (I2C) and performs gyro bias calibration.
     Requires the robot to be stationary during calibration.
     Returns True if initialization and calibration succeed, False otherwise.
     """
-    global bus, last_time, gyro_bias_z, bias_calibration_done
+    global bus, last_time, gyro_bias_z, bias_calibration_done, imu_initialized
 
     print("Initializing IMU...")
     try:
@@ -46,7 +49,7 @@ def init_imu():
         time.sleep(0.1) # Give sensor time to start
 
         # --- Bias Calibration ---
-        print("Calibrating gyro bias. Keep the robot COMPLETELY STILL...")
+        print("Calibrating gyro bias. Keep robot completely still...") # Updated print
         calibration_readings = 200 # Number of readings for calibration
         total_gyro_z = 0.0
 
@@ -59,8 +62,9 @@ def init_imu():
         # Calculate average bias
         gyro_bias_z = total_gyro_z / calibration_readings
         bias_calibration_done = True # Set flag
+        imu_initialized = True # Set initialized flag
         print(f"Gyro bias Z calibrated: {gyro_bias_z:.4f}")
-        print("IMU initialized.") # Success message
+        print("IMU initialized successfully.") # Success message
 
         # Set the initial time after calibration for integration
         last_time = time.time()
@@ -70,11 +74,13 @@ def init_imu():
         print("Error: I2C bus not found. Make sure I2C is enabled in Raspberry Pi configuration.")
         bus = None
         bias_calibration_done = False
+        imu_initialized = False
         return False # Indicate failure
     except Exception as e:
         print(f"Error during IMU initialization: {e}")
         bus = None
         bias_calibration_done = False
+        imu_initialized = False
         return False # Indicate failure
 
 
@@ -84,7 +90,7 @@ def read_raw_gyro_z():
     """Reads raw Z-axis gyroscope data from the IMU."""
     global bus
     if bus is None:
-        return 0 # Return 0 if bus is not initialized
+        return 0 # Return 0 if bus is not initialized or error occurred earlier
 
     try:
         # Read high and low byte for Z-axis gyro
@@ -101,6 +107,7 @@ def read_raw_gyro_z():
 
     except Exception:
         # Return 0 on error - this might cause inaccurate integration if reads fail mid-turn
+        # print(f"Warning: Error reading raw gyro data: {e}") # Optional debug print
         return 0
 
 
@@ -111,10 +118,10 @@ def read_imu_data():
     after bias correction, scaling, and orientation compensation.
     Returns 0.0 if IMU is not initialized or calibrated.
     """
-    global gyro_bias_z, bias_calibration_done
+    global gyro_bias_z, bias_calibration_done, imu_initialized
 
     # Only process if IMU is initialized and calibrated
-    if bus is None or not bias_calibration_done:
+    if not imu_initialized or not bias_calibration_done:
         return 0.0
 
     raw_gyro_z = read_raw_gyro_z() # Read raw data
@@ -127,7 +134,11 @@ def read_imu_data():
 
     # Apply Upside-Down Compensation
     # Negate Z-axis velocity if IMU is mounted upside-down relative to convention
+    # IMPORTANT: UNCOMMENT this line if your IMU is mounted upside down and Z-axis reading is inverted!
     compensated_angular_velocity_z = -angular_velocity_z
+    # For now, assuming it's NOT upside down or compensation is handled elsewhere/not needed
+    # compensated_angular_velocity_z = angular_velocity_z
+
 
     return compensated_angular_velocity_z
 
@@ -140,27 +151,36 @@ def rotate_by_gyro(target_angle_degrees):
     Requires IMU to be initialized and calibrated via init_imu().
     Uses proportional control based on remaining angle error.
     """
-    global integrated_angle, last_time
-    # Reset integrated angle before starting THIS rotation
+    global integrated_angle, last_time, imu_initialized
+
+    # Ensure IMU is initialized and calibrated before attempting rotation
+    if not imu_initialized or not bias_calibration_done:
+        print("Cannot execute rotation: IMU not initialized or calibrated.")
+        motor_control.send_command("0 0 0\n") # Ensure motors are stopped if rotate is called when IMU is not ready
+        return # Exit function if IMU is not ready
+
+    # Reset integrated angle BEFORE starting THIS rotation
+    # This is crucial: each rotation starts from 0 integrated angle for THAT turn
     integrated_angle = 0.0
     last_time = time.time() # Get start time for this rotation
 
-    if bus is None or not bias_calibration_done:
-        print("Cannot execute rotation: IMU not initialized or calibrated.")
-        return # Exit function if IMU is not ready
-
-    print(f"Starting rotation: {target_angle_degrees:.2f}�")
+    print(f"Starting rotation: {target_angle_degrees:.2f}�") # Added print with degree symbol
 
     # --- Rotation Control Parameters (Adjust these for tuning) ---
     # Simple proportional control: Speed = Kp_speed * Error
     Kp_speed = 0.4 # Proportional gain for speed control (Lower = slower, Higher = faster turn)
-    angle_tolerance = 0.5 # Stop when within +/- 0.5 degrees of target
-    base_speed = 18 # Max/Base motor speed for rotation
-    min_rotate_speed = 5 # Minimum motor speed to prevent stalling near target
+    angle_tolerance = 1.0 # Stop when within +/- 1.0 degrees of target (increased slightly for stability)
+    base_speed = 18 # Max/Base motor speed for rotation (kept at 18)
+    min_rotate_speed = 5 # Minimum motor speed to prevent stalling near target (kept at 5)
+
+    # Set a timeout for rotation to prevent infinite loops if IMU fails mid-turn
+    rotation_timeout = 10.0 # seconds (Adjust as needed)
+    start_rotation_time = time.time()
 
 
     # Rotation control loop based on integrated angle
-    while abs(target_angle_degrees - integrated_angle) > angle_tolerance:
+    # Continue as long as error is outside tolerance AND timeout not reached
+    while abs(target_angle_degrees - integrated_angle) > angle_tolerance and (time.time() - start_rotation_time) < rotation_timeout:
         current_time = time.time()
         # Calculate time difference since last reading
         # Use a small minimum dt to avoid division by zero issues if loop is very fast
@@ -177,70 +197,30 @@ def rotate_by_gyro(target_angle_degrees):
         error = target_angle_degrees - integrated_angle
 
         # Calculate motor speed command based on proportional control
+        # The sign of 'error' gives the direction
         rotate_speed_command = Kp_speed * error
 
-        # Apply sign and clip the speed command
+        # Apply base speed limit and minimum speed
         # If error is positive, need positive speed (Right turn)
         # If error is negative, need negative speed (Left turn)
-        if error > 0: # Need to turn Right
-             # Speed should be positive, between min_rotate_speed and max_rotate_speed
+        if error > 0: # Need to turn Right (positive angle needed)
+             # Speed should be positive, clip between min_rotate_speed and base_speed
              rotate_speed_command = max(min_rotate_speed, min(base_speed, rotate_speed_command))
-        else: # Need to turn Left
-             # Speed should be negative, between -base_speed and -min_rotate_speed
+        else: # Need to turn Left (negative angle needed)
+             # Speed should be negative, clip between -base_speed and -min_rotate_speed
              rotate_speed_command = min(-min_rotate_speed, max(-base_speed, rotate_speed_command))
 
+
         # Send motor command (Assuming your motor_control takes '0 0 rotate_speed' format)
-        # Example Debug print:
-        # print(f"Raw: {read_raw_gyro_z():.2f}, Corrected: {read_imu_data():.2f}, Integ: {integrated_angle:.2f}�, Err: {error:.2f}�, Speed: {int(rotate_speed_command)}")
-        print(f"Integ: {integrated_angle:.2f}� / Target: {target_angle_degrees:.2f}� (Remaining: {error:.2f}�)")
+        # CONVERT TO INTEGER before sending! This caused the float issue.
+        send_speed = int(rotate_speed_command)
+
+        # Debug print (Optional, can make log very long)
+        # print(f"Time: {current_time - start_rotation_time:.2f}s, Raw: {read_raw_gyro_z()}, Vel: {current_velocity:.2f}, Integ: {integrated_angle:.2f}�, Target: {target_angle_degrees:.2f}�, Error: {error:.2f}�, Speed Cmd: {send_speed}")
+        print(f"Integ: {integrated_angle:.2f}� / Target: {target_angle_degrees:.2f}� (Remaining: {error:.2f}�), Speed: {send_speed}")
 
 
         # Send motor command
-        motor_control.send_command(f"0 0 {int(rotate_speed_command)}\n")
+        motor_control.send_command(f"0 0 {send_speed}\n") # Stop motors
 
-        # Small delay for control loop frequency
-        time.sleep(0.01) # Aim for ~100 Hz control loop
-
-    # After the loop finishes (target angle reached within tolerance), stop motors
-    motor_control.send_command("0 0 0\n")
-    print(f"Rotation completed. Reached {integrated_angle:.2f}� of target {target_angle_degrees:.2f}�.")
-
-
-# --- Cleanup ---
-def cleanup():
-    """
-    Clean up resources used by the IMU module.
-    Closes the I2C bus if it was opened.
-    """
-    print("IMU cleanup: Closing I2C bus...")
-    global bus
-    if bus is not None:
-        try:
-            bus.close()
-            print("IMU cleanup: I2C bus closed.")
-        except Exception as e:
-            print(f"IMU cleanup: Error closing I2C bus: {e}")
-        bus = None # Clear the bus reference
-
-# --- Example usage (if this module is run directly for testing) ---
-# This block is commented out by default. Uncomment for isolation testing.
-# if __name__ == "__main__":
-#     print("Running IMU module isolation test...")
-#     # Note: This test requires a physical IMU connected via I2C
-#     # and requires a dummy/mock motor_control module to be available
-#     # if you uncomment the rotate_by_gyro test.
-
-#     # Example of initializing and reading data:
-#     # if init_imu(): # Initialize and calibrate
-#     #     print("IMU ready and calibrated.")
-#     #     print("Reading IMU data for 5 seconds...")
-#     #     start_test_time = time.time()
-#     #     while (time.time() - start_test_time) < 5:
-#     #         velocity = read_imu_data()
-#     #         print(f"Time: {time.time() - start_test_time:.2f}s, Velocity Z: {velocity:.2f} deg/sec")
-#     #         time.sleep(0.05) # Read frequency example
-#     # else:
-#     #      print("IMU initialization or calibration failed. Cannot run test.")
-
-#     # Example of calling cleanup manually after test
-#     # cleanup()
+        # Check if rotation completed successfully or timed o

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Filename: ultrasound_module.py
 # Module for reading distance from HC-SR04 ultrasound sensors
 
