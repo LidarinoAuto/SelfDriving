@@ -1,3 +1,4 @@
+# kontroll.py
 import pygame
 import lidar
 import ultrasound
@@ -5,11 +6,10 @@ import kompas
 import mpu6050
 import calibration
 from motorsignal import send_movement_command
-from heading import oppdater_heading
+from heading import HeadingTracker
 from visualisering import tegn_robot, tegn_lidar, tegn_ultrasound
 from hindringslogikk import autonom_logikk
 import time
-import math
 
 # Konstanter
 STEP = 100
@@ -20,7 +20,7 @@ CENTER = (WIDTH // 2, HEIGHT // 2)
 SCALE = 2.0
 KOMPASS_JUSTERING = 270
 
-# For LIDAR historikk
+# LIDAR historikk
 lidar_points = []
 MAX_LIDAR_POINTS = 200
 
@@ -53,18 +53,11 @@ def main():
     # --- SENSOROPPSTART ---
     lidar.start_lidar()
     ultrasound.setup_ultrasound()
-    kompas.setup_compass()
-    mpu6050.setup_mpu6050()
+    heading_tracker = HeadingTracker()
+    heading_tracker.setup()
 
     modus = "manuell"
     prev_command = (0, 0, 0.0)
-    fused_heading = kompas.read_heading()
-    if fused_heading != -1:
-        fused_heading = (fused_heading + KOMPASS_JUSTERING) % 360
-    else:
-        fused_heading = 0
-
-    last_time = time.time()
 
     running = True
     while running:
@@ -107,7 +100,7 @@ def main():
             prev_command = current_command
 
         # Oppdater heading
-        fused_heading, last_time = oppdater_heading(fused_heading, last_time)
+        fused_heading = heading_tracker.update()
 
         # --- TEGNING ---
         tegn_robot(screen, fused_heading)
