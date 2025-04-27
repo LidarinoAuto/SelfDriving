@@ -1,7 +1,7 @@
 # calibration.py
 import time
-import mpu6050
-import kompas
+from sensorer import mpu6050
+from sensorer import kompas
 import motorsignal
 import pygame
 
