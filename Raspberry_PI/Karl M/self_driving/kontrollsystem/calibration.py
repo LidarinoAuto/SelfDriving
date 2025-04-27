@@ -2,7 +2,7 @@
 import time
 from sensorer import mpu6050
 from sensorer import kompas
-import motorsignal
+from kontrollsystem import motorsignal
 import pygame
 
 def logg(melding):

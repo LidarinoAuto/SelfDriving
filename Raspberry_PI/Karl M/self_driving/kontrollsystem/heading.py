@@ -1,8 +1,8 @@
 # heading.py
 import math
 import time
-import kompas
-import mpu6050
+from sensorer import kompas
+from sensorer import mpu6050
 
 # Konstanter
 KOMPASS_JUSTERING = 270

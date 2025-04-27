@@ -1,6 +1,6 @@
 # hindringslogikk.py
-import lidar
-import ultrasound
+from sensorer import lidar
+from sensorer import ultrasound
 
 STEP = 100  # Flyttesteg
 
