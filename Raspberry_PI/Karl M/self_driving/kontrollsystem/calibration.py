@@ -42,8 +42,8 @@ def calibrate_compass():
     logg("Starter kompass-kalibrering")
     kompas.setup_compass()
 
-    rotation_speed = 30  # grader/s
-    rotation_duration = 7  # sekunder
+    rotation_speed = 30  # grader per sekund
+    rotation_duration = 10  # sekunder (mer enn 360� rotasjon)
 
     min_x = min_y = 32767
     max_x = max_y = -32768
@@ -65,40 +65,21 @@ def calibrate_compass():
         time.sleep(0.01)
 
     motorsignal.send_movement_command(0, 0, 0.0)
-    logg("Stoppet rotasjon mot venstre")
+    logg("Stoppet rotasjon")
     time.sleep(1)
 
-    # Nå roter andre vei
-    logg("Starter rotasjon mot høyre")
-    motorsignal.send_movement_command(0, 0, -rotation_speed)
+    # --- Regn ut offset ---
+    compass_offset_x = (max_x + min_x) / 2
+    compass_offset_y = (max_y + min_y) / 2
 
-    start_time = time.time()
+    print(f"Kompass offset m�lt: x={compass_offset_x:.2f}, y={compass_offset_y:.2f}")
+    logg(f"Kompass offset m�lt: x={compass_offset_x:.2f}, y={compass_offset_y:.2f}")
 
-    while (time.time() - start_time) < rotation_duration:
-        x, y = kompas.read_raw_xy()
-        min_x = min(min_x, x)
-        max_x = max(max_x, x)
-        min_y = min(min_y, y)
-        max_y = max(max_y, y)
-
-        logg(f"Lest kompass X={x}, Y={y}")
-        pygame.event.pump()
-        time.sleep(0.01)
-
-    motorsignal.send_movement_command(0, 0, 0.0)
-    logg("Stoppet rotasjon mot høyre")
-    time.sleep(1)
-
-    global compass_offset_x, compass_offset_y
-    compass_offset_x = (min_x + max_x) / 2
-    compass_offset_y = (min_y + max_y) / 2
-
-    print(f"Kompass offset målt: x={compass_offset_x:.2f}, y={compass_offset_y:.2f}")
-    logg(f"Kompass offset målt: x={compass_offset_x:.2f}, y={compass_offset_y:.2f}")
-
+    # --- Lagre til fil ---
     with open("kompas_offset.txt", "w") as f:
         f.write(f"{compass_offset_x}\n")
         f.write(f"{compass_offset_y}\n")
+    
     logg("Kompass-offset lagret til kompas_offset.txt.")
 
 def full_calibration():
