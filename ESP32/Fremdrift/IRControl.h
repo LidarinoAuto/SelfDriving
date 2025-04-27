@@ -28,39 +28,39 @@ inline void handleIRInput() {
 
   switch (cmd) {
     case 0x18:  // Forward
-      speedX   = 150;
+      speedX   = 200;
       speedY   = 0;
       rotation = 0;
       break;
 
     case 0x52:  // Backward
-      speedX   = -150;
+      speedX   = -200;
       speedY   = 0;
       rotation = 0;
       break;
 
     case 0x08:  // Left  (merk at 0x8 skal skrives som 0x08)
       speedX   = 0;
-      speedY   = 150;
+      speedY   = 200;
       rotation = 0;
       break;
 
     case 0x5A:  // Right
       speedX   = 0;
-      speedY   = -150;
+      speedY   = -200;
       rotation = 0;
       break;
 
     case 0x16:  // Rotate left
       speedX   = 0;
       speedY   = 0;
-      rotation = 20;
+      rotation = 50;
       break;
 
     case 0x0D:  // Rotate right (0xD = 0x0D)
       speedX   = 0;
       speedY   = 0;
-      rotation = -20;
+      rotation = -50;
       break;
 
     case 0x1C:  // Start (med 2 sek delay)

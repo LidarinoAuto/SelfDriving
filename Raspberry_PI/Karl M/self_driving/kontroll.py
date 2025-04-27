@@ -95,7 +95,7 @@ def main():
                 omega = -ROTATE
 
         elif modus == "autonom":
-            x, y, omega = autonom_logikk()
+            x, y, omega = autonom_logikk(heading_tracker.get_heading())
 
         current_command = (x, y, omega)
         if current_command != prev_command:
