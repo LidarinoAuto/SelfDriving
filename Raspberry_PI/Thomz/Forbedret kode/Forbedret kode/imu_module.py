@@ -6,6 +6,7 @@
 
 import smbus    # For I2C communication
 import time
+import math
 # Removed math import as it's not explicitly used in these functions
 from logging_utils import skriv_logg
 import motor_control # Import motor_control module
@@ -58,7 +59,7 @@ def init_imu():
         # Optional: Configure Gyroscope (if needed to set range)
         # For MPU-6050, GYRO_CONFIG is register 0x1B
         # Example: Set to +/- 250 deg/sec (value 0x00)
-        # bus.write_byte_data(IMU_ADDRESS, 0x1B, 0x00)
+        bus.write_byte_data(IMU_ADDRESS, 0x1B, 0x00)
 
 
 # --- Bias Calibration ---
@@ -152,7 +153,11 @@ def read_imu_data():
     # compensated_angular_velocity_z = -angular_velocity_z
     # Otherwise, use the original angular velocity:
     compensated_angular_velocity_z = angular_velocity_z
-
+    
+    # --- Debug logg for IMU Z-akse hastighet - MIDLERTIDIG ---
+    # Denne linjen vil kj re HVER gang IMU leses i en rotasjonsloop
+    # skriv_logg(f"IMU Debug Z Vel: {compensated_angular_velocity_z:.2f}") # <--- LEGG TIL DENNE LINJEN HER!
+    # -------------------------------------------------------
 
     return compensated_angular_velocity_z
 
@@ -212,23 +217,29 @@ def rotate_by_gyro(target_angle_degrees):
 
         # Calculate motor speed command based on proportional control
         # The sign of 'error' gives the direction
-        rotate_speed_command = Kp_speed * error
+        rotate_speed_command = -Kp_speed * error # <--- MED MINUS
 
-        # Apply base speed limit and minimum speed
-        # If error is positive, need positive speed (Right turn)
-        # If error is negative, need negative speed (Left turn)
-        if error > 0: # Need to turn Right (positive angle needed)
-             # Speed should be positive, clip between min_rotate_speed and base_speed
-             rotate_speed_command = max(min_rotate_speed, min(base_speed, rotate_speed_command))
-        else: # Need to turn Left (negative angle needed)
-             # Speed should be negative, clip between -base_speed and -min_rotate_speed
-             rotate_speed_command = min(-min_rotate_speed, max(-base_speed, rotate_speed_command))
-             
-        # Send motor command (send_command's internal print is commented out)
-        send_speed = int(rotate_speed_command)
+        # Apply speed limits and minimum speed based on the calculated command's magnitude.
+        # Use absolute value for clamping, then reapply the original sign.
+        abs_speed_command = abs(rotate_speed_command)
+        
+        # Clamp between min_rotate_speed and base_speed
+        if abs_speed_command < min_rotate_speed:
+            # If below min, use min speed, but keep original sign
+            clamped_abs_speed = min_rotate_speed
+        elif abs_speed_command > base_speed:
+            # If above max, use base speed
+            clamped_abs_speed = base_speed
+        else:
+            # If within range, use calculated speed magnitude
+            clamped_abs_speed = abs_speed_command
+
+        # Reapply the original sign and convert to integer for motor command
+        # math.copysign(magnitude, sign_value) returns magnitude with the sign of sign_value
+        send_speed = int(math.copysign(clamped_abs_speed, rotate_speed_command))
 
         # Debug skriv_logg (Optional, can make log very long - KEEP COMMENTED OUT for clean log)
-        # skriv_logg(f"Time: {current_time - start_rotation_time:.2f}s, Raw: {read_raw_gyro_z()}, Vel: {current_velocity:.2f}, Integ: {integrated_angle:.2f} , Target: {target_angle_degrees:.2f} , Error: {error:.2f} , Speed Cmd: {send_speed}")
+        #skriv_logg(f"Time: {current_time - start_rotation_time:.2f}s, Raw: {read_raw_gyro_z()}, Vel: {current_velocity:.2f}, Integ: {integrated_angle:.2f} , Target: {target_angle_degrees:.2f} , Error: {error:.2f} , Speed Cmd: {send_speed}")
         # skriv_logg(f"Integ: {integrated_angle:.2f}  / Target: {target_angle_degrees:.2f}  (Remaining: {error:.2f} ), Speed: {send_speed}")
 
 
@@ -312,27 +323,31 @@ def rotate_to_heading(target_heading_degrees):
             break # Exit loop if target reached
 
         # Calculate motor speed command based on proportional control
-        rotate_speed_command = Kp_heading * error
+        rotate_speed_command = -Kp_heading * error # <--- MED MINUS
 
-        # Apply base speed limit and minimum speed
-        if error > 0: # Need to turn Right (positive heading needed)
-             # Speed should be positive, clip between min_rotate_speed_heading and base_speed_heading
-             rotate_speed_command = max(min_rotate_speed_heading, min(base_speed_heading, rotate_speed_command))
-        else: # Need to turn Left (negative heading needed)
-             # Speed should be negative, clip between -base_speed_heading and -min_rotate_speed_heading
-             rotate_speed_command = min(-min_rotate_speed_heading, max(-base_speed_heading, rotate_speed_command))
-             
-             
-        # Send motor command (send_command's internal print is commented out)
-        send_speed = int(rotate_speed_command)
+        # Apply speed limits and minimum speed based on the calculated command's magnitude.
+        # Use absolute value for clamping, then reapply the original sign.
+        abs_speed_command = abs(rotate_speed_command)
+        
+        # Clamp between min_rotate_speed_heading and base_speed_heading
+        if abs_speed_command < min_rotate_speed_heading:
+            # If below min, use min speed, but keep original sign
+            clamped_abs_speed = min_rotate_speed_heading
+        elif abs_speed_command > base_speed_heading:
+            # If above max, use base speed
+            clamped_abs_speed = base_speed_heading
+        else:
+            # If within range, use calculated speed magnitude
+            clamped_abs_speed = abs_speed_command
+
+        # Reapply the original sign and convert to integer for motor command
+        send_speed = int(math.copysign(clamped_abs_speed, rotate_speed_command))
+
+        # Debug logg er kommentert ut - BRA!
+
         motor_control.send_command(f"0 0 {send_speed}\n")
 
-        # Optional: Log progress less frequently than the loop runs
-        # if time.time() - start_rotation_time > 1.0: # Log every second
-        #     skriv_logg(f"Heading Rot Progress: Current={current_heading:.2f} , Target={target_heading_degrees:.2f} , Error={error:.2f} , Speed={send_speed}")
-
-
-        time.sleep(0.05) # Control loop frequency for compass feedback (can be slower than IMU)
+        time.sleep(0.05) 
 
     # Ensure motors stop when loop finishes (either by target or timeout)
     motor_control.send_command("0 0 0\n")
