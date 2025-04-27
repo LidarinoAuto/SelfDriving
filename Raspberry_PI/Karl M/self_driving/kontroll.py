@@ -73,6 +73,8 @@ def main():
 
     # --- NORMAL DRIFT ---
     lidar.start_lidar()
+    lidar_points = []
+    MAX_LIDAR_POINTS = 200
     ultrasound.setup_ultrasound()
     kompas.setup_compass()
     mpu6050.setup_mpu6050()
@@ -160,10 +162,30 @@ def main():
         screen.blit(north_text, (WIDTH//2 - 10, 10))
 
         # Tegn LIDAR
+        # Legg til nye målinger i bufferen
         for angle, distance in lidar.scan_data:
             if distance > 0:
-                x, y = polar_to_cartesian(angle, distance / 10.0, fused_heading)
-                pygame.draw.circle(screen, (255, 255, 255), (x, y), 2)
+                lidar_points.append((angle, distance))
+        
+        # Begrens antall punkter
+        if len(lidar_points) > MAX_LIDAR_POINTS:
+            lidar_points = lidar_points[-MAX_LIDAR_POINTS:]
+        
+        # Tegn alle punktene i bufferen
+        for angle, distance in lidar_points:
+            x, y = polar_to_cartesian(angle, distance / 10.0, fused_heading)
+        
+            # Velg farge basert på avstand
+            if distance < 500:  # Under 50 cm
+                color = (0, 191, 255)  # Lys blå
+            elif distance < 1500:  # 50 cm - 150 cm
+                color = (0, 255, 255)  # Turkis (cyan)
+            else:  # Over 150 cm
+                color = (0, 255, 0)  # Grønn
+        
+            pygame.draw.circle(screen, color, (x, y), 2)
+
+
         
         # Tegn ultralyd
         for sensor, distance in ultrasound.sensor_distances.items():
