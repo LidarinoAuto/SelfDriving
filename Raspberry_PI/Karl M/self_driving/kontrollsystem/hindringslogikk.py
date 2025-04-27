@@ -1,4 +1,3 @@
-# hindringslogikk.py
 from sensorer import lidar
 from sensorer import ultrasound
 import time
@@ -12,16 +11,7 @@ SEARCH_TIMEOUT = 10  # sekunder
 search_mode = False
 search_start_time = 0
 
-# --- Logging ---
-LOG_FILE = "hindringslogg.txt"
-
-def logg(message):
-    timestamp = time.strftime("%H:%M:%S")
-    with open(LOG_FILE, "a") as f:
-        f.write(f"[{timestamp}] {message}\n")
-
 def is_path_clear():
-    """Sjekker om det er trygt å kjøre fremover"""
     path_clear = lidar.is_path_clear()
 
     front_blocked = False
@@ -30,35 +20,33 @@ def is_path_clear():
     if ultrasound.sensor_distances["front_right"] > 0 and ultrasound.sensor_distances["front_right"] < SAFE_DISTANCE_ULTRASOUND:
         front_blocked = True
 
-    logg(f"Path clear (LIDAR): {path_clear}, Front blocked (Ultrasound): {front_blocked}")
     return path_clear and not front_blocked
 
-def autonom_logikk():
+def autonom_logikk(current_heading):  # <--- Legg til current_heading her!
     global search_mode, search_start_time
 
     if not search_mode:
-        # Normal fremoverkjøring
         if is_path_clear():
-            logg("Kjører fremover (vei fri)")
+            logg("[HINDRING]: Klar bane. Kjører fremover.")
             return (STEP, 0, 0.0)
         else:
-            # Starter søk etter åpen vei
             search_mode = True
             search_start_time = time.time()
-            logg("Hindring foran - starter søkemodus")
+            logg(f"[HINDRING]: Starter søk etter åpning. Heading: {current_heading:.1f} grader")
             return (0, 0, ROTATE_STEP)
     else:
-        # Søkemodus aktiv
         if is_path_clear():
-            # Fant åpen vei, kjør fremover
+            logg(f"[HINDRING]: Åpning funnet! Heading: {current_heading:.1f} grader")
             search_mode = False
-            logg("Fant åpning - kjører fremover")
             return (STEP, 0, 0.0)
         elif (time.time() - search_start_time) > SEARCH_TIMEOUT:
-            # Timeout uten å finne vei
+            logg("[HINDRING]: Timeout. Stopper robot.")
             search_mode = False
-            logg("Timeout - ingen åpning funnet, stopper robot")
             return (0, 0, 0.0)
         else:
-            logg("Fortsetter søk - roterer")
             return (0, 0, ROTATE_STEP)
+
+def logg(tekst):
+    with open("hindringslogg.txt", "a") as f:
+        tidspunkt = time.strftime("%Y-%m-%d %H:%M:%S")
+        f.write(f"[{tidspunkt}] {tekst}\n")
