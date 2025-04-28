@@ -1,5 +1,6 @@
 # kontroll.py
 import pygame
+import logg
 from sensorer import lidar
 from sensorer import ultrasound
 from sensorer import kompas

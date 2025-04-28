@@ -1,703 +1,1093 @@
-[2025-04-27 13:11:07] [HINDRING]: Starter s�k etter �pning. N�v�rende heading: 3.73 grader
-[2025-04-27 13:11:07] [HINDRING]: S�ker fortsatt etter �pning... Heading: 3.45 grader
-[2025-04-27 13:11:07] [HINDRING]: S�ker fortsatt etter �pning... Heading: 3.27 grader
-[2025-04-27 13:11:07] [HINDRING]: S�ker fortsatt etter �pning... Heading: 2.58 grader
-[2025-04-27 13:11:07] [HINDRING]: S�ker fortsatt etter �pning... Heading: 0.28 grader
-[2025-04-27 13:11:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 357.41 grader
-[2025-04-27 13:11:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 354.82 grader
-[2025-04-27 13:11:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 353.56 grader
-[2025-04-27 13:11:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 352.77 grader
-[2025-04-27 13:11:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 352.31 grader
-[2025-04-27 13:11:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 350.78 grader
-[2025-04-27 13:11:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 349.06 grader
-[2025-04-27 13:11:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 347.66 grader
-[2025-04-27 13:11:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 346.44 grader
-[2025-04-27 13:11:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 345.31 grader
-[2025-04-27 13:11:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 344.58 grader
-[2025-04-27 13:11:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 343.84 grader
-[2025-04-27 13:11:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 343.16 grader
-[2025-04-27 13:11:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 342.16 grader
-[2025-04-27 13:11:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 340.85 grader
-[2025-04-27 13:11:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 339.25 grader
-[2025-04-27 13:11:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 337.68 grader
-[2025-04-27 13:11:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 336.22 grader
-[2025-04-27 13:11:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 334.72 grader
-[2025-04-27 13:11:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 333.56 grader
-[2025-04-27 13:11:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 332.26 grader
-[2025-04-27 13:11:08] [HINDRING]: �pning funnet! Kj�rer fremover. Heading: 331.31 grader
-[2025-04-27 13:11:08] [HINDRING]: Starter s�k etter �pning. N�v�rende heading: 329.20 grader
-[2025-04-27 13:11:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 327.43 grader
-[2025-04-27 13:11:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 326.79 grader
-[2025-04-27 13:11:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 325.35 grader
-[2025-04-27 13:11:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 323.78 grader
-[2025-04-27 13:11:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 322.29 grader
-[2025-04-27 13:11:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 320.97 grader
-[2025-04-27 13:11:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 319.62 grader
-[2025-04-27 13:11:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 318.48 grader
-[2025-04-27 13:11:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 317.37 grader
-[2025-04-27 13:11:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 316.28 grader
-[2025-04-27 13:11:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 315.07 grader
-[2025-04-27 13:11:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 313.72 grader
-[2025-04-27 13:11:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 312.36 grader
-[2025-04-27 13:11:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 311.05 grader
-[2025-04-27 13:11:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 309.71 grader
-[2025-04-27 13:11:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 308.34 grader
-[2025-04-27 13:11:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 306.90 grader
-[2025-04-27 13:11:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 305.59 grader
-[2025-04-27 13:11:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 304.30 grader
-[2025-04-27 13:11:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 302.97 grader
-[2025-04-27 13:11:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 301.73 grader
-[2025-04-27 13:11:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 300.49 grader
-[2025-04-27 13:11:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 299.18 grader
-[2025-04-27 13:11:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 297.64 grader
-[2025-04-27 13:11:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 296.08 grader
-[2025-04-27 13:11:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 294.57 grader
-[2025-04-27 13:11:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 292.99 grader
-[2025-04-27 13:11:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 291.47 grader
-[2025-04-27 13:11:09] [HINDRING]: �pning funnet! Kj�rer fremover. Heading: 289.94 grader
-[2025-04-27 13:11:47] [HINDRING]: Starter s�k etter �pning. N�v�rende heading: 78.54 grader
-[2025-04-27 13:11:47] [HINDRING]: S�ker fortsatt etter �pning... Heading: 78.52 grader
-[2025-04-27 13:11:47] [HINDRING]: S�ker fortsatt etter �pning... Heading: 78.32 grader
-[2025-04-27 13:11:47] [HINDRING]: S�ker fortsatt etter �pning... Heading: 77.90 grader
-[2025-04-27 13:11:47] [HINDRING]: S�ker fortsatt etter �pning... Heading: 76.72 grader
-[2025-04-27 13:11:47] [HINDRING]: S�ker fortsatt etter �pning... Heading: 75.13 grader
-[2025-04-27 13:11:47] [HINDRING]: S�ker fortsatt etter �pning... Heading: 74.18 grader
-[2025-04-27 13:11:47] [HINDRING]: S�ker fortsatt etter �pning... Heading: 73.38 grader
-[2025-04-27 13:11:47] [HINDRING]: S�ker fortsatt etter �pning... Heading: 72.88 grader
-[2025-04-27 13:11:47] [HINDRING]: S�ker fortsatt etter �pning... Heading: 71.10 grader
-[2025-04-27 13:11:47] [HINDRING]: S�ker fortsatt etter �pning... Heading: 68.40 grader
-[2025-04-27 13:11:47] [HINDRING]: S�ker fortsatt etter �pning... Heading: 66.13 grader
-[2025-04-27 13:11:47] [HINDRING]: S�ker fortsatt etter �pning... Heading: 65.38 grader
-[2025-04-27 13:11:47] [HINDRING]: S�ker fortsatt etter �pning... Heading: 65.40 grader
-[2025-04-27 13:11:47] [HINDRING]: S�ker fortsatt etter �pning... Heading: 65.71 grader
-[2025-04-27 13:11:47] [HINDRING]: S�ker fortsatt etter �pning... Heading: 65.08 grader
-[2025-04-27 13:11:47] [HINDRING]: S�ker fortsatt etter �pning... Heading: 63.39 grader
-[2025-04-27 13:11:47] [HINDRING]: S�ker fortsatt etter �pning... Heading: 60.76 grader
-[2025-04-27 13:11:47] [HINDRING]: S�ker fortsatt etter �pning... Heading: 59.97 grader
-[2025-04-27 13:11:47] [HINDRING]: S�ker fortsatt etter �pning... Heading: 59.08 grader
-[2025-04-27 13:11:47] [HINDRING]: S�ker fortsatt etter �pning... Heading: 58.83 grader
-[2025-04-27 13:11:47] [HINDRING]: S�ker fortsatt etter �pning... Heading: 58.11 grader
-[2025-04-27 13:11:47] [HINDRING]: S�ker fortsatt etter �pning... Heading: 56.76 grader
-[2025-04-27 13:11:47] [HINDRING]: S�ker fortsatt etter �pning... Heading: 55.09 grader
-[2025-04-27 13:11:47] [HINDRING]: S�ker fortsatt etter �pning... Heading: 53.66 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 52.27 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 50.67 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 49.36 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 48.59 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 47.88 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 47.09 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 46.01 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 44.98 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 43.74 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 42.37 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 41.04 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 39.90 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 38.75 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 37.75 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 36.64 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 35.45 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 34.25 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 32.95 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 31.69 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 30.33 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 29.10 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 27.93 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 26.89 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 25.71 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 24.57 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 23.53 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 22.48 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 21.24 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 19.99 grader
-[2025-04-27 13:11:48] [HINDRING]: S�ker fortsatt etter �pning... Heading: 18.52 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 16.93 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 15.04 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 13.74 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 12.43 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 11.08 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 9.63 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 8.41 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 7.23 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 5.90 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 4.65 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 3.17 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 1.48 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 0.34 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 358.79 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 357.27 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 355.53 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 354.41 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 353.10 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 351.63 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 350.26 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 348.89 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 347.45 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 346.09 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 344.79 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 343.68 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 342.41 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 341.10 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 339.68 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 338.29 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 336.82 grader
-[2025-04-27 13:11:49] [HINDRING]: S�ker fortsatt etter �pning... Heading: 335.30 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 334.02 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 332.54 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 331.14 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 329.83 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 328.50 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 327.00 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 325.66 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 324.02 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 322.82 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 321.34 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 319.59 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 318.42 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 316.71 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 315.06 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 313.51 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 311.94 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 310.67 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 309.11 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 307.82 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 306.58 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 305.40 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 304.14 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 302.78 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 301.37 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 299.99 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 298.59 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 297.12 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 295.73 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 294.39 grader
-[2025-04-27 13:11:50] [HINDRING]: S�ker fortsatt etter �pning... Heading: 292.98 grader
-[2025-04-27 13:11:51] [HINDRING]: S�ker fortsatt etter �pning... Heading: 291.52 grader
-[2025-04-27 13:11:51] [HINDRING]: S�ker fortsatt etter �pning... Heading: 289.92 grader
-[2025-04-27 13:11:51] [HINDRING]: S�ker fortsatt etter �pning... Heading: 288.54 grader
-[2025-04-27 13:11:51] [HINDRING]: S�ker fortsatt etter �pning... Heading: 287.11 grader
-[2025-04-27 13:11:51] [HINDRING]: S�ker fortsatt etter �pning... Heading: 285.78 grader
-[2025-04-27 13:11:51] [HINDRING]: S�ker fortsatt etter �pning... Heading: 284.30 grader
-[2025-04-27 13:11:51] [HINDRING]: S�ker fortsatt etter �pning... Heading: 282.74 grader
-[2025-04-27 13:11:51] [HINDRING]: S�ker fortsatt etter �pning... Heading: 281.42 grader
-[2025-04-27 13:11:51] [HINDRING]: S�ker fortsatt etter �pning... Heading: 279.83 grader
-[2025-04-27 13:11:51] [HINDRING]: S�ker fortsatt etter �pning... Heading: 278.01 grader
-[2025-04-27 13:11:51] [HINDRING]: S�ker fortsatt etter �pning... Heading: 276.64 grader
-[2025-04-27 13:11:51] [HINDRING]: S�ker fortsatt etter �pning... Heading: 275.00 grader
-[2025-04-27 13:11:51] [HINDRING]: S�ker fortsatt etter �pning... Heading: 273.55 grader
-[2025-04-27 13:11:51] [HINDRING]: S�ker fortsatt etter �pning... Heading: 272.33 grader
-[2025-04-27 13:11:51] [HINDRING]: S�ker fortsatt etter �pning... Heading: 270.96 grader
-[2025-04-27 13:11:51] [HINDRING]: S�ker fortsatt etter �pning... Heading: 269.60 grader
-[2025-04-27 13:11:51] [HINDRING]: S�ker fortsatt etter �pning... Heading: 268.17 grader
-[2025-04-27 13:11:51] [HINDRING]: S�ker fortsatt etter �pning... Heading: 266.81 grader
-[2025-04-27 13:11:51] [HINDRING]: �pning funnet! Kj�rer fremover. Heading: 265.37 grader
-[2025-04-27 13:11:56] [HINDRING]: Starter s�k etter �pning. N�v�rende heading: 252.17 grader
-[2025-04-27 13:11:56] [HINDRING]: �pning funnet! Kj�rer fremover. Heading: 252.08 grader
-[2025-04-27 13:11:57] [HINDRING]: Starter s�k etter �pning. N�v�rende heading: 245.39 grader
-[2025-04-27 13:11:57] [HINDRING]: S�ker fortsatt etter �pning... Heading: 245.27 grader
-[2025-04-27 13:11:57] [HINDRING]: S�ker fortsatt etter �pning... Heading: 245.04 grader
-[2025-04-27 13:11:57] [HINDRING]: S�ker fortsatt etter �pning... Heading: 244.83 grader
-[2025-04-27 13:11:57] [HINDRING]: S�ker fortsatt etter �pning... Heading: 244.22 grader
-[2025-04-27 13:11:57] [HINDRING]: S�ker fortsatt etter �pning... Heading: 241.10 grader
-[2025-04-27 13:11:57] [HINDRING]: S�ker fortsatt etter �pning... Heading: 238.32 grader
-[2025-04-27 13:11:57] [HINDRING]: S�ker fortsatt etter �pning... Heading: 235.99 grader
-[2025-04-27 13:11:57] [HINDRING]: S�ker fortsatt etter �pning... Heading: 234.79 grader
-[2025-04-27 13:11:57] [HINDRING]: S�ker fortsatt etter �pning... Heading: 233.83 grader
-[2025-04-27 13:11:57] [HINDRING]: S�ker fortsatt etter �pning... Heading: 233.44 grader
-[2025-04-27 13:11:57] [HINDRING]: S�ker fortsatt etter �pning... Heading: 231.70 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 229.93 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 228.78 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 228.09 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 227.70 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 227.39 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 225.93 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 223.15 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 221.48 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 221.03 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 220.33 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 219.83 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 218.19 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 215.93 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 214.64 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 213.53 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 212.40 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 211.70 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 210.93 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 210.09 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 209.06 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 207.70 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 206.07 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 204.13 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 202.39 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 200.62 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 199.13 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 197.81 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 196.76 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 195.67 grader
-[2025-04-27 13:11:58] [HINDRING]: S�ker fortsatt etter �pning... Heading: 194.73 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 193.63 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 192.45 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 191.26 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 189.95 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 188.58 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 187.28 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 185.71 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 184.26 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 183.01 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 181.88 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 180.44 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 179.06 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 177.56 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 175.96 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 174.33 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 172.81 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 171.37 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 169.89 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 168.71 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 167.19 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 165.61 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 164.05 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 162.74 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 161.01 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 159.39 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 157.60 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 156.00 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 154.39 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 153.22 grader
-[2025-04-27 13:11:59] [HINDRING]: S�ker fortsatt etter �pning... Heading: 152.02 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 150.70 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 149.36 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 147.89 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 146.19 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 144.51 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 142.90 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 141.26 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 139.52 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 137.83 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 136.24 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 134.83 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 133.20 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 131.75 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 130.12 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 128.68 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 127.17 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 125.77 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 124.07 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 122.49 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 121.06 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 119.28 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 117.52 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 115.73 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 114.11 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 112.42 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 110.81 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 109.30 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 107.85 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 106.39 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 104.95 grader
-[2025-04-27 13:12:00] [HINDRING]: S�ker fortsatt etter �pning... Heading: 103.56 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 101.99 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 100.38 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 98.89 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 97.30 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 95.67 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 93.98 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 92.59 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 90.88 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 89.32 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 87.99 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 86.23 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 84.57 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 83.26 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 81.72 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 79.88 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 78.33 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 76.74 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 75.18 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 73.51 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 71.79 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 70.24 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 68.57 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 67.09 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 65.72 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 64.31 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 63.08 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 61.64 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 60.24 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 58.51 grader
-[2025-04-27 13:12:01] [HINDRING]: S�ker fortsatt etter �pning... Heading: 56.95 grader
-[2025-04-27 13:12:02] [HINDRING]: S�ker fortsatt etter �pning... Heading: 55.34 grader
-[2025-04-27 13:12:02] [HINDRING]: S�ker fortsatt etter �pning... Heading: 53.58 grader
-[2025-04-27 13:12:02] [HINDRING]: S�ker fortsatt etter �pning... Heading: 51.90 grader
-[2025-04-27 13:12:02] [HINDRING]: S�ker fortsatt etter �pning... Heading: 50.27 grader
-[2025-04-27 13:12:02] [HINDRING]: S�ker fortsatt etter �pning... Heading: 48.56 grader
-[2025-04-27 13:12:02] [HINDRING]: S�ker fortsatt etter �pning... Heading: 46.95 grader
-[2025-04-27 13:12:02] [HINDRING]: S�ker fortsatt etter �pning... Heading: 45.28 grader
-[2025-04-27 13:12:02] [HINDRING]: S�ker fortsatt etter �pning... Heading: 43.60 grader
-[2025-04-27 13:12:02] [HINDRING]: S�ker fortsatt etter �pning... Heading: 42.00 grader
-[2025-04-27 13:12:02] [HINDRING]: S�ker fortsatt etter �pning... Heading: 40.60 grader
-[2025-04-27 13:12:02] [HINDRING]: �pning funnet! Kj�rer fremover. Heading: 39.17 grader
-[2025-04-27 13:12:04] [HINDRING]: Starter s�k etter �pning. N�v�rende heading: 21.30 grader
-[2025-04-27 13:12:04] [HINDRING]: S�ker fortsatt etter �pning... Heading: 21.20 grader
-[2025-04-27 13:12:04] [HINDRING]: S�ker fortsatt etter �pning... Heading: 21.07 grader
-[2025-04-27 13:12:04] [HINDRING]: S�ker fortsatt etter �pning... Heading: 20.47 grader
-[2025-04-27 13:12:04] [HINDRING]: S�ker fortsatt etter �pning... Heading: 17.99 grader
-[2025-04-27 13:12:04] [HINDRING]: S�ker fortsatt etter �pning... Heading: 14.61 grader
-[2025-04-27 13:12:04] [HINDRING]: S�ker fortsatt etter �pning... Heading: 11.36 grader
-[2025-04-27 13:12:04] [HINDRING]: S�ker fortsatt etter �pning... Heading: 9.49 grader
-[2025-04-27 13:12:04] [HINDRING]: S�ker fortsatt etter �pning... Heading: 8.48 grader
-[2025-04-27 13:12:04] [HINDRING]: S�ker fortsatt etter �pning... Heading: 8.24 grader
-[2025-04-27 13:12:04] [HINDRING]: S�ker fortsatt etter �pning... Heading: 6.77 grader
-[2025-04-27 13:12:04] [HINDRING]: S�ker fortsatt etter �pning... Heading: 5.07 grader
-[2025-04-27 13:12:04] [HINDRING]: S�ker fortsatt etter �pning... Heading: 3.23 grader
-[2025-04-27 13:12:04] [HINDRING]: S�ker fortsatt etter �pning... Heading: 2.52 grader
-[2025-04-27 13:12:05] [HINDRING]: S�ker fortsatt etter �pning... Heading: 1.26 grader
-[2025-04-27 13:12:05] [HINDRING]: S�ker fortsatt etter �pning... Heading: 0.53 grader
-[2025-04-27 13:12:05] [HINDRING]: S�ker fortsatt etter �pning... Heading: 359.85 grader
-[2025-04-27 13:12:05] [HINDRING]: S�ker fortsatt etter �pning... Heading: 358.23 grader
-[2025-04-27 13:12:05] [HINDRING]: S�ker fortsatt etter �pning... Heading: 356.69 grader
-[2025-04-27 13:12:05] [HINDRING]: �pning funnet! Kj�rer fremover. Heading: 355.28 grader
-[2025-04-27 13:12:08] [HINDRING]: Starter s�k etter �pning. N�v�rende heading: 345.60 grader
-[2025-04-27 13:12:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 345.65 grader
-[2025-04-27 13:12:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 345.71 grader
-[2025-04-27 13:12:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 344.61 grader
-[2025-04-27 13:12:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 342.29 grader
-[2025-04-27 13:12:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 339.20 grader
-[2025-04-27 13:12:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 336.11 grader
-[2025-04-27 13:12:08] [HINDRING]: S�ker fortsatt etter �pning... Heading: 334.63 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 333.48 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 333.02 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 331.31 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 329.53 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 328.25 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 327.90 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 327.12 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 326.73 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 325.54 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 323.62 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 321.51 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 321.04 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 320.23 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 320.00 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 319.33 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 317.96 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 316.76 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 315.39 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 313.52 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 311.75 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 310.24 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 309.15 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 308.56 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 307.97 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 307.60 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 306.98 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 305.75 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 304.13 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 302.41 grader
-[2025-04-27 13:12:09] [HINDRING]: S�ker fortsatt etter �pning... Heading: 300.34 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 298.26 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 296.59 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 295.15 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 294.02 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 292.98 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 291.96 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 291.02 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 290.03 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 288.81 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 287.33 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 285.87 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 284.42 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 282.92 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 281.60 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 280.21 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 278.98 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 277.58 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 276.30 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 274.92 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 273.64 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 272.14 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 270.69 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 269.21 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 267.79 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 266.60 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 265.34 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 264.09 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 263.11 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 261.84 grader
-[2025-04-27 13:12:10] [HINDRING]: S�ker fortsatt etter �pning... Heading: 260.70 grader
-[2025-04-27 13:12:11] [HINDRING]: S�ker fortsatt etter �pning... Heading: 258.99 grader
-[2025-04-27 13:12:11] [HINDRING]: S�ker fortsatt etter �pning... Heading: 257.56 grader
-[2025-04-27 13:12:11] [HINDRING]: �pning funnet! Kj�rer fremover. Heading: 256.31 grader
-[2025-04-27 13:12:12] [HINDRING]: Starter s�k etter �pning. N�v�rende heading: 243.41 grader
-[2025-04-27 13:12:12] [HINDRING]: S�ker fortsatt etter �pning... Heading: 242.99 grader
-[2025-04-27 13:12:12] [HINDRING]: S�ker fortsatt etter �pning... Heading: 242.22 grader
-[2025-04-27 13:12:12] [HINDRING]: S�ker fortsatt etter �pning... Heading: 239.32 grader
-[2025-04-27 13:12:12] [HINDRING]: S�ker fortsatt etter �pning... Heading: 236.29 grader
-[2025-04-27 13:12:12] [HINDRING]: S�ker fortsatt etter �pning... Heading: 233.00 grader
-[2025-04-27 13:12:12] [HINDRING]: S�ker fortsatt etter �pning... Heading: 231.78 grader
-[2025-04-27 13:12:12] [HINDRING]: S�ker fortsatt etter �pning... Heading: 230.65 grader
-[2025-04-27 13:12:12] [HINDRING]: S�ker fortsatt etter �pning... Heading: 230.63 grader
-[2025-04-27 13:12:12] [HINDRING]: S�ker fortsatt etter �pning... Heading: 229.74 grader
-[2025-04-27 13:12:12] [HINDRING]: S�ker fortsatt etter �pning... Heading: 228.38 grader
-[2025-04-27 13:12:12] [HINDRING]: S�ker fortsatt etter �pning... Heading: 226.89 grader
-[2025-04-27 13:12:12] [HINDRING]: S�ker fortsatt etter �pning... Heading: 225.70 grader
-[2025-04-27 13:12:12] [HINDRING]: S�ker fortsatt etter �pning... Heading: 224.46 grader
-[2025-04-27 13:12:12] [HINDRING]: S�ker fortsatt etter �pning... Heading: 223.44 grader
-[2025-04-27 13:12:12] [HINDRING]: S�ker fortsatt etter �pning... Heading: 222.42 grader
-[2025-04-27 13:12:12] [HINDRING]: S�ker fortsatt etter �pning... Heading: 221.42 grader
-[2025-04-27 13:12:12] [HINDRING]: S�ker fortsatt etter �pning... Heading: 220.48 grader
-[2025-04-27 13:12:12] [HINDRING]: S�ker fortsatt etter �pning... Heading: 219.17 grader
-[2025-04-27 13:12:12] [HINDRING]: S�ker fortsatt etter �pning... Heading: 217.17 grader
-[2025-04-27 13:12:12] [HINDRING]: S�ker fortsatt etter �pning... Heading: 215.41 grader
-[2025-04-27 13:12:12] [HINDRING]: S�ker fortsatt etter �pning... Heading: 213.72 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 212.27 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 210.44 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 208.67 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 207.41 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 206.43 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 205.35 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 204.31 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 203.36 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 202.08 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 200.56 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 199.00 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 197.65 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 196.17 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 194.60 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 193.22 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 192.02 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 190.63 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 189.50 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 188.10 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 186.52 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 185.05 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 183.49 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 181.71 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 180.19 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 178.62 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 177.15 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 175.72 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 174.31 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 172.91 grader
-[2025-04-27 13:12:13] [HINDRING]: S�ker fortsatt etter �pning... Heading: 171.55 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 170.18 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 168.61 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 167.16 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 165.52 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 164.10 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 162.75 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 161.28 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 159.82 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 158.26 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 156.56 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 155.18 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 153.73 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 152.27 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 150.92 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 149.56 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 148.11 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 146.53 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 145.06 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 143.58 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 141.85 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 140.14 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 138.58 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 136.75 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 135.07 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 133.39 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 132.03 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 130.67 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 129.27 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 127.96 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 126.46 grader
-[2025-04-27 13:12:14] [HINDRING]: S�ker fortsatt etter �pning... Heading: 124.91 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 123.13 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 121.64 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 120.00 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 118.24 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 116.52 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 114.86 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 113.14 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 111.61 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 110.13 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 108.86 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 107.17 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 105.66 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 104.01 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 102.24 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 100.61 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 98.77 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 96.93 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 95.36 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 93.49 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 91.82 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 90.40 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 89.17 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 87.68 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 86.16 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 84.70 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 83.25 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 81.66 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 80.16 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 78.36 grader
-[2025-04-27 13:12:15] [HINDRING]: S�ker fortsatt etter �pning... Heading: 76.70 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 75.08 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 73.34 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 71.83 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 70.39 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 69.06 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 67.58 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 66.14 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 64.74 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 63.16 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 61.52 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 59.82 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 58.22 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 56.60 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 55.08 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 53.34 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 51.65 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 50.23 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 48.71 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 47.37 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 45.90 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 44.30 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 43.07 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 41.66 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 40.29 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 38.76 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 37.19 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 35.56 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 33.89 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 32.38 grader
-[2025-04-27 13:12:16] [HINDRING]: S�ker fortsatt etter �pning... Heading: 30.96 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 29.59 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 28.10 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 26.69 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 25.42 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 23.79 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 22.68 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 21.17 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 19.76 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 18.07 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 16.36 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 14.63 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 12.81 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 11.26 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 9.73 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 8.38 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 7.14 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 5.73 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 4.45 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 3.16 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 1.92 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 0.47 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 358.98 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 357.34 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 355.66 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 353.89 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 352.42 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 351.17 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 349.95 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 348.79 grader
-[2025-04-27 13:12:17] [HINDRING]: S�ker fortsatt etter �pning... Heading: 347.53 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 346.31 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 344.99 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 343.65 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 342.07 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 340.45 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 338.75 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 336.99 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 335.22 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 333.59 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 332.18 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 330.96 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 329.86 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 328.67 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 327.40 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 326.10 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 324.68 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 322.97 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 321.59 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 319.97 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 318.24 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 316.78 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 315.27 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 313.93 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 312.52 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 311.23 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 309.89 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 308.59 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 307.20 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 305.80 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 304.37 grader
-[2025-04-27 13:12:18] [HINDRING]: S�ker fortsatt etter �pning... Heading: 303.01 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 301.64 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 300.09 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 298.48 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 296.90 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 295.36 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 294.02 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 292.51 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 291.35 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 289.72 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 288.58 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 287.22 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 286.01 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 284.64 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 283.21 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 281.78 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 280.19 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 278.37 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 276.77 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 275.23 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 273.81 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 272.49 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 271.09 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 269.84 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 268.26 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 266.85 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 265.61 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 263.91 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 262.39 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 260.84 grader
-[2025-04-27 13:12:19] [HINDRING]: S�ker fortsatt etter �pning... Heading: 258.74 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 257.22 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 255.58 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 254.08 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 252.92 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 251.67 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 250.56 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 249.31 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 247.94 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 246.80 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 245.52 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 244.02 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 242.70 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 240.73 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 239.03 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 237.49 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 236.01 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 234.67 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 233.36 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 232.20 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 231.21 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 229.74 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 228.35 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 226.77 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 225.34 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 223.73 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 222.00 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 220.47 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 218.95 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 217.48 grader
-[2025-04-27 13:12:20] [HINDRING]: S�ker fortsatt etter �pning... Heading: 216.22 grader
-[2025-04-27 13:12:21] [HINDRING]: S�ker fortsatt etter �pning... Heading: 214.95 grader
-[2025-04-27 13:12:21] [HINDRING]: S�ker fortsatt etter �pning... Heading: 213.57 grader
-[2025-04-27 13:12:21] [HINDRING]: S�ker fortsatt etter �pning... Heading: 212.23 grader
-[2025-04-27 13:12:21] [HINDRING]: S�ker fortsatt etter �pning... Heading: 210.81 grader
-[2025-04-27 13:12:21] [HINDRING]: S�ker fortsatt etter �pning... Heading: 209.71 grader
-[2025-04-27 13:12:21] [HINDRING]: S�ker fortsatt etter �pning... Heading: 208.24 grader
-[2025-04-27 13:12:21] [HINDRING]: S�ker fortsatt etter �pning... Heading: 206.90 grader
-[2025-04-27 13:12:21] [HINDRING]: S�ker fortsatt etter �pning... Heading: 205.42 grader
-[2025-04-27 13:12:21] [HINDRING]: S�ker fortsatt etter �pning... Heading: 203.90 grader
-[2025-04-27 13:12:21] [HINDRING]: �pning funnet! Kj�rer fremover. Heading: 202.20 grader
+[2025-04-28 22:54:52] [HINDRING] Starter sok etter aapning.
+[2025-04-28 22:54:52] [SOK] Beste aapning pa 315.6 grader, avstand 1773.0 cm.
+[2025-04-28 22:54:52] [HINDRING] Aapning funnet, starter kjore mot aapning.
+[2025-04-28 22:54:52] [SOK] Beste aapning pa 312.5 grader, avstand 1861.0 cm.
+[2025-04-28 22:54:52] [KORRIGERING] Avviker fra mål med -4e+01 grader, korrigerer med omega=-43.0.
+[2025-04-28 22:54:52] [SOK] Beste aapning pa 312.5 grader, avstand 1861.0 cm.
+[2025-04-28 22:54:52] [KORRIGERING] Avviker fra mål med -4e+01 grader, korrigerer med omega=-43.1.
+[2025-04-28 22:54:52] [SOK] Beste aapning pa 312.5 grader, avstand 1861.0 cm.
+[2025-04-28 22:54:52] [KORRIGERING] Avviker fra mål med -5e+01 grader, korrigerer med omega=-45.1.
+[2025-04-28 22:54:52] [SOK] Beste aapning pa 312.5 grader, avstand 1861.0 cm.
+[2025-04-28 22:54:52] [KORRIGERING] Avviker fra mål med -5e+01 grader, korrigerer med omega=-49.0.
+[2025-04-28 22:54:52] [SOK] Beste aapning pa 304.7 grader, avstand 1782.8 cm.
+[2025-04-28 22:54:52] [KORRIGERING] Avviker fra mål med -6e+01 grader, korrigerer med omega=-61.3.
+[2025-04-28 22:54:52] [SOK] Beste aapning pa 304.7 grader, avstand 1782.8 cm.
+[2025-04-28 22:54:52] [KORRIGERING] Avviker fra mål med -6e+01 grader, korrigerer med omega=-63.0.
+[2025-04-28 22:54:52] [SOK] Beste aapning pa 304.7 grader, avstand 1782.8 cm.
+[2025-04-28 22:54:52] [KORRIGERING] Avviker fra mål med -6e+01 grader, korrigerer med omega=-60.9.
+[2025-04-28 22:54:52] [SOK] Beste aapning pa 304.7 grader, avstand 1782.8 cm.
+[2025-04-28 22:54:52] [KORRIGERING] Avviker fra mål med -6e+01 grader, korrigerer med omega=-57.9.
+[2025-04-28 22:54:52] [SOK] Beste aapning pa 302.0 grader, avstand 1782.8 cm.
+[2025-04-28 22:54:52] [KORRIGERING] Avviker fra mål med -6e+01 grader, korrigerer med omega=-60.3.
+[2025-04-28 22:54:52] [SOK] Beste aapning pa 302.0 grader, avstand 1782.8 cm.
+[2025-04-28 22:54:52] [KORRIGERING] Avviker fra mål med -6e+01 grader, korrigerer med omega=-63.0.
+[2025-04-28 22:54:52] [SOK] Beste aapning pa 302.0 grader, avstand 1782.8 cm.
+[2025-04-28 22:54:52] [KORRIGERING] Avviker fra mål med -7e+01 grader, korrigerer med omega=-66.4.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 302.0 grader, avstand 1782.8 cm.
+[2025-04-28 22:54:53] [KORRIGERING] Avviker fra mål med -7e+01 grader, korrigerer med omega=-69.4.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 300.8 grader, avstand 1766.2 cm.
+[2025-04-28 22:54:53] [KORRIGERING] Avviker fra mål med -7e+01 grader, korrigerer med omega=-73.6.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 300.8 grader, avstand 1766.2 cm.
+[2025-04-28 22:54:53] [KORRIGERING] Avviker fra mål med -8e+01 grader, korrigerer med omega=-76.8.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 300.8 grader, avstand 1766.2 cm.
+[2025-04-28 22:54:53] [KORRIGERING] Avviker fra mål med -8e+01 grader, korrigerer med omega=-79.0.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 300.8 grader, avstand 1766.2 cm.
+[2025-04-28 22:54:53] [KORRIGERING] Avviker fra mål med -8e+01 grader, korrigerer med omega=-80.4.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 300.7 grader, avstand 1473.2 cm.
+[2025-04-28 22:54:53] [KORRIGERING] Avviker fra mål med -8e+01 grader, korrigerer med omega=-81.6.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 300.7 grader, avstand 1473.2 cm.
+[2025-04-28 22:54:53] [KORRIGERING] Avviker fra mål med -8e+01 grader, korrigerer med omega=-82.8.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 300.7 grader, avstand 1473.2 cm.
+[2025-04-28 22:54:53] [KORRIGERING] Avviker fra mål med -9e+01 grader, korrigerer med omega=-85.5.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 300.7 grader, avstand 1473.2 cm.
+[2025-04-28 22:54:53] [KORRIGERING] Avviker fra mål med -9e+01 grader, korrigerer med omega=-88.1.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 25.6 grader, avstand 465.5 cm.
+[2025-04-28 22:54:53] [DRIVING] Kjorer rett frem uten korreksjon.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 25.6 grader, avstand 465.5 cm.
+[2025-04-28 22:54:53] [DRIVING] Kjorer rett frem uten korreksjon.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 25.6 grader, avstand 465.5 cm.
+[2025-04-28 22:54:53] [KORRIGERING] Avviker fra mål med -1e+01 grader, korrigerer med omega=-12.6.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 25.6 grader, avstand 465.5 cm.
+[2025-04-28 22:54:53] [KORRIGERING] Avviker fra mål med -1e+01 grader, korrigerer med omega=-13.3.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 18.3 grader, avstand 449.2 cm.
+[2025-04-28 22:54:53] [KORRIGERING] Avviker fra mål med -2e+01 grader, korrigerer med omega=-18.0.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 18.3 grader, avstand 449.2 cm.
+[2025-04-28 22:54:53] [KORRIGERING] Avviker fra mål med -1e+01 grader, korrigerer med omega=-14.5.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 18.3 grader, avstand 449.2 cm.
+[2025-04-28 22:54:53] [KORRIGERING] Avviker fra mål med -1e+01 grader, korrigerer med omega=-12.7.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 8.4 grader, avstand 442.0 cm.
+[2025-04-28 22:54:53] [KORRIGERING] Avviker fra mål med -2e+01 grader, korrigerer med omega=-23.4.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 8.4 grader, avstand 442.0 cm.
+[2025-04-28 22:54:53] [KORRIGERING] Avviker fra mål med -3e+01 grader, korrigerer med omega=-25.6.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 8.4 grader, avstand 442.0 cm.
+[2025-04-28 22:54:53] [KORRIGERING] Avviker fra mål med -3e+01 grader, korrigerer med omega=-28.1.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 8.4 grader, avstand 442.0 cm.
+[2025-04-28 22:54:53] [KORRIGERING] Avviker fra mål med -3e+01 grader, korrigerer med omega=-30.3.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 15.8 grader, avstand 443.0 cm.
+[2025-04-28 22:54:53] [KORRIGERING] Avviker fra mål med -3e+01 grader, korrigerer med omega=-25.2.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 15.8 grader, avstand 443.0 cm.
+[2025-04-28 22:54:53] [KORRIGERING] Avviker fra mål med -3e+01 grader, korrigerer med omega=-26.0.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 15.8 grader, avstand 443.0 cm.
+[2025-04-28 22:54:53] [KORRIGERING] Avviker fra mål med -3e+01 grader, korrigerer med omega=-26.6.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 15.8 grader, avstand 443.0 cm.
+[2025-04-28 22:54:53] [KORRIGERING] Avviker fra mål med -3e+01 grader, korrigerer med omega=-26.9.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 6.6 grader, avstand 439.8 cm.
+[2025-04-28 22:54:53] [KORRIGERING] Avviker fra mål med -4e+01 grader, korrigerer med omega=-36.7.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 6.6 grader, avstand 439.8 cm.
+[2025-04-28 22:54:53] [KORRIGERING] Avviker fra mål med -4e+01 grader, korrigerer med omega=-37.3.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 6.6 grader, avstand 439.8 cm.
+[2025-04-28 22:54:53] [KORRIGERING] Avviker fra mål med -4e+01 grader, korrigerer med omega=-38.1.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 6.6 grader, avstand 439.8 cm.
+[2025-04-28 22:54:53] [KORRIGERING] Avviker fra mål med -4e+01 grader, korrigerer med omega=-39.3.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 3.2 grader, avstand 431.0 cm.
+[2025-04-28 22:54:53] [KORRIGERING] Avviker fra mål med -4e+01 grader, korrigerer med omega=-44.4.
+[2025-04-28 22:54:53] [SOK] Beste aapning pa 3.2 grader, avstand 431.0 cm.
+[2025-04-28 22:54:53] [KORRIGERING] Avviker fra mål med -5e+01 grader, korrigerer med omega=-46.5.
+[2025-04-28 22:54:54] [SOK] Beste aapning pa 3.2 grader, avstand 431.0 cm.
+[2025-04-28 22:54:54] [KORRIGERING] Avviker fra mål med -5e+01 grader, korrigerer med omega=-48.5.
+[2025-04-28 22:54:54] [SOK] Beste aapning pa 3.2 grader, avstand 431.0 cm.
+[2025-04-28 22:54:54] [KORRIGERING] Avviker fra mål med -5e+01 grader, korrigerer med omega=-50.5.
+[2025-04-28 22:54:54] [SOK] Beste aapning pa 0.0 grader, avstand 421.8 cm.
+[2025-04-28 22:54:54] [KORRIGERING] Avviker fra mål med -6e+01 grader, korrigerer med omega=-55.5.
+[2025-04-28 22:54:54] [SOK] Beste aapning pa 0.0 grader, avstand 421.8 cm.
+[2025-04-28 22:54:54] [KORRIGERING] Avviker fra mål med -6e+01 grader, korrigerer med omega=-56.9.
+[2025-04-28 22:54:54] [SOK] Beste aapning pa 0.0 grader, avstand 421.8 cm.
+[2025-04-28 22:54:54] [KORRIGERING] Avviker fra mål med -6e+01 grader, korrigerer med omega=-58.6.
+[2025-04-28 22:54:54] [SOK] Beste aapning pa 0.0 grader, avstand 421.8 cm.
+[2025-04-28 22:54:54] [KORRIGERING] Avviker fra mål med -6e+01 grader, korrigerer med omega=-60.0.
+[2025-04-28 22:54:54] [SOK] Beste aapning pa 345.7 grader, avstand 397.8 cm.
+[2025-04-28 22:54:54] [KORRIGERING] Avviker fra mål med -8e+01 grader, korrigerer med omega=-76.5.
+[2025-04-28 22:54:54] [SOK] Beste aapning pa 345.7 grader, avstand 397.8 cm.
+[2025-04-28 22:54:54] [KORRIGERING] Avviker fra mål med -8e+01 grader, korrigerer med omega=-78.9.
+[2025-04-28 22:54:54] [SOK] Beste aapning pa 345.7 grader, avstand 397.8 cm.
+[2025-04-28 22:54:54] [KORRIGERING] Avviker fra mål med -8e+01 grader, korrigerer med omega=-82.1.
+[2025-04-28 22:54:54] [SOK] Beste aapning pa 345.7 grader, avstand 397.8 cm.
+[2025-04-28 22:54:54] [KORRIGERING] Avviker fra mål med -8e+01 grader, korrigerer med omega=-84.8.
+[2025-04-28 22:54:54] [SOK] Beste aapning pa 334.5 grader, avstand 386.5 cm.
+[2025-04-28 22:54:54] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:54] [SOK] Beste aapning pa 334.5 grader, avstand 386.5 cm.
+[2025-04-28 22:54:54] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:54] [SOK] Beste aapning pa 334.5 grader, avstand 386.5 cm.
+[2025-04-28 22:54:54] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:54] [SOK] Beste aapning pa 334.5 grader, avstand 386.5 cm.
+[2025-04-28 22:54:54] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:54] [SOK] Beste aapning pa 59.6 grader, avstand 430.2 cm.
+[2025-04-28 22:54:54] [KORRIGERING] Avviker fra mål med -3e+01 grader, korrigerer med omega=-28.4.
+[2025-04-28 22:54:54] [SOK] Beste aapning pa 59.6 grader, avstand 430.2 cm.
+[2025-04-28 22:54:54] [KORRIGERING] Avviker fra mål med -3e+01 grader, korrigerer med omega=-32.9.
+[2025-04-28 22:54:54] [SOK] Beste aapning pa 59.6 grader, avstand 430.2 cm.
+[2025-04-28 22:54:54] [KORRIGERING] Avviker fra mål med -4e+01 grader, korrigerer med omega=-36.7.
+[2025-04-28 22:54:54] [SOK] Beste aapning pa 56.2 grader, avstand 478.0 cm.
+[2025-04-28 22:54:54] [KORRIGERING] Avviker fra mål med -4e+01 grader, korrigerer med omega=-44.0.
+[2025-04-28 22:54:54] [SOK] Beste aapning pa 56.2 grader, avstand 478.0 cm.
+[2025-04-28 22:54:54] [KORRIGERING] Avviker fra mål med -5e+01 grader, korrigerer med omega=-47.4.
+[2025-04-28 22:54:54] [TILBAKE TIL IDLE] Kjoring mot aapning ferdig. Heading nå: 104.5 grader.
+[2025-04-28 22:54:54] [HINDRING] Starter sok etter aapning.
+[2025-04-28 22:54:54] [SOK] Beste aapning pa 42.4 grader, avstand 473.8 cm.
+[2025-04-28 22:54:54] [HINDRING] Aapning funnet, starter kjore mot aapning.
+[2025-04-28 22:54:54] [SOK] Beste aapning pa 42.4 grader, avstand 473.8 cm.
+[2025-04-28 22:54:54] [KORRIGERING] Avviker fra mål med -6e+01 grader, korrigerer med omega=-61.3.
+[2025-04-28 22:54:54] [SOK] Beste aapning pa 42.4 grader, avstand 473.8 cm.
+[2025-04-28 22:54:54] [KORRIGERING] Avviker fra mål med -6e+01 grader, korrigerer med omega=-60.5.
+[2025-04-28 22:54:54] [SOK] Beste aapning pa 42.4 grader, avstand 473.8 cm.
+[2025-04-28 22:54:54] [KORRIGERING] Avviker fra mål med -6e+01 grader, korrigerer med omega=-61.0.
+[2025-04-28 22:54:54] [SOK] Beste aapning pa 38.8 grader, avstand 473.2 cm.
+[2025-04-28 22:54:54] [KORRIGERING] Avviker fra mål med -7e+01 grader, korrigerer med omega=-68.1.
+[2025-04-28 22:54:54] [SOK] Beste aapning pa 38.8 grader, avstand 473.2 cm.
+[2025-04-28 22:54:54] [KORRIGERING] Avviker fra mål med -7e+01 grader, korrigerer med omega=-72.5.
+[2025-04-28 22:54:54] [SOK] Beste aapning pa 38.8 grader, avstand 473.2 cm.
+[2025-04-28 22:54:54] [KORRIGERING] Avviker fra mål med -8e+01 grader, korrigerer med omega=-76.9.
+[2025-04-28 22:54:54] [SOK] Beste aapning pa 38.8 grader, avstand 473.2 cm.
+[2025-04-28 22:54:54] [KORRIGERING] Avviker fra mål med -8e+01 grader, korrigerer med omega=-81.0.
+[2025-04-28 22:54:54] [SOK] Beste aapning pa 39.3 grader, avstand 454.2 cm.
+[2025-04-28 22:54:54] [KORRIGERING] Avviker fra mål med -8e+01 grader, korrigerer med omega=-84.2.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 39.3 grader, avstand 454.2 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med -9e+01 grader, korrigerer med omega=-87.2.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 39.3 grader, avstand 454.2 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med -9e+01 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 39.3 grader, avstand 454.2 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med -9e+01 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 59.8 grader, avstand 470.5 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med -8e+01 grader, korrigerer med omega=-75.8.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 59.8 grader, avstand 470.5 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med -8e+01 grader, korrigerer med omega=-79.9.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 59.8 grader, avstand 470.5 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med -8e+01 grader, korrigerer med omega=-84.7.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 59.8 grader, avstand 470.5 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med -9e+01 grader, korrigerer med omega=-89.4.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 57.9 grader, avstand 551.8 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 57.9 grader, avstand 551.8 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 57.9 grader, avstand 551.8 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 57.9 grader, avstand 551.8 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 48.1 grader, avstand 1109.0 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 48.1 grader, avstand 1109.0 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 48.1 grader, avstand 1109.0 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 57.5 grader, avstand 1443.2 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 57.5 grader, avstand 1443.2 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 57.5 grader, avstand 1443.2 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 57.5 grader, avstand 1443.2 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 40.3 grader, avstand 1726.2 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 40.3 grader, avstand 1726.2 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 40.3 grader, avstand 1726.2 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 40.3 grader, avstand 1726.2 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 31.1 grader, avstand 1426.0 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 31.1 grader, avstand 1426.0 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 31.1 grader, avstand 1426.0 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 31.1 grader, avstand 1426.0 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 59.7 grader, avstand 1904.2 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 59.7 grader, avstand 1904.2 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 59.7 grader, avstand 1904.2 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 59.7 grader, avstand 1904.2 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:55] [SOK] Beste aapning pa 59.5 grader, avstand 1902.5 cm.
+[2025-04-28 22:54:55] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:56] [SOK] Beste aapning pa 59.5 grader, avstand 1902.5 cm.
+[2025-04-28 22:54:56] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:56] [SOK] Beste aapning pa 59.5 grader, avstand 1902.5 cm.
+[2025-04-28 22:54:56] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:56] [SOK] Beste aapning pa 59.5 grader, avstand 1902.5 cm.
+[2025-04-28 22:54:56] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:56] [SOK] Beste aapning pa 58.5 grader, avstand 1886.8 cm.
+[2025-04-28 22:54:56] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:56] [SOK] Beste aapning pa 58.5 grader, avstand 1886.8 cm.
+[2025-04-28 22:54:56] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:56] [SOK] Beste aapning pa 58.5 grader, avstand 1886.8 cm.
+[2025-04-28 22:54:56] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:56] [SOK] Beste aapning pa 58.5 grader, avstand 1886.8 cm.
+[2025-04-28 22:54:56] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:56] [SOK] Beste aapning pa 58.9 grader, avstand 1895.0 cm.
+[2025-04-28 22:54:56] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:56] [SOK] Beste aapning pa 58.9 grader, avstand 1895.0 cm.
+[2025-04-28 22:54:56] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:56] [SOK] Beste aapning pa 58.9 grader, avstand 1895.0 cm.
+[2025-04-28 22:54:56] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:56] [SOK] Beste aapning pa 56.5 grader, avstand 2055.8 cm.
+[2025-04-28 22:54:56] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:56] [SOK] Beste aapning pa 56.5 grader, avstand 2055.8 cm.
+[2025-04-28 22:54:56] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:56] [SOK] Beste aapning pa 56.5 grader, avstand 2055.8 cm.
+[2025-04-28 22:54:56] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:56] [SOK] Beste aapning pa 56.5 grader, avstand 2055.8 cm.
+[2025-04-28 22:54:56] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:56] [SOK] Beste aapning pa 42.8 grader, avstand 2055.5 cm.
+[2025-04-28 22:54:56] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:56] [SOK] Beste aapning pa 42.8 grader, avstand 2055.5 cm.
+[2025-04-28 22:54:56] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:56] [SOK] Beste aapning pa 42.8 grader, avstand 2055.5 cm.
+[2025-04-28 22:54:56] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:56] [SOK] Beste aapning pa 42.8 grader, avstand 2055.5 cm.
+[2025-04-28 22:54:56] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:56] [SOK] Beste aapning pa 49.8 grader, avstand 2043.2 cm.
+[2025-04-28 22:54:56] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:56] [SOK] Beste aapning pa 49.8 grader, avstand 2043.2 cm.
+[2025-04-28 22:54:56] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:56] [SOK] Beste aapning pa 49.8 grader, avstand 2043.2 cm.
+[2025-04-28 22:54:56] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:56] [TILBAKE TIL IDLE] Kjoring mot aapning ferdig. Heading nå: 226.4 grader.
+[2025-04-28 22:54:58] [HINDRING] Starter sok etter aapning.
+[2025-04-28 22:54:58] [SOK] Beste aapning pa 50.5 grader, avstand 1825.0 cm.
+[2025-04-28 22:54:58] [HINDRING] Aapning funnet, starter kjore mot aapning.
+[2025-04-28 22:54:58] [SOK] Beste aapning pa 50.5 grader, avstand 1825.0 cm.
+[2025-04-28 22:54:58] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:58] [SOK] Beste aapning pa 50.3 grader, avstand 1813.5 cm.
+[2025-04-28 22:54:58] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:58] [SOK] Beste aapning pa 50.3 grader, avstand 1813.5 cm.
+[2025-04-28 22:54:58] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:58] [SOK] Beste aapning pa 50.3 grader, avstand 1813.5 cm.
+[2025-04-28 22:54:58] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:58] [SOK] Beste aapning pa 50.3 grader, avstand 1813.5 cm.
+[2025-04-28 22:54:58] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:58] [SOK] Beste aapning pa 52.0 grader, avstand 1802.5 cm.
+[2025-04-28 22:54:58] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:58] [SOK] Beste aapning pa 52.0 grader, avstand 1802.5 cm.
+[2025-04-28 22:54:58] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:58] [SOK] Beste aapning pa 52.0 grader, avstand 1802.5 cm.
+[2025-04-28 22:54:58] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:58] [SOK] Beste aapning pa 52.0 grader, avstand 1802.5 cm.
+[2025-04-28 22:54:58] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:58] [SOK] Beste aapning pa 58.8 grader, avstand 1755.0 cm.
+[2025-04-28 22:54:58] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:58] [SOK] Beste aapning pa 58.8 grader, avstand 1755.0 cm.
+[2025-04-28 22:54:58] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:58] [SOK] Beste aapning pa 58.8 grader, avstand 1755.0 cm.
+[2025-04-28 22:54:58] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:58] [SOK] Beste aapning pa 58.8 grader, avstand 1755.0 cm.
+[2025-04-28 22:54:58] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:58] [SOK] Beste aapning pa 59.6 grader, avstand 1771.5 cm.
+[2025-04-28 22:54:58] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:58] [SOK] Beste aapning pa 59.6 grader, avstand 1771.5 cm.
+[2025-04-28 22:54:58] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:58] [SOK] Beste aapning pa 59.6 grader, avstand 1771.5 cm.
+[2025-04-28 22:54:58] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:58] [SOK] Beste aapning pa 59.6 grader, avstand 1771.5 cm.
+[2025-04-28 22:54:58] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:58] [SOK] Beste aapning pa 45.6 grader, avstand 1795.8 cm.
+[2025-04-28 22:54:58] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:58] [SOK] Beste aapning pa 45.6 grader, avstand 1795.8 cm.
+[2025-04-28 22:54:58] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 45.6 grader, avstand 1795.8 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 42.8 grader, avstand 1793.0 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 42.8 grader, avstand 1793.0 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 42.8 grader, avstand 1793.0 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 42.8 grader, avstand 1793.0 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 42.8 grader, avstand 1793.0 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 58.0 grader, avstand 1789.0 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 58.0 grader, avstand 1789.0 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 58.0 grader, avstand 1789.0 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 5.1 grader, avstand 1457.0 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 5.1 grader, avstand 1457.0 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 5.1 grader, avstand 1457.0 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 5.1 grader, avstand 1457.0 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 22.3 grader, avstand 1190.8 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 22.3 grader, avstand 1190.8 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 22.3 grader, avstand 1190.8 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 22.3 grader, avstand 1190.8 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 6.3 grader, avstand 1322.5 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 6.3 grader, avstand 1322.5 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 6.3 grader, avstand 1322.5 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 6.3 grader, avstand 1322.5 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 12.6 grader, avstand 1050.0 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 12.6 grader, avstand 1050.0 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 12.6 grader, avstand 1050.0 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 12.6 grader, avstand 1050.0 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 31.6 grader, avstand 1128.0 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 31.6 grader, avstand 1128.0 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 31.6 grader, avstand 1128.0 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 31.6 grader, avstand 1128.0 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:54:59] [SOK] Beste aapning pa 18.3 grader, avstand 868.5 cm.
+[2025-04-28 22:54:59] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:00] [SOK] Beste aapning pa 18.3 grader, avstand 868.5 cm.
+[2025-04-28 22:55:00] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:00] [SOK] Beste aapning pa 18.3 grader, avstand 868.5 cm.
+[2025-04-28 22:55:00] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:00] [SOK] Beste aapning pa 18.3 grader, avstand 868.5 cm.
+[2025-04-28 22:55:00] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:00] [SOK] Beste aapning pa 19.2 grader, avstand 1041.5 cm.
+[2025-04-28 22:55:00] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:00] [SOK] Beste aapning pa 19.2 grader, avstand 1041.5 cm.
+[2025-04-28 22:55:00] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:00] [SOK] Beste aapning pa 19.2 grader, avstand 1041.5 cm.
+[2025-04-28 22:55:00] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:00] [SOK] Beste aapning pa 19.2 grader, avstand 1041.5 cm.
+[2025-04-28 22:55:00] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:00] [SOK] Beste aapning pa 33.2 grader, avstand 1327.0 cm.
+[2025-04-28 22:55:00] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:00] [SOK] Beste aapning pa 33.2 grader, avstand 1327.0 cm.
+[2025-04-28 22:55:00] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:00] [SOK] Beste aapning pa 33.2 grader, avstand 1327.0 cm.
+[2025-04-28 22:55:00] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:00] [SOK] Beste aapning pa 0.0 grader, avstand 835.8 cm.
+[2025-04-28 22:55:00] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:00] [TILBAKE TIL IDLE] Kjoring mot aapning ferdig. Heading nå: 193.0 grader.
+[2025-04-28 22:55:00] [HINDRING] Starter sok etter aapning.
+[2025-04-28 22:55:00] [SOK] Beste aapning pa 0.0 grader, avstand 835.8 cm.
+[2025-04-28 22:55:00] [HINDRING] Aapning funnet, starter kjore mot aapning.
+[2025-04-28 22:55:00] [SOK] Beste aapning pa 46.0 grader, avstand 1146.0 cm.
+[2025-04-28 22:55:00] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:00] [SOK] Beste aapning pa 46.0 grader, avstand 1146.0 cm.
+[2025-04-28 22:55:00] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:00] [SOK] Beste aapning pa 46.0 grader, avstand 1146.0 cm.
+[2025-04-28 22:55:00] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:00] [SOK] Beste aapning pa 46.0 grader, avstand 1146.0 cm.
+[2025-04-28 22:55:00] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:00] [SOK] Beste aapning pa 56.3 grader, avstand 1353.8 cm.
+[2025-04-28 22:55:00] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:00] [SOK] Beste aapning pa 56.3 grader, avstand 1353.8 cm.
+[2025-04-28 22:55:00] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:00] [SOK] Beste aapning pa 56.3 grader, avstand 1353.8 cm.
+[2025-04-28 22:55:00] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:00] [SOK] Beste aapning pa 56.3 grader, avstand 1353.8 cm.
+[2025-04-28 22:55:00] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:00] [SOK] Beste aapning pa 47.2 grader, avstand 1022.0 cm.
+[2025-04-28 22:55:00] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:00] [SOK] Beste aapning pa 47.2 grader, avstand 1022.0 cm.
+[2025-04-28 22:55:00] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:00] [SOK] Beste aapning pa 47.2 grader, avstand 1022.0 cm.
+[2025-04-28 22:55:00] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:00] [SOK] Beste aapning pa 47.2 grader, avstand 1022.0 cm.
+[2025-04-28 22:55:00] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:00] [SOK] Beste aapning pa 30.4 grader, avstand 1021.0 cm.
+[2025-04-28 22:55:00] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:00] [SOK] Beste aapning pa 30.4 grader, avstand 1021.0 cm.
+[2025-04-28 22:55:00] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:00] [SOK] Beste aapning pa 30.4 grader, avstand 1021.0 cm.
+[2025-04-28 22:55:00] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:00] [SOK] Beste aapning pa 48.4 grader, avstand 1347.5 cm.
+[2025-04-28 22:55:00] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 48.4 grader, avstand 1347.5 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 48.4 grader, avstand 1347.5 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 48.4 grader, avstand 1347.5 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 48.4 grader, avstand 1347.5 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 42.2 grader, avstand 1318.2 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 42.2 grader, avstand 1318.2 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 42.2 grader, avstand 1318.2 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 25.5 grader, avstand 1337.5 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 25.5 grader, avstand 1337.5 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 25.5 grader, avstand 1337.5 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 25.5 grader, avstand 1337.5 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 25.5 grader, avstand 1337.5 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 6.2 grader, avstand 1404.5 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 6.2 grader, avstand 1404.5 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 6.2 grader, avstand 1404.5 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 39.0 grader, avstand 1322.8 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 39.0 grader, avstand 1322.8 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 39.0 grader, avstand 1322.8 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 39.0 grader, avstand 1322.8 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 3.2 grader, avstand 1467.0 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 3.2 grader, avstand 1467.0 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 3.2 grader, avstand 1467.0 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 3.2 grader, avstand 1467.0 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 54.7 grader, avstand 1325.8 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 54.7 grader, avstand 1325.8 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 54.7 grader, avstand 1325.8 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 54.7 grader, avstand 1325.8 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 7.8 grader, avstand 1456.8 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 7.8 grader, avstand 1456.8 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:01] [SOK] Beste aapning pa 7.8 grader, avstand 1456.8 cm.
+[2025-04-28 22:55:01] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:02] [SOK] Beste aapning pa 7.8 grader, avstand 1456.8 cm.
+[2025-04-28 22:55:02] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:02] [SOK] Beste aapning pa 22.6 grader, avstand 772.0 cm.
+[2025-04-28 22:55:02] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:02] [SOK] Beste aapning pa 22.6 grader, avstand 772.0 cm.
+[2025-04-28 22:55:02] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:02] [SOK] Beste aapning pa 22.6 grader, avstand 772.0 cm.
+[2025-04-28 22:55:02] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:02] [SOK] Beste aapning pa 38.5 grader, avstand 1035.2 cm.
+[2025-04-28 22:55:02] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:02] [SOK] Beste aapning pa 38.5 grader, avstand 1035.2 cm.
+[2025-04-28 22:55:02] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:02] [SOK] Beste aapning pa 38.5 grader, avstand 1035.2 cm.
+[2025-04-28 22:55:02] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:02] [SOK] Beste aapning pa 38.5 grader, avstand 1035.2 cm.
+[2025-04-28 22:55:02] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:02] [SOK] Beste aapning pa 42.0 grader, avstand 1246.5 cm.
+[2025-04-28 22:55:02] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:02] [SOK] Beste aapning pa 42.0 grader, avstand 1246.5 cm.
+[2025-04-28 22:55:02] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:02] [SOK] Beste aapning pa 42.0 grader, avstand 1246.5 cm.
+[2025-04-28 22:55:02] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:02] [SOK] Beste aapning pa 42.0 grader, avstand 1246.5 cm.
+[2025-04-28 22:55:02] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:02] [SOK] Beste aapning pa 338.7 grader, avstand 1434.8 cm.
+[2025-04-28 22:55:02] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:02] [SOK] Beste aapning pa 338.7 grader, avstand 1434.8 cm.
+[2025-04-28 22:55:02] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:02] [TILBAKE TIL IDLE] Kjoring mot aapning ferdig. Heading nå: 234.4 grader.
+[2025-04-28 22:55:10] [HINDRING] Starter sok etter aapning.
+[2025-04-28 22:55:10] [SOK] Beste aapning pa 59.7 grader, avstand 1153.2 cm.
+[2025-04-28 22:55:10] [HINDRING] Aapning funnet, starter kjore mot aapning.
+[2025-04-28 22:55:10] [SOK] Beste aapning pa 59.7 grader, avstand 1153.2 cm.
+[2025-04-28 22:55:10] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 59.7 grader, avstand 1153.2 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 59.5 grader, avstand 1141.0 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 59.5 grader, avstand 1141.0 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 59.5 grader, avstand 1141.0 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 59.3 grader, avstand 1096.8 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 59.3 grader, avstand 1096.8 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 59.3 grader, avstand 1096.8 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 59.3 grader, avstand 1096.8 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 59.3 grader, avstand 1096.8 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 336.7 grader, avstand 1026.2 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 336.7 grader, avstand 1026.2 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 336.7 grader, avstand 1026.2 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med 9e+01 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 336.7 grader, avstand 1026.2 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med 9e+01 grader, korrigerer med omega=87.9.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 57.8 grader, avstand 1005.8 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 57.8 grader, avstand 1005.8 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 57.8 grader, avstand 1005.8 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 59.1 grader, avstand 1115.8 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 59.1 grader, avstand 1115.8 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 59.1 grader, avstand 1115.8 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 59.1 grader, avstand 1115.8 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 341.0 grader, avstand 1030.0 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 341.0 grader, avstand 1030.0 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 341.0 grader, avstand 1030.0 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 341.0 grader, avstand 1030.0 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 337.5 grader, avstand 1001.0 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 337.5 grader, avstand 1001.0 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 337.5 grader, avstand 1001.0 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 337.5 grader, avstand 1001.0 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 342.0 grader, avstand 1015.5 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 342.0 grader, avstand 1015.5 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:11] [SOK] Beste aapning pa 342.0 grader, avstand 1015.5 cm.
+[2025-04-28 22:55:11] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:12] [SOK] Beste aapning pa 342.0 grader, avstand 1015.5 cm.
+[2025-04-28 22:55:12] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:12] [SOK] Beste aapning pa 59.0 grader, avstand 758.2 cm.
+[2025-04-28 22:55:12] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:12] [SOK] Beste aapning pa 59.0 grader, avstand 758.2 cm.
+[2025-04-28 22:55:12] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:12] [SOK] Beste aapning pa 59.0 grader, avstand 758.2 cm.
+[2025-04-28 22:55:12] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:12] [SOK] Beste aapning pa 59.0 grader, avstand 758.2 cm.
+[2025-04-28 22:55:12] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:12] [SOK] Beste aapning pa 357.5 grader, avstand 1015.5 cm.
+[2025-04-28 22:55:12] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:12] [SOK] Beste aapning pa 357.5 grader, avstand 1015.5 cm.
+[2025-04-28 22:55:12] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:12] [SOK] Beste aapning pa 357.5 grader, avstand 1015.5 cm.
+[2025-04-28 22:55:12] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:12] [SOK] Beste aapning pa 8.7 grader, avstand 1000.0 cm.
+[2025-04-28 22:55:12] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:12] [SOK] Beste aapning pa 8.7 grader, avstand 1000.0 cm.
+[2025-04-28 22:55:12] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:12] [SOK] Beste aapning pa 8.7 grader, avstand 1000.0 cm.
+[2025-04-28 22:55:12] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:12] [SOK] Beste aapning pa 8.7 grader, avstand 1000.0 cm.
+[2025-04-28 22:55:12] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:12] [SOK] Beste aapning pa 6.7 grader, avstand 997.8 cm.
+[2025-04-28 22:55:12] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:12] [SOK] Beste aapning pa 6.7 grader, avstand 997.8 cm.
+[2025-04-28 22:55:12] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:12] [SOK] Beste aapning pa 6.7 grader, avstand 997.8 cm.
+[2025-04-28 22:55:12] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:12] [SOK] Beste aapning pa 6.7 grader, avstand 997.8 cm.
+[2025-04-28 22:55:12] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:12] [SOK] Beste aapning pa 333.8 grader, avstand 699.8 cm.
+[2025-04-28 22:55:12] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:12] [SOK] Beste aapning pa 333.8 grader, avstand 699.8 cm.
+[2025-04-28 22:55:12] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:12] [SOK] Beste aapning pa 333.8 grader, avstand 699.8 cm.
+[2025-04-28 22:55:12] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:12] [SOK] Beste aapning pa 333.8 grader, avstand 699.8 cm.
+[2025-04-28 22:55:12] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:12] [SOK] Beste aapning pa 31.6 grader, avstand 989.8 cm.
+[2025-04-28 22:55:12] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:12] [SOK] Beste aapning pa 31.6 grader, avstand 989.8 cm.
+[2025-04-28 22:55:12] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:12] [SOK] Beste aapning pa 31.6 grader, avstand 989.8 cm.
+[2025-04-28 22:55:12] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:12] [SOK] Beste aapning pa 31.6 grader, avstand 989.8 cm.
+[2025-04-28 22:55:12] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:12] [SOK] Beste aapning pa 23.7 grader, avstand 980.2 cm.
+[2025-04-28 22:55:12] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:12] [SOK] Beste aapning pa 23.7 grader, avstand 980.2 cm.
+[2025-04-28 22:55:12] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:12] [SOK] Beste aapning pa 23.7 grader, avstand 980.2 cm.
+[2025-04-28 22:55:12] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:12] [SOK] Beste aapning pa 23.7 grader, avstand 980.2 cm.
+[2025-04-28 22:55:12] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:12] [TILBAKE TIL IDLE] Kjoring mot aapning ferdig. Heading nå: 197.1 grader.
+[2025-04-28 22:55:12] [HINDRING] Starter sok etter aapning.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 29.8 grader, avstand 976.5 cm.
+[2025-04-28 22:55:13] [HINDRING] Aapning funnet, starter kjore mot aapning.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 29.8 grader, avstand 976.5 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 15.1 grader, avstand 968.0 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 15.1 grader, avstand 968.0 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 15.1 grader, avstand 968.0 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 15.1 grader, avstand 968.0 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 3.2 grader, avstand 963.0 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 3.2 grader, avstand 963.0 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 3.2 grader, avstand 963.0 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 3.2 grader, avstand 963.0 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 330.4 grader, avstand 339.8 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 330.4 grader, avstand 339.8 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 330.4 grader, avstand 339.8 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 330.4 grader, avstand 339.8 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 4.9 grader, avstand 947.0 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 4.9 grader, avstand 947.0 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 4.9 grader, avstand 947.0 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 18.4 grader, avstand 924.8 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 18.4 grader, avstand 924.8 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 18.4 grader, avstand 924.8 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 18.4 grader, avstand 924.8 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 304.4 grader, avstand 1223.0 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 304.4 grader, avstand 1223.0 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 304.4 grader, avstand 1223.0 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 304.4 grader, avstand 1223.0 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 42.7 grader, avstand 904.2 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 42.7 grader, avstand 904.2 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 42.7 grader, avstand 904.2 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 42.7 grader, avstand 904.2 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:13] [SOK] Beste aapning pa 311.9 grader, avstand 1218.2 cm.
+[2025-04-28 22:55:13] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 311.9 grader, avstand 1218.2 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 311.9 grader, avstand 1218.2 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 311.9 grader, avstand 1218.2 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 312.5 grader, avstand 1217.0 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med 1e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 312.5 grader, avstand 1217.0 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 312.5 grader, avstand 1217.0 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 312.5 grader, avstand 1217.0 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 321.1 grader, avstand 1217.5 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 321.1 grader, avstand 1217.5 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 321.1 grader, avstand 1217.5 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 321.1 grader, avstand 1217.5 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 300.7 grader, avstand 1349.5 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 300.7 grader, avstand 1349.5 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 300.7 grader, avstand 1349.5 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 300.7 grader, avstand 1349.5 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 300.9 grader, avstand 1341.0 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 300.9 grader, avstand 1341.0 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 300.9 grader, avstand 1341.0 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 300.9 grader, avstand 1382.5 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 300.9 grader, avstand 1382.5 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 300.9 grader, avstand 1382.5 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 300.9 grader, avstand 1382.5 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 305.2 grader, avstand 1619.2 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 305.2 grader, avstand 1619.2 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 305.2 grader, avstand 1619.2 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 305.2 grader, avstand 1619.2 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 307.7 grader, avstand 1616.0 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 307.7 grader, avstand 1616.0 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 307.7 grader, avstand 1616.0 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:14] [SOK] Beste aapning pa 307.7 grader, avstand 1616.0 cm.
+[2025-04-28 22:55:14] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:15] [SOK] Beste aapning pa 300.1 grader, avstand 1466.0 cm.
+[2025-04-28 22:55:15] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:15] [TILBAKE TIL IDLE] Kjoring mot aapning ferdig. Heading nå: 128.2 grader.
+[2025-04-28 22:55:16] [HINDRING] Starter sok etter aapning.
+[2025-04-28 22:55:16] [SOK] Beste aapning pa 300.5 grader, avstand 1330.2 cm.
+[2025-04-28 22:55:16] [HINDRING] Aapning funnet, starter kjore mot aapning.
+[2025-04-28 22:55:16] [SOK] Beste aapning pa 300.5 grader, avstand 1330.2 cm.
+[2025-04-28 22:55:16] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:16] [SOK] Beste aapning pa 300.5 grader, avstand 1337.0 cm.
+[2025-04-28 22:55:16] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:16] [SOK] Beste aapning pa 300.5 grader, avstand 1337.0 cm.
+[2025-04-28 22:55:16] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 300.5 grader, avstand 1337.0 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 300.5 grader, avstand 1337.0 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 300.1 grader, avstand 1458.5 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 300.1 grader, avstand 1458.5 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 300.1 grader, avstand 1458.5 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 300.1 grader, avstand 1458.5 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 313.2 grader, avstand 1044.0 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 313.2 grader, avstand 1044.0 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 313.2 grader, avstand 1044.0 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 313.2 grader, avstand 1044.0 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 302.5 grader, avstand 1029.8 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 302.5 grader, avstand 1029.8 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 302.5 grader, avstand 1029.8 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 302.5 grader, avstand 1029.8 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 300.6 grader, avstand 998.5 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 300.6 grader, avstand 998.5 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 300.6 grader, avstand 998.5 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 300.6 grader, avstand 998.5 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 309.5 grader, avstand 1025.2 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 309.5 grader, avstand 1025.2 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 309.5 grader, avstand 1025.2 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 318.6 grader, avstand 1033.0 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 318.6 grader, avstand 1033.0 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 318.6 grader, avstand 1033.0 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 318.6 grader, avstand 1033.0 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 318.6 grader, avstand 1033.0 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 306.4 grader, avstand 1035.5 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 306.4 grader, avstand 1035.5 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 306.4 grader, avstand 1035.5 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 306.4 grader, avstand 1035.5 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:17] [SOK] Beste aapning pa 300.3 grader, avstand 981.0 cm.
+[2025-04-28 22:55:17] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:18] [SOK] Beste aapning pa 300.3 grader, avstand 981.0 cm.
+[2025-04-28 22:55:18] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:18] [SOK] Beste aapning pa 300.3 grader, avstand 981.0 cm.
+[2025-04-28 22:55:18] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:18] [SOK] Beste aapning pa 300.3 grader, avstand 981.0 cm.
+[2025-04-28 22:55:18] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:18] [SOK] Beste aapning pa 300.9 grader, avstand 974.8 cm.
+[2025-04-28 22:55:18] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:18] [SOK] Beste aapning pa 300.9 grader, avstand 974.8 cm.
+[2025-04-28 22:55:18] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:18] [SOK] Beste aapning pa 300.9 grader, avstand 974.8 cm.
+[2025-04-28 22:55:18] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:18] [SOK] Beste aapning pa 305.0 grader, avstand 1018.5 cm.
+[2025-04-28 22:55:18] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:18] [SOK] Beste aapning pa 305.0 grader, avstand 1018.5 cm.
+[2025-04-28 22:55:18] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:18] [SOK] Beste aapning pa 305.0 grader, avstand 1018.5 cm.
+[2025-04-28 22:55:18] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:18] [SOK] Beste aapning pa 305.0 grader, avstand 1018.5 cm.
+[2025-04-28 22:55:18] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:18] [SOK] Beste aapning pa 316.2 grader, avstand 1001.5 cm.
+[2025-04-28 22:55:18] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:18] [SOK] Beste aapning pa 316.2 grader, avstand 1001.5 cm.
+[2025-04-28 22:55:18] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:18] [SOK] Beste aapning pa 316.2 grader, avstand 1001.5 cm.
+[2025-04-28 22:55:18] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:18] [SOK] Beste aapning pa 316.2 grader, avstand 1001.5 cm.
+[2025-04-28 22:55:18] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:18] [SOK] Beste aapning pa 320.5 grader, avstand 1000.8 cm.
+[2025-04-28 22:55:18] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:18] [SOK] Beste aapning pa 320.5 grader, avstand 1000.8 cm.
+[2025-04-28 22:55:18] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:18] [SOK] Beste aapning pa 320.5 grader, avstand 1000.8 cm.
+[2025-04-28 22:55:18] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:18] [SOK] Beste aapning pa 320.5 grader, avstand 1000.8 cm.
+[2025-04-28 22:55:18] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:18] [SOK] Beste aapning pa 304.7 grader, avstand 993.0 cm.
+[2025-04-28 22:55:18] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:18] [SOK] Beste aapning pa 304.7 grader, avstand 993.0 cm.
+[2025-04-28 22:55:18] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:18] [SOK] Beste aapning pa 304.7 grader, avstand 993.0 cm.
+[2025-04-28 22:55:18] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:18] [SOK] Beste aapning pa 304.7 grader, avstand 993.0 cm.
+[2025-04-28 22:55:18] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:18] [SOK] Beste aapning pa 301.1 grader, avstand 967.8 cm.
+[2025-04-28 22:55:18] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:18] [SOK] Beste aapning pa 301.1 grader, avstand 967.8 cm.
+[2025-04-28 22:55:18] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:18] [SOK] Beste aapning pa 301.1 grader, avstand 967.8 cm.
+[2025-04-28 22:55:18] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:18] [SOK] Beste aapning pa 310.1 grader, avstand 1000.2 cm.
+[2025-04-28 22:55:18] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:18] [TILBAKE TIL IDLE] Kjoring mot aapning ferdig. Heading nå: 115.1 grader.
+[2025-04-28 22:55:18] [HINDRING] Starter sok etter aapning.
+[2025-04-28 22:55:18] [SOK] Beste aapning pa 310.1 grader, avstand 1000.2 cm.
+[2025-04-28 22:55:18] [HINDRING] Aapning funnet, starter kjore mot aapning.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 300.8 grader, avstand 1237.2 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 300.8 grader, avstand 1237.2 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 300.8 grader, avstand 1237.2 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 300.8 grader, avstand 1237.2 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 300.3 grader, avstand 1252.5 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 300.3 grader, avstand 1252.5 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 300.3 grader, avstand 1252.5 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 300.3 grader, avstand 1252.5 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 306.8 grader, avstand 973.2 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 306.8 grader, avstand 973.2 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 306.8 grader, avstand 973.2 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 306.8 grader, avstand 973.2 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 304.1 grader, avstand 977.0 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 304.1 grader, avstand 977.0 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 304.1 grader, avstand 977.0 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 304.1 grader, avstand 977.0 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 320.1 grader, avstand 975.2 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 320.1 grader, avstand 975.2 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 320.1 grader, avstand 975.2 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 320.1 grader, avstand 975.2 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 311.7 grader, avstand 960.2 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 311.7 grader, avstand 960.2 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 311.7 grader, avstand 960.2 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 311.7 grader, avstand 960.2 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 300.4 grader, avstand 928.5 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 300.4 grader, avstand 928.5 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 300.4 grader, avstand 928.5 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 300.4 grader, avstand 928.5 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 314.1 grader, avstand 876.2 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 314.1 grader, avstand 876.2 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:19] [SOK] Beste aapning pa 314.1 grader, avstand 876.2 cm.
+[2025-04-28 22:55:19] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 300.9 grader, avstand 899.2 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 300.9 grader, avstand 899.2 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 300.9 grader, avstand 899.2 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 300.9 grader, avstand 899.2 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 306.8 grader, avstand 942.2 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 306.8 grader, avstand 942.2 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 306.8 grader, avstand 942.2 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 306.8 grader, avstand 942.2 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 315.9 grader, avstand 938.8 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 315.9 grader, avstand 938.8 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 315.9 grader, avstand 938.8 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 315.9 grader, avstand 938.8 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 308.9 grader, avstand 953.8 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 308.9 grader, avstand 953.8 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 308.9 grader, avstand 953.8 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 308.9 grader, avstand 953.8 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 300.2 grader, avstand 895.2 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 300.2 grader, avstand 895.2 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 300.2 grader, avstand 895.2 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 300.2 grader, avstand 895.2 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 300.8 grader, avstand 863.5 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 300.8 grader, avstand 863.5 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 300.8 grader, avstand 863.5 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 300.8 grader, avstand 863.5 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 305.1 grader, avstand 929.0 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 305.1 grader, avstand 929.0 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 305.1 grader, avstand 929.0 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 313.8 grader, avstand 928.2 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:20] [SOK] Beste aapning pa 313.8 grader, avstand 928.2 cm.
+[2025-04-28 22:55:20] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:20] [TILBAKE TIL IDLE] Kjoring mot aapning ferdig. Heading nå: 116.9 grader.
+[2025-04-28 22:55:21] [HINDRING] Starter sok etter aapning.
+[2025-04-28 22:55:21] [SOK] Beste aapning pa 300.7 grader, avstand 917.8 cm.
+[2025-04-28 22:55:21] [HINDRING] Aapning funnet, starter kjore mot aapning.
+[2025-04-28 22:55:21] [SOK] Beste aapning pa 300.7 grader, avstand 917.8 cm.
+[2025-04-28 22:55:21] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:21] [SOK] Beste aapning pa 300.7 grader, avstand 917.8 cm.
+[2025-04-28 22:55:21] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:21] [SOK] Beste aapning pa 300.7 grader, avstand 917.8 cm.
+[2025-04-28 22:55:21] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:21] [SOK] Beste aapning pa 300.3 grader, avstand 881.0 cm.
+[2025-04-28 22:55:21] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:21] [SOK] Beste aapning pa 300.3 grader, avstand 881.0 cm.
+[2025-04-28 22:55:21] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:21] [SOK] Beste aapning pa 300.3 grader, avstand 881.0 cm.
+[2025-04-28 22:55:21] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:21] [SOK] Beste aapning pa 300.3 grader, avstand 881.0 cm.
+[2025-04-28 22:55:21] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:21] [SOK] Beste aapning pa 312.1 grader, avstand 923.5 cm.
+[2025-04-28 22:55:21] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:21] [SOK] Beste aapning pa 312.1 grader, avstand 923.5 cm.
+[2025-04-28 22:55:21] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:21] [SOK] Beste aapning pa 312.1 grader, avstand 923.5 cm.
+[2025-04-28 22:55:21] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:21] [SOK] Beste aapning pa 312.1 grader, avstand 923.5 cm.
+[2025-04-28 22:55:21] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:21] [SOK] Beste aapning pa 302.8 grader, avstand 925.5 cm.
+[2025-04-28 22:55:21] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:21] [SOK] Beste aapning pa 302.8 grader, avstand 925.5 cm.
+[2025-04-28 22:55:21] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:21] [SOK] Beste aapning pa 302.8 grader, avstand 925.5 cm.
+[2025-04-28 22:55:21] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:21] [SOK] Beste aapning pa 302.8 grader, avstand 925.5 cm.
+[2025-04-28 22:55:21] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:21] [SOK] Beste aapning pa 308.1 grader, avstand 815.2 cm.
+[2025-04-28 22:55:21] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:21] [SOK] Beste aapning pa 308.1 grader, avstand 815.2 cm.
+[2025-04-28 22:55:21] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:21] [SOK] Beste aapning pa 308.1 grader, avstand 815.2 cm.
+[2025-04-28 22:55:21] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:21] [SOK] Beste aapning pa 300.1 grader, avstand 858.2 cm.
+[2025-04-28 22:55:21] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:21] [SOK] Beste aapning pa 300.1 grader, avstand 858.2 cm.
+[2025-04-28 22:55:21] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:21] [SOK] Beste aapning pa 300.1 grader, avstand 858.2 cm.
+[2025-04-28 22:55:21] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:21] [SOK] Beste aapning pa 300.1 grader, avstand 858.2 cm.
+[2025-04-28 22:55:21] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:21] [SOK] Beste aapning pa 300.1 grader, avstand 858.2 cm.
+[2025-04-28 22:55:21] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:21] [SOK] Beste aapning pa 304.2 grader, avstand 928.5 cm.
+[2025-04-28 22:55:21] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:21] [SOK] Beste aapning pa 304.2 grader, avstand 928.5 cm.
+[2025-04-28 22:55:21] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:21] [SOK] Beste aapning pa 304.2 grader, avstand 928.5 cm.
+[2025-04-28 22:55:21] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:21] [SOK] Beste aapning pa 304.2 grader, avstand 928.5 cm.
+[2025-04-28 22:55:21] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:22] [SOK] Beste aapning pa 306.3 grader, avstand 933.0 cm.
+[2025-04-28 22:55:22] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:22] [SOK] Beste aapning pa 306.3 grader, avstand 933.0 cm.
+[2025-04-28 22:55:22] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:22] [SOK] Beste aapning pa 306.3 grader, avstand 933.0 cm.
+[2025-04-28 22:55:22] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:22] [SOK] Beste aapning pa 306.3 grader, avstand 933.0 cm.
+[2025-04-28 22:55:22] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:22] [SOK] Beste aapning pa 301.5 grader, avstand 855.8 cm.
+[2025-04-28 22:55:22] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:22] [SOK] Beste aapning pa 301.5 grader, avstand 855.8 cm.
+[2025-04-28 22:55:22] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:22] [SOK] Beste aapning pa 301.5 grader, avstand 855.8 cm.
+[2025-04-28 22:55:22] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:22] [SOK] Beste aapning pa 8.4 grader, avstand 121.2 cm.
+[2025-04-28 22:55:22] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:22] [SOK] Beste aapning pa 8.4 grader, avstand 121.2 cm.
+[2025-04-28 22:55:22] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:22] [SOK] Beste aapning pa 8.4 grader, avstand 121.2 cm.
+[2025-04-28 22:55:22] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:22] [SOK] Beste aapning pa 8.4 grader, avstand 121.2 cm.
+[2025-04-28 22:55:22] [KORRIGERING] Avviker fra mål med -1e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:22] [SOK] Beste aapning pa 300.3 grader, avstand 846.8 cm.
+[2025-04-28 22:55:22] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:22] [SOK] Beste aapning pa 300.3 grader, avstand 846.8 cm.
+[2025-04-28 22:55:22] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:22] [SOK] Beste aapning pa 300.3 grader, avstand 846.8 cm.
+[2025-04-28 22:55:22] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:22] [SOK] Beste aapning pa 300.3 grader, avstand 846.8 cm.
+[2025-04-28 22:55:22] [KORRIGERING] Avviker fra mål med 2e+02 grader, korrigerer med omega=90.0.
+[2025-04-28 22:55:22] [SOK] Beste aapning pa 58.1 grader, avstand 706.5 cm.
+[2025-04-28 22:55:22] [KORRIGERING] Avviker fra mål med -9e+01 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:22] [SOK] Beste aapning pa 58.1 grader, avstand 706.5 cm.
+[2025-04-28 22:55:22] [KORRIGERING] Avviker fra mål med -9e+01 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:22] [SOK] Beste aapning pa 58.1 grader, avstand 706.5 cm.
+[2025-04-28 22:55:22] [KORRIGERING] Avviker fra mål med -9e+01 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:22] [SOK] Beste aapning pa 58.1 grader, avstand 706.5 cm.
+[2025-04-28 22:55:22] [KORRIGERING] Avviker fra mål med -9e+01 grader, korrigerer med omega=-88.1.
+[2025-04-28 22:55:22] [SOK] Beste aapning pa 351.2 grader, avstand 124.8 cm.
+[2025-04-28 22:55:22] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:22] [SOK] Beste aapning pa 351.2 grader, avstand 124.8 cm.
+[2025-04-28 22:55:22] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.
+[2025-04-28 22:55:22] [SOK] Beste aapning pa 351.2 grader, avstand 124.8 cm.
+[2025-04-28 22:55:22] [KORRIGERING] Avviker fra mål med -2e+02 grader, korrigerer med omega=-90.0.

@@ -5,6 +5,7 @@ from logging_utils import skriv_logg
 import time
 import sys
 import threading  # Import threading if needed
+from Heading_Tracker import HeadingTracker
 # Import your own modules
 import motor_control
 import imu_module
