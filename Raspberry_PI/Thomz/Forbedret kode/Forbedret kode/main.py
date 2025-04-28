@@ -5,7 +5,6 @@ from logging_utils import skriv_logg
 import time
 import sys
 import threading  # Import threading if needed
-
 # Import your own modules
 import motor_control
 import imu_module
@@ -33,8 +32,8 @@ def initialize_systems():
 
     try:
         skriv_logg("Setting up ultrasound sensors...")
-        # --- VIKTIG: S�rg for at setup_ultrasound_gpio i ultrasound_module stemmer med hvordan du har implementert returverdien ---
-        # Hvis setup_ultrasound_gpio kaster feil ved problem (som min foresl�tte kode gjorde), fjern 'if us_initialized =' linjen og 'if us_initialized:' sjekken nedenfor.
+        # --- VIKTIG: S rg for at setup_ultrasound_gpio i ultrasound_module stemmer med hvordan du har implementert returverdien ---
+        # Hvis setup_ultrasound_gpio kaster feil ved problem (som min foresl tte kode gjorde), fjern 'if us_initialized =' linjen og 'if us_initialized:' sjekken nedenfor.
         us_initialized = ultrasound_module.setup_ultrasound_gpio()
         if us_initialized:
             skriv_logg("Ultrasound sensors set up.")
@@ -55,6 +54,13 @@ def initialize_systems():
             skriv_logg("Warning: Lidar failed to initialize or connect.")
 
         skriv_logg("Initialization complete.")
+        
+        # --- HEADING TRACKER SETUP --- # <--- ADD THIS BLOCK
+        global heading_tracker # Declare heading tracker globally
+        heading_tracker = HeadingTracker()
+        heading_tracker.setup() # Initialiserer f sed heading basert p  kompass
+        skriv_logg(f"Initial fused heading: {heading_tracker.get_heading():.1f} ")
+        # --- END HEADING TRACKER SETUP ---
 
     except Exception as e:
         skriv_logg(f"Critical error during system initialization: {e}")
@@ -64,46 +70,53 @@ def initialize_systems():
 # --- MAIN NAVIGATION LOOP ---
 def main():
     """Main navigation loop."""
-    global last_turn_dir
+    global last_turn_dir, heading_tracker
 
-    # Optional: Initial heading alignment
-#    try:
-#        skriv_logg("Performing initial heading check and rotation...")
-#        current_heading = compass_module.read_compass()
-#
-#        if current_heading != -1.0:
-#            skriv_logg(f"Current heading: {current_heading:.1f}�")
-#            target_heading = 0.0
-#            angle_to_rotate = (target_heading - current_heading + 360) % 360
-#            if angle_to_rotate > 180:
-#                angle_to_rotate -= 360
+    #Optional: Initial heading alignment
+    try:
+        skriv_logg("Performing initial heading check and rotation...")
+        current_heading = compass_module.read_compass()
 
-#            if abs(angle_to_rotate) > 1.0:  # Unng� rotasjon for veldig sm� vinkler
-#               skriv_logg(f"Executing rotation of {angle_to_rotate:.1f}�...")
-#                #imu_module.rotate_by_gyro(angle_to_rotate)
-#                imu_module.rotate_to_heading(target_heading)
-#                skriv_logg("Initial rotation completed.")
-#                current_heading = compass_module.read_compass()  # Les heading etter rotasjon
-#                skriv_logg(f"New heading after rotation: {current_heading:.1f}�")
-#            else:
-#                skriv_logg("Initial heading is already close to North.")
-#        else:
-#            skriv_logg("Initial compass reading failed. Skipping initial rotation.")
-#    except Exception as e:
-#        skriv_logg(f"Error during initial heading rotation: {e}")
+        if current_heading != -1.0:
+            skriv_logg(f"Current heading: {current_heading:.1f} ")
+            target_heading = 0.0
+            angle_to_rotate = (target_heading - current_heading + 360) % 360
+            if angle_to_rotate > 180:
+                angle_to_rotate -= 360
 
-    skriv_logg("Starting continuous forward movement loop...")
-    # Starter med � sende en bevegelsesskommando
+            if abs(angle_to_rotate) > 1.0:  # Unng  rotasjon for veldig sm  vinkler
+                skriv_logg(f"Executing rotation of {angle_to_rotate:.1f} ...")
+                #imu_module.rotate_by_gyro(angle_to_rotate)
+                imu_module.rotate_to_heading(target_heading, heading_tracker)
+                skriv_logg("Initial rotation completed.")
+                current_heading = compass_module.read_compass()  # Les heading etter rotasjon
+                skriv_logg(f"New heading after rotation: {current_heading:.1f} ")
+            else:
+                skriv_logg("Initial heading is already close to North.")
+        else:
+            skriv_logg("Initial compass reading failed. Skipping initial rotation.")
+    except Exception as e:
+        skriv_logg(f"Error during initial heading rotation: {e}")
+
+    # Sending a movement command
     motor_control.send_command(f"{FORWARD_SPEED} 0 0\n")
 
     try:
         while True:
             # --- READ SENSOR DATA ---
             lidar_distance = get_median_lidar_reading_cm()
-            # --- VIKTIG: get_triggered_ultrasound_info m� returnere (liste, dict) ---
+            # --- VIKTIG: get_triggered_ultrasound_info m  returnere (liste, dict) ---
             triggered_us_info = ultrasound_module.get_triggered_ultrasound_info(ULTRASOUND_STOP_DISTANCE_CM)
             triggered_us_sensors = triggered_us_info[0]  # Liste med triggede US sensor-indekser
             us_distances = triggered_us_info[1]  # Dictionary med avstander for ALLE US sensorer
+            
+            # --- UPDATE FUSED HEADING --- #
+            # N  kan du bruke fused_heading (variabelen i denne l kken) eller
+            # kalle heading_tracker.get_heading() hvor som helst ellers som har tilgang til objektet.
+            # Eksempel p  hvordan du ville brukt den (ikke n dvendigvis for gjeldende logikk):
+            # current_absolute_heading = heading_tracker.get_heading()
+            # skriv_logg(f"Current Fused Heading: {fused_heading:.2f}") # Valgfri debug-logg for f sed heading
+            # --- END UPDATE FUSED HEADING ---            
 
             # --- DEBUG skriv_loggS ---
             #if lidar_distance != float('inf'):
@@ -134,21 +147,21 @@ def main():
                 is_us_1 = 1 in triggered_us_sensors
                 is_back = any(i in triggered_us_sensors for i in [2, 3])
 
-                # --- LOGIKK FOR � SVINGE VEKK FRA HINDRING ---
+                # --- LOGIKK FOR   SVINGE VEKK FRA HINDRING ---
                 if is_us_1 and not is_us_0 and not is_back:
                     turn_angle = base_turn_angle
-                    skriv_logg(f"US 1 triggered: Turning Right (+{turn_angle}�)")
+                    skriv_logg(f"US 1 triggered: Turning Right (+{turn_angle} )")
 
                 elif is_us_0 and not is_us_1 and not is_back:
                     turn_angle = -base_turn_angle
-                    skriv_logg(f"US 0 triggered: Turning Left ({turn_angle}�)")
+                    skriv_logg(f"US 0 triggered: Turning Left ({turn_angle} )")
 
                 # --- FALLBACK LOGIKK ---
                 elif lidar_detected or is_back or (is_us_0 and is_us_1):
                     skriv_logg("Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.")
                     turn_angle = base_fallback_angle * last_turn_dir
                     last_turn_dir *= -1
-                    skriv_logg(f"Fallback turn: {turn_angle:+}�")
+                    skriv_logg(f"Fallback turn: {turn_angle:+} ")
 
                 else:
                     skriv_logg("Obstacle detected, but no specific avoidance rule matched. Remaining stopped.")
@@ -156,7 +169,7 @@ def main():
 
                 if turn_angle != 0:
                     try:
-                        skriv_logg(f"Executing turn of {turn_angle}�...")
+                        skriv_logg(f"Executing turn of {turn_angle} ...")
                         imu_module.rotate_by_gyro(turn_angle)
                         skriv_logg("Avoidance maneuver completed.")
                         time.sleep(0.5)
@@ -191,7 +204,7 @@ def cleanup_systems():
 
 # --- PROGRAM ENTRY POINT ---
 if __name__ == "__main__":
-    # Valgfritt: Pr�v opprydning ved start for � sikre ren tilstand (nyttig under utvikling)
+    # Valgfritt: Pr v opprydning ved start for   sikre ren tilstand (nyttig under utvikling)
     # try:
     #     cleanup_systems()
     # except Exception as e:

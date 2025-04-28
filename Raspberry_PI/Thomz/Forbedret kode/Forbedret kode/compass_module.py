@@ -3,6 +3,7 @@
 # Module for handling QMC5883L compass sensor data
 
 # --- IMPORT NECESSARY LIBRARIES ---
+import os
 import smbus # For I2C communication
 import time # For time functions (time.sleep())
 import math # For mathematical functions (atan2, degrees)
@@ -20,7 +21,8 @@ QMC5883L_DATA = 0x00 # Start register for X_L data (data begins here)
 
 # --- Global Variables ---
 compass_initialized = False # <-- NY VARIABEL: Flag to indicate successful initialization
-
+offset_x = 0.0 # <-- Add this global variable for X offset
+offset_y = 0.0 # <-- Add this global variable for Y offset
 
 # --- INITIALIZATION ---
 def init_compass():
@@ -40,8 +42,27 @@ def init_compass():
         bus.write_byte_data(QMC5883L_ADDRESS, QMC5883L_CTRL1, 0b00011101) # Example configuration
         time.sleep(0.1) # Wait for the sensor to start measurements
 
-        compass_initialized = True # <-- SETT TIL TRUE VED SUKSESS
         skriv_logg("QMC5883L initialized successfully.")
+        
+        # --- LOAD CALIBRATION OFFSETS ---  # <--- Add this block
+        try:
+            if os.path.exists("kompas_offset.txt"):
+                with open("kompas_offset.txt", "r") as f:
+                    lines = f.readlines()
+                    if len(lines) >= 2:
+                        offset_x = float(lines[0].strip())
+                        offset_y = float(lines[1].strip())
+                        skriv_logg(f"Compass offsets loaded: x={offset_x:.2f}, y={offset_y:.2f}")
+                    else:
+                            skriv_logg("Warning: kompas_offset.txt found but does not contain enough lines.")
+            else:
+                skriv_logg("kompas_offset.txt not found. Running without compass calibration offsets.")
+        except Exception as e:
+                skriv_logg(f"Error loading compass offsets: {e}")
+        
+        # --- END LOAD CALIBRATION OFFSETS ---
+        
+        compass_initialized = True # <-- SETT TIL TRUE VED SUKSESS
     except FileNotFoundError:
         skriv_logg("Error: I2C bus not found for compass. Make sure I2C is enabled.")
         compass_initialized = False # Sett til False ved feil
@@ -55,74 +76,115 @@ def init_compass():
 # --- READING COMPASS DATA ---
 def read_compass():
     """
-    Reads raw data from QMC5883L (X, Y, Z) and calculates heading in degrees.
-    Returns the heading in degrees (0-359), or -1.0 on error.
+    Reads raw data from QMC5883L (X, Y, Z), applies calibration offset and upside-down compensation,
+    and calculates heading in degrees.
+    Returns the heading in degrees (0-359), or -1.0 on error or if not initialized.
     """
-    global bus, compass_initialized
-    if not compass_initialized or bus is None: # Sjekk om kompasset er initialisert
+    # Declare global variables, including offsets loaded in init_compass
+    global bus, compass_initialized, offset_x, offset_y
+
+    # Check if the compass sensor has been successfully initialized
+    if not compass_initialized or bus is None:
         # skriv_logg("Warning: Attempted to read compass before initialization.") # Optional debug
-        return -1.0 # Returner -1.0 hvis ikke initialisert
+        return -1.0 # Return -1.0 if not initialized or bus is not available
 
     try:
-        # Read 6 bytes of data from QMC5883L, starting from register 0x00
+        # Read 6 bytes of data from QMC5883L, starting from register 0x00 (Data Register)
         # Data comes in the order X_L, X_H, Y_L, Y_H, Z_L, Z_H (Little-Endian)
         data = bus.read_i2c_block_data(QMC5883L_ADDRESS, QMC5883L_DATA, 6)
 
-        # Reconstruct 16-bit values from the 2 bytes (Little-Endian)
+        # Reconstruct 16-bit signed integer values from the 2 bytes for each axis (Little-Endian)
         x_raw = (data[1] << 8) | data[0]
         y_raw = (data[3] << 8) | data[2]
         z_raw = (data[5] << 8) | data[4]
 
         # Convert from unsigned 16-bit values to signed (two's complement)
-        # QMC5883L raw data are signed 16-bit values
+        # QMC5883L raw data are signed 16-bit values. This conversion handles the sign bit.
         x = x_raw - 65536 if x_raw > 32767 else x_raw
         y = y_raw - 65536 if y_raw > 32767 else y_raw
-        z = z_raw - 65536 if z_raw > 32767 else z_raw
-
-        # --- COMPENSATE FOR UPSIDE-DOWN MOUNTING ---
-        # The standard heading calculation uses atan2(y, x).
-        # With the sensor upside down, the raw x, y, z readings need to be
-        # remapped to the robot's forward/sideways axes relative to the magnetic field.
-        # A common compensation for Z-axis flip is swapping and/or negating X and Y.
-        # Let's try using -x as the new Y component and y as the new X component for atan2.
-        # This maps the sensor's raw X (with flipped sign) to the magnetic East/West
-        # and raw Y to the magnetic North/South, assuming a typical flip.
-        # IMPORTANT: You might need to adjust this compensation based on how YOUR compass is physically mounted!
-        compensated_x = y # Use raw signed y as the X component for atan2 (Towards North/South)
-        compensated_y = -x # Use negative raw signed x as the Y component for atan2 (Towards East/West)
-
-        # --- CUSTOM CALIBRATION OFFSET (Optional) ---
-        # If needed, add hard-iron calibration offset here by subtracting constants
-        # You would typically find these offsets by rotating the robot 360 degrees
-        # and logging min/max X and Y values to find the center (average min/max).
-        # E.g., If min_x=-500, max_x=700, x_offset = (-500+700)/2 = 100
-        # compensated_x = compensated_x - x_offset
-        # compensated_y = compensated_y - y_offset
+        # z = z_raw - 65536 if z_raw > 32767 else z_raw # Z data is typically not used for 2D heading
 
 
-        # Calculate heading in radians using atan2(compensated_y, compensated_x)
-        # atan2(y, x) gives the angle from the positive X-axis (which we've mapped to North)
-        heading_rad = math.atan2(compensated_y, compensated_x) # Use compensated values
+        # --- APPLY CALIBRATION OFFSETS (Hard-Iron Compensation) ---
+        # Subtract the loaded hard-iron offsets (calculated by calibrate_compass_tool)
+        # from the raw signed X and Y values. This shifts the magnetic center to (0,0).
+        compensated_x_raw = x - offset_x
+        compensated_y_raw = y - offset_y
+        # --- END APPLY CALIBRATION OFFSETS ---
 
 
-        # Convert from radians to degrees
+        # --- COMPENSATE FOR UPSIDE-DOWN MOUNTING (if sensor is mounted upside down) ---
+        # Apply the upside-down compensation to the offset-corrected values.
+        # The standard heading calculation uses atan2(y, x) where +x is East and +y is North.
+        # Adjust the offset-corrected values (compensated_x_raw, compensated_y_raw)
+        # based on how YOUR compass is physically mounted relative to the robot's desired North axis.
+        # The mapping (y, -x) is a common compensation for Z-axis flip, assuming raw Y points
+        # towards magnetic North/South and raw X towards magnetic East/West after offset.
+        # IMPORTANT: Verify if this mapping (y, -x) matches your physical mounting and desired heading directions!
+        final_x_for_atan2 = compensated_y_raw # Use offset-corrected y as the X component for atan2 (maps to North/South axis)
+        final_y_for_atan2 = -compensated_x_raw # Use negative offset-corrected x as the Y component for atan2 (maps to East/West axis)
+        # --- END COMPENSATE FOR UPSIDE-DOWN MOUNTING ---
+
+
+        # Calculate heading in radians using atan2(final_y_for_atan2, final_x_for_atan2)
+        # atan2(y, x) calculates the angle between the positive X-axis and the point (x, y).
+        # Our final_x_for_atan2 represents the X-axis component (North/South),
+        # and final_y_for_atan2 represents the Y-axis component (East/West) relative to Magnetic North.
+        # Note: atan2(y, x) maps (+x, +y) -> 0 to +90, (-x, +y) -> +90 to +180, (-x, -y) -> -180 to -90, (+x, -y) -> -90 to 0
+        heading_rad = math.atan2(final_y_for_atan2, final_x_for_atan2) # <-- KUN EN BEREGNING AV heading_rad HER
+
+
+        # Convert heading from radians to degrees
         heading_deg = math.degrees(heading_rad)
 
         # Normalize heading to be between 0 and 360 degrees
-        # atan2 returns values from -180 to +180 degrees
+        # atan2 returns values from -180 to +180 degrees. We want 0-360.
         if heading_deg < 0:
-             heading_deg += 360
-             
-        skriv_logg(f"Compass Debug Heading: {heading_deg:.2f}")
+            heading_deg += 360
 
+        # --- DEBUG LOG ---
+        # Log the calculated heading for debugging purposes
+        skriv_logg(f"Compass Debug Heading: {heading_deg:.2f}") # <-- Loggen skal v re her
+        # --- END DEBUG LOG ---
+
+        # Return the calculated heading in degrees
         # Note: The original code returned heading_deg and raw data (x, y, z).
         # main.py currently only uses the heading. Returning only heading_deg.
-        return heading_deg # Return only the heading
+        return heading_deg # <-- Return statement skal v re her
 
     except Exception as e:
+        # Handle potential errors during I2C communication or calculation
         # skriv_logg(f"Error reading QMC5883L: {e}") # Optional: Uncomment for debugging errors
         # Return -1.0 on error (can be handled in the main program)
         return -1.0 # Return -1.0 on error
+    
+def read_raw_xy():
+    #"""Reads raw X and Y data from QMC5883L sensor."""
+    global bus, QMC5883L_ADDRESS
+    try:
+        # Ensure the sensor is in continuous measurement mode if not already
+        # This might be redundant if init_compass already sets this,
+        # but safe to ensure for raw reads.
+        # We saw 0x1D (0b00011101) in working code, let's ensure that mode
+        bus.write_byte_data(QMC5883L_ADDRESS, 0x09, 0x1D) # QMC5883L_CTRL1 = 0x09, Mode=0x1D
+
+        data = bus.read_i2c_block_data(QMC5883L_ADDRESS, 0x00, 6) # Start reading from 0x00
+
+        # Convert the raw bytes to signed 16-bit integers
+        x_raw = (data[1] << 8) | data[0]
+        y_raw = (data[3] << 8) | data[2]
+        z_raw = (data[5] << 8) | data[4] # Read Z too, though we only need X/Y for 2D heading
+
+        # Apply two's complement conversion for signed values
+        x = x_raw - 65536 if x_raw > 32767 else x_raw
+        y = y_raw - 65536 if y_raw > 32767 else y_raw
+        # z = z_raw - 65536 if z_raw > 32767 else z_raw # Not needed for 2D heading
+
+        return x, y
+    except Exception as e:
+        # Avoid crashing the calibration tool on read error
+        print(f"Error reading raw compass data: {e}")
+        return 0, 0 # Return zeros on error
 
 
 def get_compass_direction(deg):
