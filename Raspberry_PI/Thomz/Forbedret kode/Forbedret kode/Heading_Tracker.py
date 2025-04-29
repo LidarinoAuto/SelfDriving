@@ -1,84 +1,122 @@
-# heading_tracker.py
-import math
+# Filename: Heading_Tracker.py
 import time
-# IMPORT DE RIKTIGE MODULENE FRA DITT N V RENDE PROSJEKT
-# Sannsynligvis disse:
-from compass_module import read_compass, init_compass as init_compass_module # Antar du kaller init i modulen
-from imu_module import read_imu_data, init_imu as init_imu_module # Antar du kaller init i modulen
+import math
+from logging_utils import skriv_logg
+# FJERN ALLE IMPORTER SOM KOMMER FRA IMU_MODULE ELLER COMPASS_MODULE HER
+# IKKE IMPORTER read_imu_data, init_imu, read_compass_data, init_compass ETC.
+# Disse mottas n i __init__ metoden.
 
-
-# Konstanter for Complementary Filter
-# Juster disse om n dvendig basert p  testing
-GYRO_WEIGHT = 0.90  # H yere verdi betyr mer tillit til gyro (jevnere, men drifter)
-COMPASS_WEIGHT = 1.0 - GYRO_WEIGHT # Lavere verdi betyr mindre tillit til kompass (mindre st y fra kompass, men tregere korreksjon)
-
-# EKSEMPEL: Hvis kompasset ditt trenger en fast justering for   peke Nord der du vil
-KOMPASS_JUSTERING = 270 # Dette var i den andre koden. Juster/fjern basert p  dine behov.
 
 class HeadingTracker:
-    def __init__(self):
-        self.last_time = time.time()
-        self.fused_heading = 0.0 # Start med 0 som standard
+    """
+    Tracks the robot's fused heading by combining Gyro (short-term)
+    and Compass (long-term) data using a complementary filter.
+    Receives sensor reading functions during initialization.
+    """
+    # Vektfaktor for Gyro. Hold denne P  0.90
+    GYRO_WEIGHT = 0.9
+    COMPASS_WEIGHT = 1.0 - GYRO_WEIGHT # Beregnes automatisk
 
-    def setup(self):
-        # Initialiser sensorer (hvis ikke allerede gjort i main.py)
-        # Pass p  at init_compass_module og init_imu_module finnes/kalles riktig
-        # i ditt n v rende prosjekt
-        # init_compass_module() # Kanskje dette gj res i main.py allerede?
-        # init_imu_module()     # Kanskje dette gj res i main.py allerede?
 
-        # Sett innledende f sed heading basert p  kompass
-        # Det er viktig at kompasset gir en stabil m ling N R ROBOTEN ST R STILLE her.
-        # V r kalibrering skal hjelpe med dette.
-        heading = read_compass() # Bruk read_compass fra din compass_module
+    def __init__(self, imu_data_reader, compass_data_reader): # <--- MOTTA LESEFUNKSJONER HER
+        """
+        Initializes the HeadingTracker with sensor reading functions.
+        Performs initial compass read for first fused heading.
+        :param imu_data_reader: Function that returns Z-axis angular velocity (deg/sec), or 0.0 if IMU not ready/error.
+        :param compass_data_reader: Function that returns Compass heading (0-359.9 degrees), or -1.0 on error.
+        """
+        # Lagre referansene til funksjonene som HeadingTracker skal bruke
+        self.imu_data_reader = imu_data_reader
+        self.compass_data_reader = compass_data_reader
 
-        if heading != -1.0: # Sjekk at kompasslesing var vellykket
-            self.fused_heading = (heading + KOMPASS_JUSTERING) % 360 # Bruk KOMPASS_JUSTERING om n dvendig
-            #self.fused_heading = heading # Bruk raw compass heading hvis ingen justering trengs
+        self._fused_heading = 0.0  # Fused heading, initialized
+        self._last_time = time.time() # Time of the last update
+
+        # --- Initial calibration/synchronization ---
+        # Les kompass ved start for en grov initial heading.
+        # Dette skjer KUN n r objektet opprettes.
+        initial_compass_heading = self.compass_data_reader() # Bruk den sendte funksjonen
+
+        if initial_compass_heading != -1.0: # Forutsatt -1.0 indikerer feil i compass_module
+            self._fused_heading = initial_compass_heading
+            skriv_logg(f"HeadingTracker initialized. Initial fused heading set to compass value: {self._fused_heading:.1f} ")
         else:
-            self.fused_heading = 0.0 # Fallback til 0 hvis kompasset feiler ved start
-            # Logg en feilmelding her om initial kompasslesing feilet?
+            skriv_logg("Warning: HeadingTracker initialized, but could not get initial compass heading. Fused heading set to 0.")
+            self._fused_heading = 0.0 # Fallback til 0 hvis kompass feiler
 
-        self.last_time = time.time() # Start tidtaking ETTER initialisering
+        # Oppdater last_time etter initialisering
+        self._last_time = time.time()
+
 
     def update(self):
+        """
+        Updates the fused heading using new sensor readings from the
+        functions provided during initialization. Should be called
+        frequently (e.g., in the main loop or before PID calculation).
+        """
         current_time = time.time()
-        dt = current_time - self.last_time
-        self.last_time = current_time
+        dt = current_time - self._last_time # Time elapsed since last update
 
-        # Forhindre store dt ved debugging / pause
-        if dt > 0.1: # Sett en maksgrense for dt
-            dt = 0.1
-            # Kanskje resette gyro-integrasjonen helt her?
-            # Eller logge en advarsel
+        # Handle very small or zero dt to avoid division by zero or large gyro updates
+        if dt < 0.0001: # Minimum dt, just skip update if too fast
+            return # Skip update if time difference is negligible
 
-        # --- GYRO INTEGRASJON ---
-        gyro_z = read_imu_data()
-        self.fused_heading = (self.fused_heading + gyro_z * dt) % 360
-        # H ndter negativ heading fra modulo
-        if self.fused_heading < 0:
-            self.fused_heading += 360
+        self._last_time = current_time # Update last update time for the next iteration
 
-        # --- KOMPASS KORREKSJON ---
-        # Bruk read_compass fra din compass_module. S rg for den returnerer 0-360 grader ETTER offset/kompensasjon.
-        compass_heading = read_compass()
+        # --- Get new sensor data using the passed functions ---
+        # Kall funksjonene som ble sendt inn til __init__
+        gyro_rate = self.imu_data_reader()
+        compass_heading_raw = self.compass_data_reader()
 
-        if compass_heading != -1.0: # Sjekk at kompasslesing var vellykket
-            compass_heading = (compass_heading + KOMPASS_JUSTERING) % 360 # Bruk justering om n dvendig
 
-            # Beregn korteste vinkel mellom f sed og kompass heading (-180 til +180)
-            delta = ((compass_heading - self.fused_heading + 540.0) % 360.0) - 180.0
+        # --- Complementary Filter Logic ---
+        # Integrer gyro for a estimere endring i heading over dt
+        # Anta at gyro_rate er i grader/sekund
+        gyro_delta_heading = gyro_rate * dt
 
-            # Bruk en liten del av delta til   korrigere f sed heading (komplement rfilter)
-            self.fused_heading = (self.fused_heading + delta * COMPASS_WEIGHT) % 360
+        # Oppdater fasede heading ved a legge til gyro-estimatet
+        # Handter wrap-around n r headingen gar forbi 360/0
+        fused_heading_gyro_updated = (self._fused_heading + gyro_delta_heading) % 360.0
+        # Juster til a v re i [0, 360)
+        if fused_heading_gyro_updated < 0:
+            fused_heading_gyro_updated += 360
 
-            # H ndter negativ heading fra modulo
-            if self.fused_heading < 0:
-                self.fused_heading += 360
 
-        # Returner den oppdaterte f sede headingen
-        return self.fused_heading
+        # Bruk kompasset for a korrigere drift (langsiktig referanse)
+        # Gj r dette kun hvis kompass data er tilgjengelig
+        if compass_heading_raw != -1.0: # Forutsatt -1.0 indikerer feil i compass_module
+            # Beregn feilen mellom gjeldende fused (gyro-oppdatert) og kompass-headingen
+            # Bruk smidig feilberegning for a handtere wrap-around (korteste vei)
+            # error = ((target - current + 540.0) % 360.0) - 180.0
+            # Her er target = compass_heading_raw, current = fused_heading_gyro_updated
+            heading_difference = ((compass_heading_raw - fused_heading_gyro_updated + 540.0) % 360.0) - 180.0
+
+            # Korriger fused heading basert p heading_difference og kompassets vekt
+            # Denne korreksjonen skjer kun hvis kompass-data er tilgjengelig
+            self._fused_heading = fused_heading_gyro_updated + (heading_difference * self.COMPASS_WEIGHT)
+        else:
+            # Hvis kompass data ikke er tilgjengelig, stoler vi kun p gyro for denne oppdateringen
+            self._fused_heading = fused_heading_gyro_updated
+            # skriv_logg("Warning: Compass data not available. Fused heading updated using only gyro.") # Unng spamming
+
+        # S rger for at den fasede headingen forblir i [0, 360)
+        self._fused_heading = self._fused_heading % 360.0
+        if self._fused_heading < 0:
+            self._fused_heading += 360
+
 
     def get_heading(self):
-        # Returner gjeldende f sed heading
-        return self.fused_heading
+        """
+        Returns the current fused heading (0-359.9 degrees).
+        Note: This function does NOT update the heading. Call update() first.
+        Returns -1.0 if sensor initialization failed? (Handteres best i main/kallende funksjon).
+        For n returnerer den bare den lagrede fused headingen.
+        """
+        # Vi antar at kallende kode sjekker om HeadingTracker objektet eksisterer (alts at kritisk init lyktes)
+        return self._fused_heading
+
+    # Du kan legge til flere metoder her om n dvedig
+    # f.eks. en metode for a sjekke om trackeren er "sunn" (fikk gyldige data sist)
+    # def is_healthy(self):
+    #    # Returner True hvis siste update fikk gyldige data fra begge sensorer
+    #    return True # Placeholder
