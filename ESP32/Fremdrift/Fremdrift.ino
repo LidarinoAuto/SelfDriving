@@ -17,9 +17,9 @@ int speedY = 0;
 int rotation = 0;
 
 // === PID-relaterte arrayer (ett sett for hvert hjul) ===
-float pid_kp[3] = {1.32, 1.32, 1.32};
-float pid_ki[3] = {2.3, 2.3, 2.3};
-float pid_kd[3] = {0.0342, 0.0342, 0.0342};
+float pid_kp[3] = {1.75, 1.75, 1.75};
+float pid_ki[3] = {1.0, 1.0, 1.0};
+float pid_kd[3] = {0.0001, 0.0001, 0.0001};
 
 float pid_integral[3]   = {0, 0, 0};
 float pid_lastError[3]  = {0, 0, 0};
@@ -41,7 +41,7 @@ static const float WHEEL_CIRCUM_MM        = WHEEL_DIAMETER_MM * PI;
 static const unsigned long CONTROL_INTERVAL = 100; // ms
 
 // === Idle-stopp fra B-kode ===
-static const unsigned long STOP_PWM_DELAY   = 500; // ms idle før PWM kuttes
+static const unsigned long STOP_PWM_DELAY   = 100; // ms idle før PWM kuttes
 unsigned long lastMotionTime  = 0;
 bool pwmDisabled = false;
 
@@ -163,12 +163,28 @@ void loop() {
                      : (i == 1 ? MOTOR_2_BACKWARD_PIN : MOTOR_3_BACKWARD_PIN));
         setMotorSpeed(fwdPin, bwdPin, (int)pwm);
 
-        // (Valgfritt) enkel debug for hjul 0
+        /* (Valgfritt) enkel debug for hjul 0
         if (i == 0) {
           Serial.print("[M1] SP=");  Serial.print(setpointSpeed[0], 1);
           Serial.print("  Act=");    Serial.print(speed_mms, 1);
           Serial.print("  Err=");    Serial.print(setpointSpeed[0] - speed_mms, 1);
           Serial.print("  PWM=");    Serial.println(pwm, 1);
+
+          */
+          // Inne i lkken der du itererer gjennom hjulene, sannsynligvis med en variabel 'i' (0, 1, 2...)
+          
+          // Sjekk om gjeldende hjulindeks er 0, 1 eller 2 (antar du har 3 hjul)
+          if (i < 3) { // Korrigert sjekk: Kj r for index 0, 1, 2
+           Serial.print("[M"); // Skriv ut "[M"
+           Serial.print(i); // Skriv ut hjulindeksen (0, 1, eller 2)
+           Serial.print("] "); // Skriv ut "] "
+          
+           // Skriv ut SetPoint for det G JELDENDE hjulet (bruk index 'i')
+           Serial.print("SP=");Serial.print(setpointSpeed[i], 1); // Bruk [i]
+           Serial.print("Act="); Serial.print(speed_mms, 1); // speed_mms antas a v re aktuell hastighet for hjul 'i'
+           Serial.print("Err="); Serial.print(setpointSpeed[i] - speed_mms, 1); // Bruk [i]
+           Serial.print("PWM="); Serial.println(pwm, 1); // pwm antas a v re beregnet PWM for hjul 'i'
+          
         }
       }
     }

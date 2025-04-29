@@ -37,9 +37,9 @@ inline void readSerialCommands() {
 
       if (count == 3) {
         // Konverter til int (hvis du vil bevare float, kan du endre speedX/rotation til float)
-        speedX   = (int)x;
-        speedY   = (int)y;
-        rotation = (int)w;
+        speedX   = (float)x;
+        speedY   = (float)y;
+        rotation = (float)w;
 
         Serial.print("[DEBUG] Parsed: vx=");
         Serial.print(x);

@@ -99,24 +99,6 @@ class HeadingTracker:
             self._fused_heading = fused_heading_gyro_updated
             # skriv_logg("Warning: Compass data not available. Fused heading updated using only gyro.") # Unng spamming
 
-        # S rger for at den fasede headingen forblir i [0, 360)
-        self._fused_heading = self._fused_heading % 360.0
-        if self._fused_heading < 0:
-            self._fused_heading += 360
-
-
     def get_heading(self):
-        """
-        Returns the current fused heading (0-359.9 degrees).
-        Note: This function does NOT update the heading. Call update() first.
-        Returns -1.0 if sensor initialization failed? (Handteres best i main/kallende funksjon).
-        For n returnerer den bare den lagrede fused headingen.
-        """
-        # Vi antar at kallende kode sjekker om HeadingTracker objektet eksisterer (alts at kritisk init lyktes)
-        return self._fused_heading
 
-    # Du kan legge til flere metoder her om n dvedig
-    # f.eks. en metode for a sjekke om trackeren er "sunn" (fikk gyldige data sist)
-    # def is_healthy(self):
-    #    # Returner True hvis siste update fikk gyldige data fra begge sensorer
-    #    return True # Placeholder
+        return math.fmod(self._fused_heading, 360.0) if self._fused_heading >= 0 else math.fmod(self._fused_heading, 360.0) + 360

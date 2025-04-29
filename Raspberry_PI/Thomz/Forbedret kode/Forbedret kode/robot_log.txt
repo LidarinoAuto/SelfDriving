@@ -1,0 +1,252 @@
+[2025-04-29 20:34:35] Starting robot systems initialization...
+[2025-04-29 20:34:35] Setting up ultrasound sensors...
+[2025-04-29 20:34:35] Setting up Ultrasound GPIO pins...
+[2025-04-29 20:34:35] Ultrasound GPIO setup complete.
+[2025-04-29 20:34:35] Ultrasound sensors set up.
+[2025-04-29 20:34:35] Initializing IMU...
+[2025-04-29 20:34:35] Initializing IMU...
+[2025-04-29 20:34:35] Calibrating gyro bias. Keep robot completely still...
+[2025-04-29 20:34:37] Gyro bias Z calibrated: -31.2000
+[2025-04-29 20:34:37] IMU initialized successfully.
+[2025-04-29 20:34:37] IMU initialized.
+[2025-04-29 20:34:37] Initializing QMC5883L...
+[2025-04-29 20:34:37] Initializing QMC5883L...
+[2025-04-29 20:34:38] QMC5883L sensor initialized via I2C successfully.
+[2025-04-29 20:34:38] Compass offsets loaded: x=416.00, y=-354.00
+[2025-04-29 20:34:38] QMC5883L initialization reported success.
+[2025-04-29 20:34:38] Starting Lidar...
+[2025-04-29 20:34:38] Attempting to start Lidar at /dev/rplidar with baud rate 115200...
+[2025-04-29 20:34:38] Attempting to stop Lidar...
+[2025-04-29 20:34:38] Signal sent to Lidar thread to stop.
+[2025-04-29 20:34:38] Lidar object was not initialized.
+[2025-04-29 20:34:39] Lidar thread: Started scanning loop.
+[2025-04-29 20:34:39] Lidar initialized and data collection thread started.
+[2025-04-29 20:34:39] Lidar initialized and data collection started.
+[2025-04-29 20:34:39] Compass Debug Heading: 102.13
+[2025-04-29 20:34:39] HeadingTracker initialized. Initial fused heading set to compass value: 102.1 
+[2025-04-29 20:34:39] All critical systems initialized successfully.
+[2025-04-29 20:34:39] Performing initial heading check and rotation...
+[2025-04-29 20:34:39] Current heading: 102.1 
+[2025-04-29 20:34:39] Executing initial rotation to 0.0  (Error: -102.1 )...
+[2025-04-29 20:34:39] Error during initial heading rotation: unsupported operand type(s) for %: 'HeadingTracker' and 'int'
+[2025-04-29 20:34:39] Starting forward movement at speed 100...
+[2025-04-29 20:34:39] Compass Debug Heading: 108.89
+[2025-04-29 20:34:39] Compass Debug Heading: 113.20
+[2025-04-29 20:34:39] Compass Debug Heading: 110.80
+[2025-04-29 20:34:40] Compass Debug Heading: 110.52
+[2025-04-29 20:34:40] Compass Debug Heading: 108.21
+[2025-04-29 20:34:40] Compass Debug Heading: 105.35
+[2025-04-29 20:34:41] Compass Debug Heading: 109.09
+[2025-04-29 20:34:41] Compass Debug Heading: 107.66
+[2025-04-29 20:34:41] Compass Debug Heading: 106.38
+[2025-04-29 20:34:42] Compass Debug Heading: 112.39
+[2025-04-29 20:34:42] Compass Debug Heading: 110.88
+[2025-04-29 20:34:42] Compass Debug Heading: 109.90
+[2025-04-29 20:34:43] Compass Debug Heading: 111.65
+[2025-04-29 20:34:43] Compass Debug Heading: 109.48
+[2025-04-29 20:34:43] Compass Debug Heading: 110.33
+[2025-04-29 20:34:44] Compass Debug Heading: 113.55
+[2025-04-29 20:34:44] Compass Debug Heading: 113.57
+[2025-04-29 20:34:44] Compass Debug Heading: 115.95
+[2025-04-29 20:34:44] Compass Debug Heading: 112.48
+[2025-04-29 20:34:45] Compass Debug Heading: 112.23
+[2025-04-29 20:34:45] Compass Debug Heading: 111.65
+[2025-04-29 20:34:45] Compass Debug Heading: 110.61
+[2025-04-29 20:34:46] Compass Debug Heading: 115.11
+[2025-04-29 20:34:46] Compass Debug Heading: 113.93
+[2025-04-29 20:34:46] Compass Debug Heading: 113.14
+[2025-04-29 20:34:47] Compass Debug Heading: 110.11
+[2025-04-29 20:34:47] Compass Debug Heading: 116.08
+[2025-04-29 20:34:47] Compass Debug Heading: 113.35
+[2025-04-29 20:34:48] Compass Debug Heading: 109.88
+[2025-04-29 20:34:48] Compass Debug Heading: 113.67
+[2025-04-29 20:34:48] Compass Debug Heading: 112.99
+[2025-04-29 20:34:49] Compass Debug Heading: 113.20
+[2025-04-29 20:34:49] Compass Debug Heading: 114.90
+[2025-04-29 20:34:49] Compass Debug Heading: 113.12
+[2025-04-29 20:34:50] Compass Debug Heading: 111.10
+[2025-04-29 20:34:50] Compass Debug Heading: 109.80
+[2025-04-29 20:34:50] Compass Debug Heading: 113.20
+[2025-04-29 20:34:50] Compass Debug Heading: 114.13
+[2025-04-29 20:34:51] Compass Debug Heading: 112.10
+[2025-04-29 20:34:51] Compass Debug Heading: 112.96
+[2025-04-29 20:34:51] Compass Debug Heading: 115.42
+[2025-04-29 20:34:52] Compass Debug Heading: 114.33
+[2025-04-29 20:34:52] Compass Debug Heading: 114.61
+[2025-04-29 20:34:52] Compass Debug Heading: 111.67
+[2025-04-29 20:34:53] Compass Debug Heading: 110.30
+[2025-04-29 20:34:53] Compass Debug Heading: 110.03
+[2025-04-29 20:34:53] Program interrupted by user (Ctrl+C).
+[2025-04-29 20:34:53] Cleaning up before exit...
+[2025-04-29 20:34:53] Cleaning up GPIO for ultrasound...
+[2025-04-29 20:34:53] Ultrasound GPIO cleanup complete.
+[2025-04-29 20:34:53] Ultrasound GPIO cleanup complete.
+[2025-04-29 20:34:53] Attempting to stop Lidar...
+[2025-04-29 20:34:53] Signal sent to Lidar thread to stop.
+[2025-04-29 20:34:53] Waiting for Lidar thread to join...
+[2025-04-29 20:34:53] Lidar thread joined successfully.
+[2025-04-29 20:34:53] Stopping Lidar motor...
+[2025-04-29 20:34:53] Disconnecting Lidar serial port...
+[2025-04-29 20:34:53] Lidar disconnected.
+[2025-04-29 20:34:53] Lidar cleanup complete.
+[2025-04-29 20:34:53] Cleanup completed. Program finished.
+[2025-04-29 20:34:53] Cleaning up before exit...
+[2025-04-29 20:34:53] Cleaning up GPIO for ultrasound...
+[2025-04-29 20:34:53] Ultrasound GPIO cleanup complete.
+[2025-04-29 20:34:53] Ultrasound GPIO cleanup complete.
+[2025-04-29 20:34:53] Attempting to stop Lidar...
+[2025-04-29 20:34:53] Signal sent to Lidar thread to stop.
+[2025-04-29 20:34:53] Lidar object was not initialized.
+[2025-04-29 20:34:53] Lidar cleanup complete.
+[2025-04-29 20:34:53] Cleanup completed. Program finished.
+[2025-04-29 21:32:52] Starting robot systems initialization...
+[2025-04-29 21:32:52] Setting up ultrasound sensors...
+[2025-04-29 21:32:52] Setting up Ultrasound GPIO pins...
+[2025-04-29 21:32:53] Ultrasound GPIO setup complete.
+[2025-04-29 21:32:53] Ultrasound sensors set up.
+[2025-04-29 21:32:53] Initializing IMU...
+[2025-04-29 21:32:53] Initializing IMU...
+[2025-04-29 21:32:53] Calibrating gyro bias. Keep robot completely still...
+[2025-04-29 21:32:55] Gyro bias Z calibrated: -31.5250
+[2025-04-29 21:32:55] IMU initialized successfully.
+[2025-04-29 21:32:55] IMU initialized.
+[2025-04-29 21:32:55] Initializing QMC5883L...
+[2025-04-29 21:32:55] Initializing QMC5883L...
+[2025-04-29 21:32:55] QMC5883L sensor initialized via I2C successfully.
+[2025-04-29 21:32:55] Compass offsets loaded: x=416.00, y=-354.00
+[2025-04-29 21:32:55] QMC5883L initialization reported success.
+[2025-04-29 21:32:55] Starting Lidar...
+[2025-04-29 21:32:55] Attempting to start Lidar at /dev/rplidar with baud rate 115200...
+[2025-04-29 21:32:55] Attempting to stop Lidar...
+[2025-04-29 21:32:55] Signal sent to Lidar thread to stop.
+[2025-04-29 21:32:55] Lidar object was not initialized.
+[2025-04-29 21:32:56] Lidar initialized and data collection thread started.
+[2025-04-29 21:32:56] Lidar thread: Started scanning loop.
+[2025-04-29 21:32:56] Lidar initialized and data collection started.
+[2025-04-29 21:32:56] Compass Debug Heading: 163.32
+[2025-04-29 21:32:56] HeadingTracker initialized. Initial fused heading set to compass value: 163.3 
+[2025-04-29 21:32:56] All critical systems initialized successfully.
+[2025-04-29 21:32:56] Performing initial heading check and rotation...
+[2025-04-29 21:32:56] Current heading: 163.3 
+[2025-04-29 21:32:56] Executing initial rotation to 0.0  (Error: -163.3 )...
+[2025-04-29 21:32:56] Error during initial heading rotation: unsupported operand type(s) for %: 'HeadingTracker' and 'int'
+[2025-04-29 21:32:56] Starting forward movement at speed 100...
+[2025-04-29 21:32:56] Compass Debug Heading: 164.14
+[2025-04-29 21:32:57] Compass Debug Heading: 163.49
+[2025-04-29 21:32:57] Compass Debug Heading: 161.81
+[2025-04-29 21:32:57] Compass Debug Heading: 160.60
+[2025-04-29 21:32:58] Compass Debug Heading: 158.36
+[2025-04-29 21:32:58] Compass Debug Heading: 159.02
+[2025-04-29 21:32:58] Compass Debug Heading: 159.35
+[2025-04-29 21:32:59] Compass Debug Heading: 158.26
+[2025-04-29 21:32:59] Compass Debug Heading: 151.77
+[2025-04-29 21:32:59] Compass Debug Heading: 153.92
+[2025-04-29 21:33:00] Compass Debug Heading: 155.03
+[2025-04-29 21:33:00] Compass Debug Heading: 153.89
+[2025-04-29 21:33:00] Compass Debug Heading: 152.16
+[2025-04-29 21:33:00] Compass Debug Heading: 151.45
+[2025-04-29 21:33:01] Compass Debug Heading: 152.75
+[2025-04-29 21:33:01] Compass Debug Heading: 151.12
+[2025-04-29 21:33:01] Compass Debug Heading: 150.72
+[2025-04-29 21:33:02] Compass Debug Heading: 143.97
+[2025-04-29 21:33:02] Compass Debug Heading: 151.74
+[2025-04-29 21:33:02] Compass Debug Heading: 148.25
+[2025-04-29 21:33:03] Compass Debug Heading: 153.21
+[2025-04-29 21:33:03] Compass Debug Heading: 147.85
+[2025-04-29 21:33:03] Compass Debug Heading: 150.42
+[2025-04-29 21:33:04] Compass Debug Heading: 147.91
+[2025-04-29 21:33:04] Compass Debug Heading: 150.23
+[2025-04-29 21:33:04] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-04-29 21:33:04] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-04-29 21:33:04] Fallback turn: +25 
+[2025-04-29 21:33:04] Executing turn of 25 ...
+[2025-04-29 21:33:04] Starting rotation (gyro): 25.00 
+[2025-04-29 21:33:11] rotate_by_gyro completed. Target: 25.00 , Reached: 24.00 in 6.57s.
+[2025-04-29 21:33:11] Avoidance maneuver completed.
+[2025-04-29 21:33:11] Resuming forward movement...
+[2025-04-29 21:33:11] Compass Debug Heading: 171.50
+[2025-04-29 21:33:11] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-04-29 21:33:11] US 0 triggered: Turning Left (-45 )
+[2025-04-29 21:33:11] Executing turn of -45 ...
+[2025-04-29 21:33:11] Starting rotation (gyro): -45.00 
+[2025-04-29 21:33:21] rotate_by_gyro completed. Target: -45.00 , Reached: -44.04 in 9.42s.
+[2025-04-29 21:33:21] Avoidance maneuver completed.
+[2025-04-29 21:33:21] Resuming forward movement...
+[2025-04-29 21:33:22] Compass Debug Heading: 125.88
+[2025-04-29 21:33:22] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-04-29 21:33:22] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-04-29 21:33:22] Fallback turn: -25 
+[2025-04-29 21:33:22] Executing turn of -25 ...
+[2025-04-29 21:33:22] Starting rotation (gyro): -25.00 
+[2025-04-29 21:33:25] rotate_by_gyro completed. Target: -25.00 , Reached: -24.19 in 3.14s.
+[2025-04-29 21:33:25] Avoidance maneuver completed.
+[2025-04-29 21:33:25] Resuming forward movement...
+[2025-04-29 21:33:26] Compass Debug Heading: 97.55
+[2025-04-29 21:33:26] Compass Debug Heading: 98.62
+[2025-04-29 21:33:26] Compass Debug Heading: 95.91
+[2025-04-29 21:33:26] Compass Debug Heading: 95.38
+[2025-04-29 21:33:27] Compass Debug Heading: 94.03
+[2025-04-29 21:33:27] Compass Debug Heading: 94.41
+[2025-04-29 21:33:27] Compass Debug Heading: 91.94
+[2025-04-29 21:33:28] Compass Debug Heading: 93.38
+[2025-04-29 21:33:28] Compass Debug Heading: 96.13
+[2025-04-29 21:33:28] Compass Debug Heading: 93.95
+[2025-04-29 21:33:29] Compass Debug Heading: 93.53
+[2025-04-29 21:33:29] Compass Debug Heading: 97.29
+[2025-04-29 21:33:29] Compass Debug Heading: 93.06
+[2025-04-29 21:33:30] Compass Debug Heading: 93.68
+[2025-04-29 21:33:30] Compass Debug Heading: 96.33
+[2025-04-29 21:33:30] Compass Debug Heading: 94.90
+[2025-04-29 21:33:31] Compass Debug Heading: 96.92
+[2025-04-29 21:33:31] Compass Debug Heading: 97.77
+[2025-04-29 21:33:31] Compass Debug Heading: 96.91
+[2025-04-29 21:33:31] Compass Debug Heading: 98.56
+[2025-04-29 21:33:32] Compass Debug Heading: 99.75
+[2025-04-29 21:33:32] Compass Debug Heading: 97.16
+[2025-04-29 21:33:32] Compass Debug Heading: 96.22
+[2025-04-29 21:33:33] Compass Debug Heading: 99.43
+[2025-04-29 21:33:33] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-04-29 21:33:33] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-04-29 21:33:33] Fallback turn: +25 
+[2025-04-29 21:33:33] Executing turn of 25 ...
+[2025-04-29 21:33:33] Starting rotation (gyro): 25.00 
+[2025-04-29 21:33:41] rotate_by_gyro completed. Target: 25.00 , Reached: 24.03 in 8.12s.
+[2025-04-29 21:33:41] Avoidance maneuver completed.
+[2025-04-29 21:33:41] Resuming forward movement...
+[2025-04-29 21:33:42] Compass Debug Heading: 126.14
+[2025-04-29 21:33:42] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-04-29 21:33:42] US 1 triggered: Turning Right (+45 )
+[2025-04-29 21:33:42] Executing turn of 45 ...
+[2025-04-29 21:33:42] Starting rotation (gyro): 45.00 
+[2025-04-29 21:33:47] rotate_by_gyro completed. Target: 45.00 , Reached: 44.11 in 5.28s.
+[2025-04-29 21:33:47] Avoidance maneuver completed.
+[2025-04-29 21:33:47] Resuming forward movement...
+[2025-04-29 21:33:48] Compass Debug Heading: 186.90
+[2025-04-29 21:33:48] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-04-29 21:33:48] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-04-29 21:33:48] Fallback turn: -25 
+[2025-04-29 21:33:48] Executing turn of -25 ...
+[2025-04-29 21:33:48] Starting rotation (gyro): -25.00 
+[2025-04-29 21:33:49] Program interrupted by user (Ctrl+C).
+[2025-04-29 21:33:49] Cleaning up before exit...
+[2025-04-29 21:33:49] Cleaning up GPIO for ultrasound...
+[2025-04-29 21:33:49] Ultrasound GPIO cleanup complete.
+[2025-04-29 21:33:49] Ultrasound GPIO cleanup complete.
+[2025-04-29 21:33:49] Attempting to stop Lidar...
+[2025-04-29 21:33:49] Signal sent to Lidar thread to stop.
+[2025-04-29 21:33:49] Waiting for Lidar thread to join...
+[2025-04-29 21:33:49] Lidar thread joined successfully.
+[2025-04-29 21:33:49] Stopping Lidar motor...
+[2025-04-29 21:33:50] Disconnecting Lidar serial port...
+[2025-04-29 21:33:53] Lidar disconnected.
+[2025-04-29 21:33:53] Lidar cleanup complete.
+[2025-04-29 21:33:53] Cleanup completed. Program finished.
+[2025-04-29 21:33:53] Cleaning up before exit...
+[2025-04-29 21:33:53] Cleaning up GPIO for ultrasound...
+[2025-04-29 21:33:53] Ultrasound GPIO cleanup complete.
+[2025-04-29 21:33:53] Ultrasound GPIO cleanup complete.
+[2025-04-29 21:33:53] Attempting to stop Lidar...
+[2025-04-29 21:33:53] Signal sent to Lidar thread to stop.
+[2025-04-29 21:33:53] Lidar object was not initialized.
+[2025-04-29 21:33:53] Lidar cleanup complete.
+[2025-04-29 21:33:53] Cleanup completed. Program finished.

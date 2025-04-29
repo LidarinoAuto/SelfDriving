@@ -1,9 +1,17 @@
+# Filename: imu_module.py - KORRIGERT VERSJON
+
 import smbus    # For I2C communication
 import time
 import math
 from logging_utils import skriv_logg
-import motor_control # Import motor_control module
-import compass_module # Import compass_module
+import motor_control # Import motor_control module (antar denne inneholder send_command)
+import compass_module # Import compass_module (antar denne inneholder compass_initialized og read_compass_data)
+
+# --- SJEKK/TILPASS DETTE ---
+# Importer HeadingTracker klassen fra din separate fil.
+# Stien m stemme overens med hvor filen ligger i forhold til denne filen.
+from Heading_Tracker import HeadingTracker 
+
 
 # --- Configuration ---
 # IMPORTANT: Verify these settings for YOUR specific IMU chip!
@@ -30,7 +38,29 @@ gyro_bias_z = 0.0       # Calculated Z-axis gyro bias
 bias_calibration_done = False # Flag
 imu_initialized = False # Added initialization flag
 
-# --- Initialization ---
+# --- PID & Rotasjon Kontroll Konfigurasjon ---
+# PD control: Speed = Kp * Error + Kd * dError/dt
+Kp_heading = 0.1   # Proportional gain for heading control (Adjust this!)
+Kd_heading = 0.3   # Derivative gain for damping oscillations (Adjust this!)
+# Ki_heading = 0.0 # Integral gain (ikke i bruk pga oscillasjonsproblemer)
+
+heading_tolerance = 5.0 # Degrees tolerance to consider target reached (Adjust!)
+
+# Interne PID skaleringskonstanter (Arbitr r skala 0-50/8-50)
+# PID-utgangen beregnes f rst p  denne skalaen f r den konverteres til deg/s
+base_speed_heading = 50 
+min_rotate_speed_heading = 8 
+
+# Kalibrert Verdi: Maksimal rotasjonshastighet i deg/s ved base_speed_heading kommando (50.0)
+# BRUK VERDIEN DU M LTE MED CALIBRATE_ROTATE.PY HER!
+MAX_ROBOT_ROTATION_DEGPS_AT_BASE_SPEED = 37.80 # <--- SETT INN DIN FAKTISKE M LTE VERDI (POSITIV)!
+
+# Minimum rotasjonshastighet i deg/s som trengs for at roboten skal bevege seg p litelig
+# Denne beregnes basert p  forholdet mellom min/base hastighet p  den interne skalaen
+# og den kalibrerte maksimale hastigheten.
+MIN_ROBOT_ROTATION_DEGPS = (min_rotate_speed_heading / base_speed_heading) * MAX_ROBOT_ROTATION_DEGPS_AT_BASE_SPEED
+
+# --- Initialisering av IMU ---
 # Updated to set global flag and return status
 def init_imu():
     """
@@ -88,7 +118,7 @@ def init_imu():
         bias_calibration_done = False
         imu_initialized = False
         return False # Indicate failure
-    
+
 # Helper function to read raw Z-axis gyro data
 # IMPORTANT: Adjust register addresses and byte logic for YOUR specific IMU chip!
 def read_raw_gyro_z():
@@ -151,6 +181,7 @@ def read_imu_data():
 
     return compensated_angular_velocity_z
 
+
 # --- Rotation Function (Relative Angle) ---
 def rotate_by_gyro(target_angle_degrees):
     """
@@ -165,7 +196,8 @@ def rotate_by_gyro(target_angle_degrees):
     # Ensure IMU is initialized and calibrated before attempting rotation
     if not imu_initialized or not bias_calibration_done:
         skriv_logg("Cannot execute rotate_by_gyro: IMU not initialized or calibrated.")
-        motor_control.send_command("0 0 0\n") # Ensure motors are stopped
+        # Assuming motor_control is the imported module
+        motor_control.send_command(f"0.0 0.0 {0.0:.2f}\n") # Ensure motors are stopped
         return # Exit function if IMU is not ready
     
     # Reset integrated angle BEFORE starting THIS rotation
@@ -179,8 +211,8 @@ def rotate_by_gyro(target_angle_degrees):
     # Simple proportional control: Speed = Kp_speed * Error
     Kp_speed = 0.4 # Proportional gain for speed control (Lower = slower, Higher = faster turn)
     angle_tolerance = 1.0 # Stop when within +/- 1.0 degrees of target (increased slightly for stability)
-    base_speed = 18 # Max/Base motor speed for rotation (kept at 18)
-    min_rotate_speed = 5 # Minimum motor speed to prevent stalling near target (kept at 5)
+    base_speed = 18 # Max/Base motor speed for rotation (kept at 18) - THIS IS FOR rotate_by_gyro ONLY
+    min_rotate_speed = 5 # Minimum motor speed to prevent stalling near target (kept at 5) - THIS IS FOR rotate_by_gyro ONLY
 
     # Set a timeout for rotation to prevent infinite loops if IMU fails mid-turn
     rotation_timeout = 10.0 # seconds (Adjust as needed)
@@ -216,34 +248,34 @@ def rotate_by_gyro(target_angle_degrees):
         
         # Clamp between min_rotate_speed and base_speed
         if abs_speed_command < min_rotate_speed:
-            # If below min, use min speed, but keep original sign
+            # If below min, use min speed magnitude
             clamped_abs_speed = min_rotate_speed
         elif abs_speed_command > base_speed:
-            # If above max, use base speed
+            # If above max, use base speed magnitude
             clamped_abs_speed = base_speed
         else:
             # If within range, use calculated speed magnitude
             clamped_abs_speed = abs_speed_command
             
-        # Reapply the original sign and convert to integer for motor command
-        # math.copysign(magnitude, sign_value) returns magnitude with the sign of sign_value
-        direction_sign = 1 if error >= 0 else -1 # Bruk feil-fortegnet for retningen
+        # Reapply the original sign and prepare command for ESP32
+        # For rotate_by_gyro, vi sender fortsatt p den interne skalaen (5-18)
+        # Bruker math.copysign for   sikre riktig fortegn p  clamped_abs_speed.
+        rotate_command_for_esp = math.copysign(clamped_abs_speed, rotate_speed_command)
 
-        # Apply the correct direction sign to the clamped absolute speed magnitude
-        send_speed = int(clamped_abs_speed * direction_sign)
+        # --- SEND KOMMANDO TIL ESP32 ---
+        # Send kommandoen som flyttall til ESP32 ("vx vy omega")
+        # Vi sender 0.0 for vx/vy, og den skalerte hastigheten (p 5-18 skalaen) som omega.
+        # Dette forutsetter at ESP32 tolker denne skalaen som en "r " hastighetsverdi for rotate_by_gyro.
+        motor_control.send_command(f"0.0 {0.0:.2f} {rotate_command_for_esp:.2f}\n")
 
-        # Debug logg (Optional, can make log very long - KEEP COMMENTED OUT for clean log)
-        #skriv_logg(f"Integ: {integrated_angle:.2f}  / Target: {target_angle_degrees:.2f}  (Remaining: {error:.2f} ), Speed: {send_speed}")
-
-        motor_control.send_command(f"0 0 {send_speed}\n")
 
         time.sleep(0.01) # Keep this short for responsive gyro integration
-
     # Ensure motors stop when loop finishes (either by target or timeout)
-    motor_control.send_command("0 0 0\n")
+    # Assuming motor_control is the imported module
+    motor_control.send_command(f"0.0 0.0 {0.0:.2f}\n")
     time.sleep(0.5) # Liten pause etter stopp
 
-    # Optional: Log final state or reason for loop exit AFTER the loop
+    # Log final state or reason for loop exit AFTER the loop
     end_time = time.time()
     duration = end_time - start_rotation_time
     final_error = target_angle_degrees - integrated_angle
@@ -251,13 +283,16 @@ def rotate_by_gyro(target_angle_degrees):
     if abs(final_error) <= angle_tolerance:
         # Rotation completed successfully (within tolerance)
         # Log is handled by the calling function (main.py)
-        pass
+        skriv_logg(f"rotate_by_gyro completed. Target: {target_angle_degrees:.2f} , Reached: {integrated_angle:.2f} in {duration:.2f}s.")
     elif (end_time - start_rotation_time) >= rotation_timeout:
         # Rotation timed out
         skriv_logg(f"Warning: rotate_by_gyro timed out after {duration:.2f}s. Target: {target_angle_degrees:.2f} , Reached: {integrated_angle:.2f} , Remaining Error: {final_error:.2f} .")
         
+
+
 # --- Heading Rotation Function (Absolute Heading using Compass) ---
-def rotate_to_heading(target_heading_degrees, heading_tracker):
+# SJEKK/TILPASS signatur hvis HeadingTracker objektet gis p annen m te
+def rotate_to_heading(heading_tracker, target_heading_degrees, timeout=20.0):
     """
     Rotates the robot to a specific absolute heading (in degrees, 0-359)
     using Compass feedback. North is 0 degrees.
@@ -267,48 +302,44 @@ def rotate_to_heading(target_heading_degrees, heading_tracker):
     Requires a HeadingTracker object instance to be passed in.
     """
     global imu_initialized, bias_calibration_done
-    # Trenger ogs    sjekke om compass_module er initialisert, da HeadingTracker.update() bruker den.
-    # Vi sjekker dette indirekte ved   sjekke om HeadingTracker-objektet ble opprettet i main,
-    # men en eksplisitt sjekk her ogs  er sikrere.
+    # SJEKK/TILPASS: Antar at compass_module har en global flagg for initialisering
+    # (compass_module.compass_initialized)
     if not imu_initialized or not bias_calibration_done or not compass_module.compass_initialized:
         skriv_logg("Cannot execute rotate_to_heading: IMU/Compass not initialized or calibrated.")
-        motor_control.send_command("0 0 0\n")
-        return
+        # Antar motor_control er importert modul
+        motor_control.send_command(f"0.0 0.0 {0.0:.2f}\n") 
+        return False # Return False ved feil
 
     # Sjekk om HeadingTracker objektet ble sendt inn
     if heading_tracker is None:
         skriv_logg("Error: rotate_to_heading requires a valid HeadingTracker instance.")
-        motor_control.send_command("0 0 0\n")
-        return
+        motor_control.send_command(f"0.0 0.0 {0.0:.2f}\n") 
+        return False # Return False ved feil
     
     # Normalize target heading to be between 0 and 360
     target_heading_degrees = target_heading_degrees % 360
+    if target_heading_degrees < 0:
+        target_heading_degrees += 360
 
+    skriv_logg(f"Executing initial rotation to {target_heading_degrees:.1f}  (Error: {(target_heading_degrees - heading_tracker.get_heading() + 540.0) % 360.0 - 180.0:.1f} )...")
     skriv_logg(f"Starting rotation (compass) to heading: {target_heading_degrees:.2f} ")
-
-    # --- Rotation Control Parameters (Adjust these for tuning) ---
-    # PD control: Speed = Kp * Error + Kd * dError/dt
-    Kp_heading = 0.1 # Proportional gain for heading control (Adjust this!)
-    Kd_heading = 0.3 # Derivative gain for damping oscillations (Adjust this!)
-    heading_tolerance = 5.0 # Stop when within +/- 5.0 degrees of target heading (Adjust!)
-    base_speed_heading = 50 # Max/Base motor speed for heading rotation (Adjust if needed)
-    min_rotate_speed_heading = 8 # Minimum motor speed for heading rotation (Adjust if needed)
 
     # Set a timeout for rotation
     rotation_timeout = 20.0 # seconds (Adjust as needed for large turns)
     start_rotation_time = time.time()
 
-
-    # --- FORSTE AVLESNING OG INITIALISERING FOR D-TERM ---
-    # Les av heading f rste gang for   sjekke initialtilstand og sette opp D-term variabler
-    # Bruk HeadingTracker objektet som ble sendt inn
-    heading_tracker.update() # Oppdater fusjonen med nye sensoravlesninger
-    current_heading = heading_tracker.get_heading() # Hent fuset heading
+    # --- Initial lesing og klargj ring for D-term og loop ---
+    # F rste avlesning for   sjekke initialtilstand og sette opp D-term variabler
+    # VIKTIG: HeadingTracker.update() M  kalles regelmessig (i main loop eller egen tr d)
+    # for at get_heading() skal returnere oppdaterte verdier INNE I LOOPEN.
+    # Vi gj r en update her f r loop-start for   f  en fersk startverdi:
+    heading_tracker.update() 
+    current_heading = heading_tracker.get_heading() 
     
-    if current_heading == -1.0: # H ndter feil med f rste avlesning fra tracker (skal normalt ikke skje hvis init lyktes)
+    if current_heading == -1.0: # H ndter feil med f rste avlesning fra tracker
         skriv_logg("Error: Initial heading read failed in rotate_to_heading.")
-        motor_control.send_command("0 0 0\n") # Stopp motor
-        return # Avbryt funksjonen
+        motor_control.send_command(f"0.0 0.0 {0.0:.2f}\n") 
+        return False # Avbryt funksjonen ved feil
 
     error = ((target_heading_degrees - current_heading + 540.0) % 360.0) - 180.0
 
@@ -317,46 +348,47 @@ def rotate_to_heading(target_heading_degrees, heading_tracker):
     last_time_pid = time.time() # Lagre f rste tidspunkt for dt beregning
     previous_error = error # Lagre den forste feilen som "forrige" feil for D-term
 
-
     # Rotation control loop based on heading error (from compass)
+    # Loop fortsetter til m l n s ELLER timeout
     while (time.time() - start_rotation_time) < rotation_timeout:
-        # --- UPDATE AND GET CURRENT FUSED HEADING (INNE I L KKEN) ---
+        # --- HENT GJELDENDE FUSED HEADING ---
         # Disse kalles N  for HVER gang l kken kj rer, for oppdaterte verdier
-        heading_tracker.update() # <-- VIKTIG! Oppdater trackeren i hver loop-iterasjon
+        # VIKTIG: HeadingTracker.update() M  kalles regelmessig et ANNET STED
+        # (f.eks. i main loop eller en TrackingThread) for at get_heading() her
+        # skal returnere en fersk verdi!
+        # Hvis HeadingTracker kj rer i egen tr d, trenger du ikke kalle update her.
+        # Hvis ikke, M  du kalle update() i denne l kken:
+        heading_tracker.update() # <-- SJEKK/TILPASS: Kall update() her om HeadingTracker ikke har egen tr d
+
 
         # Hent den nylig oppdaterte fusede headingen for PID-feedback
         current_heading = heading_tracker.get_heading()
 
-        # HeadingTracker get_heading() skal normalt ikke returnere -1.0 hvis initialisering lyktes,
-        # men legger til en sjekk for sikkerhet (hvis update feilet feks)
-        if current_heading == -1.0: # H ndter feil inne i l kken
+        # H ndter feil med avlesning fra tracker inne i l kken
+        if current_heading == -1.0: 
             skriv_logg("Warning: Heading tracker returned -1.0 during rotation. Skipping PID update.")
-            motor_control.send_command("0 0 0\n") # Stopp motorene midlertidig ved sensorfeil
-            time.sleep(0.1) # Hold denne p 0.1 for a unng spamme loopen
-            # Tilbakestill tid og forrige heading for   unng  store sprett etter en feilavlesning
+            motor_control.send_command(f"0.0 0.0 {0.0:.2f}\n") # Stopp midlertidig ved sensorfeil
+            time.sleep(0.1) 
+            # Tilbakestill tid og feil for   unng  store sprett etter en feilavlesning
             last_time_pid = time.time()
-            # Pr v   f  en ny heading for previous_heading hvis mulig, ellers behold den gamle
-            temp_heading = heading_tracker.get_heading()
-            previous_heading = temp_heading if temp_heading != -1.0 else previous_heading
+            previous_error = error # Behold forrige gyldige feil
             continue # G  til neste iterasjon
             
             
-        # --- BEREGN P-TERM OG FEIL ---
+        # --- BEREGN FEIL & P-TERM ---
         # Calculate heading error (difference between target and current heading)
         # Bruk smidig wrap-around for   finne korteste vei (error i [-180, 180])
         error = ((target_heading_degrees - current_heading + 540.0) % 360.0) - 180.0
 
 
-        # --- DEBUG LOGG FOR FUSED HEADING OG FEIL ---
-        # Veldig viktig for a se hva PID-en reagerer p
-        # Kan kommenteres ut nar tuning er ferdig
+        # --- DEBUG LOGG ---
         skriv_logg(f"PID Debug - Fused Heading: {current_heading:.2f} , Error: {error:.2f} ")
 
 
         # Check if we are within the target tolerance
         if abs(error) <= heading_tolerance:
             # Rotation completed successfully (within tolerance)
-            # Den endelige loggen skrives etter loopen er ferdig.
+            # Logg skrives etter loopen er ferdig.
             break # Exit loop if target reached
 
 
@@ -371,64 +403,84 @@ def rotate_to_heading(target_heading_degrees, heading_tracker):
         # Beregn derivat-termen basert p endring i feil (unng  div by zero hvis dt er 0)
         derivative_term = (Kd_heading * error_change / dt) if dt > 0 else 0.0
 
+        # Oppdater forrige feil for neste D-term beregning
+        previous_error = error
 
-        # --- BEREGN TOTAL PID KOMMANDO ---
+
+        # --- BEREGN R  PID KOMMANDO P  INTERN SKALA ---
         # P-term (Kp * error) + D-term (Kd * rate_of_change)
-        # Basert p siste logg: Positiv kommando = CW sving.
-        # Positiv feil (trenger CW sving) -> Positiv kommando.
-        # Negativ feil (trenger CCW sving) -> Negativ kommando.
-        # Kp * error gir riktig fortegn.
-        rotate_speed_command = (Kp_heading * error) + derivative_term # <--- P + D KOMMANDO (UTEN MINUS FORAN Kp)
+        # Positiv kommando = CW sving. Positiv feil (trenger CW) -> Positiv kommando.
+        rotate_speed_command_internal_scale = (Kp_heading * error) + derivative_term 
 
 
-        # Apply speed limits and minimum speed based on the calculated command's magnitude.
-        # Use absolute value for clamping, then reapply the original sign.
-        abs_speed_command = abs(rotate_speed_command)
-        
-        # Clamp between min_rotate_speed_heading and base_speed_heading
-        if abs_speed_command < min_rotate_speed_heading and abs(error) > heading_tolerance:
-            # Hvis under min speed, men vi ER IKKE i m l, bruk minimum hastighet
-            clamped_abs_speed = min_rotate_speed_heading
-        elif abs_speed_command > base_speed_heading:
-            # Hvis over maks, bruk base speed
-            clamped_abs_speed = base_speed_heading
-        else:
-            # Hvis innenfor omr de eller allerede i m l (error <= tolerance), bruk beregnet speed magnitude
-            # abs(error) <= heading_tolerance sjekkes over, s  denne gj r ingenting om den ikke er brekket ut
-            clamped_abs_speed = abs_speed_command
-            
-        # Reapply the original sign and convert to integer for motor command
-        # math.copysign(magnitude, sign_value) returns magnitude with the sign of sign_value
-        send_speed = int(math.copysign(clamped_abs_speed, rotate_speed_command))
-
-        previous_error = error        
-
-        # Send motor kommando
-        motor_control.send_command(f"0 0 {send_speed}\n")
-
-        time.sleep(0.2)  
+        # --- Klemm R  PID KOMMANDO til intern skala [-base_speed_heading, base_speed_heading] ---
+        rotate_speed_command_internal_scale = max(min(rotate_speed_command_internal_scale, base_speed_heading), -base_speed_heading)
 
 
-    # Ensure motors stop when loop finishes (either by target or timeout)
-    motor_control.send_command("0 0 0\n") # Stopp motor etter l kken
-    time.sleep(0.5) # Liten pause etter stopp
+        # --- H ndter minimum rotasjonshastighet p  INTERN SKALA ---
+        # Hvis kommandoen ikke er 0, men for lav i abs.verdi, sett til min_rotate_speed_heading
+        # Dette sjekkes kun hvis vi IKKE er innenfor heading_tolerance
+        if rotate_speed_command_internal_scale != 0.0 and abs(rotate_speed_command_internal_scale) < min_rotate_speed_heading and abs(error) > heading_tolerance:
+            rotate_speed_command_internal_scale = math.copysign(min_rotate_speed_heading, rotate_speed_command_internal_scale)
 
-    # Log final state or reason for loop exit
-    end_time = time.time()
-    duration = end_time - start_rotation_time
+
+        # --- SKALER TIL GRADER/SEKUND OG H NDTER MIN DEG/S ---
+        # Den interne kommandoen (rotate_speed_command_internal_scale) er n  p  den interne skalaen (f.eks. -50 til 50).
+        # Vi konverterer den til  nsket rotasjonshastighet i faktiske GRADER/SEKUND ved hjelp av den kalibrerte verdien.
+
+        rotation_command_dps = 0.0
+        if base_speed_heading != 0: # Unng  deling p  null
+            rotation_command_dps = (rotate_speed_command_internal_scale / base_speed_heading) * MAX_ROBOT_ROTATION_DEGPS_AT_BASE_SPEED
+
+        # H ndter minimum rotasjonshastighet i GRADER/SEKUND (bruker den beregnede MIN_ROBOT_ROTATION_DEGPS)
+        # Hvis den skalerte kommandoen i deg/s er ikke-null, men under den minste grensen i deg/s
+        if rotation_command_dps != 0.0 and abs(rotation_command_dps) < MIN_ROBOT_ROTATION_DEGPS:
+            # Sett kommandoen til den minste deg/s verdien, med riktig fortegn som PID-utgangen (rotate_speed_command_internal_scale)
+            rotation_command_dps = math.copysign(MIN_ROBOT_ROTATION_DEGPS, rotate_speed_command_internal_scale)
+
+        # Merk: Maksimal deg/s h ndteres implisitt av skaleringen basert p  MAX_ROBOT_ROTATION_DEGPS_AT_BASE_SPEED
+
+
+        # --- Send kommandoen til ESP32 ---
+        # Send kommandoen som flyttall: "vx vy omega"
+        # Vi roterer bare, s  vx og vy er 0.0
+        # Send den skalerte rotasjonshastigheten i grader/sekund som omega.
+        command_to_send = f"{0.0:.2f} {0.0:.2f} {rotation_command_dps:.2f}\n" # <--- Send float deg/s
+
+        # Send kommandoen via motor_control modulen
+        motor_control.send_command(command_to_send) 
+
+        # --- Loop Delay ---
+        # Vent for   opprettholde en konsistent PID loop frekvens
+        # Denne delay-en p virker dt-beregningen og PID-responsen.
+        time.sleep(0.2) # Bruk din  nskede dveltid her (testet med 0.2)
+
+    # --- Timeout skjedde eller m l n dd ---
+    # S rg for   stoppe motorene uansett hvordan l kken avsluttes
+    motor_control.send_command(f"0.0 0.0 {0.0:.2f}\n") 
+    time.sleep(0.5) # Liten pause etter stopp for   la roboten stanse fysisk
+
     # Les final heading ETTER at motor er stoppet for mest n yaktig sluttverdi
-    # Bruk HeadingTracker objektet
-    heading_tracker.update() # En siste oppdatering
+    # Bruk HeadingTracker objektet. Gj re en siste update for   v re sikker p  fersk data.
+    heading_tracker.update() 
     current_heading_final = heading_tracker.get_heading()
 
     # Beregn slutt-feil
     final_error = ((target_heading_degrees - current_heading_final + 540.0) % 360.0) - 180.0
 
+    # --- Logg sluttresultat ---
+    end_time = time.time()
+    duration = end_time - start_rotation_time
 
     if abs(final_error) <= heading_tolerance: # Sjekk igjen med den helt siste avlesningen
-        skriv_logg(f"Heading rotation to {target_heading_degrees:.2f}  completed. Final heading: {current_heading_final:.2f}  in {duration:.2f}s.")
+        skriv_logg(f"Heading rotation to {target_heading_degrees:.2f} completed. Final heading: {current_heading_final:.2f} in {duration:.2f}s.")
+        return True # Rotasjon fullf rt
+
     elif (end_time - start_rotation_time) >= rotation_timeout:
-        skriv_logg(f"Heading rotation to {target_heading_degrees:.2f}  timed out after {duration:.2f}s. Final heading: {current_heading_final:.2f} , Remaining error: {final_error:.2f} .")
+        skriv_logg(f"Heading rotation to {target_heading_degrees:.2f} timed out after {duration:.2f}s. Final heading: {current_heading_final:.2f} , Remaining error: {final_error:.2f} .")
+        return False # Timeout
+
     else:
         # Usannsynlig   treffe denne hvis ikke brutt av brukeren tidligere
-        skriv_logg(f"Heading rotation to {target_heading_degrees:.2f}  exited unexpectedly after {duration:.2f}s. Final heading: {current_heading_final:.2f} , Remaining error: {final_error:.2f} .")
+        skriv_logg(f"Heading rotation to {target_heading_degrees:.2f} exited unexpectedly after {duration:.2f}s. Final heading: {current_heading_final:.2f} , Remaining error: {final_error:.2f} .")
+        return False # Uventet avslutning
