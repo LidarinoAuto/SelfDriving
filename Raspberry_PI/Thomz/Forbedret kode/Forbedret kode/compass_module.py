@@ -158,9 +158,15 @@ def read_compass_data(): # <--- DETTE ER FUNKSJONEN MAIN.PY TRENGER!
         # Da skal du sannsynligvis bruke (x, y) eller (y, x) eller lignende.
         # La oss holde (y, -x) basert p tidligere logger hvor det s  ut til   virke for heading.
         # Det er en vanlig kompensasjon for en standardorientert sensor snudd 180 grader rundt X-aksen.
-        final_x_for_atan2 = compensated_y  # Offset-korrigert Y-akse (som peker N/S)
-        final_y_for_atan2 = -compensated_x # Negativ offset-korrigert X-akse (som peker  /W)
+        #final_x_for_atan2 = compensated_y  # Offset-korrigert Y-akse (som peker N/S)
+        #final_y_for_atan2 = -compensated_x # Negativ offset-korrigert X-akse (som peker  /W)
         # --- END COMPENSATE FOR UPSIDE-DOWN MOUNTING ---
+        
+        # --- TRYING A DIFFERENT UPSIDE-DOWN / ORIENTATION COMPENSATION ---
+        # Forsoek 1: Antar kompensert X er Nord-komponent og kompensert Y er �st-komponent
+        final_x_for_atan2 = compensated_x # Potensiell Nord-komponent
+        final_y_for_atan2 = compensated_y # Potensiell �st-komponent
+        # --- END NEW COMPENSATION ---
 
 
         # Calculate heading in radians using atan2(final_y_for_atan2, final_x_for_atan2)

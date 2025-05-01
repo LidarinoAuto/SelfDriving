@@ -165,7 +165,7 @@ def main():
             if abs(error_to_north) > initial_rotation_threshold:
                 skriv_logg(f"Executing initial rotation to {target_heading:.1f}  (Error: {error_to_north:.1f} )...")
                 # Kall rotate_to_heading for a svinge til 0 grader (Nord)
-                imu_module.rotate_to_heading(target_heading, heading_tracker) # Kall funksjonen, send med tracker-objektet
+                imu_module.rotate_to_heading(heading_tracker, target_heading)
                 skriv_logg("Initial rotation completed.")
                 # Les ny heading etter initial rotasjon
                 new_heading_after_init_rot = heading_tracker.get_heading()
