@@ -27,23 +27,28 @@ current_target_angle = 0
 
 #log = logging.getLogger()
 
-def vurder_aapning():
+def finn_beste_aapning(heading):
+    """Returnerer vinkel og avstand til åpningen med høyest score basert på retning og avstand."""
     beste_vinkel = None
     beste_avstand = 0
+    beste_score = -1  # laveste mulig score
 
     for angle, distance in lidar.scan_data:
         if distance > 0:
             a = (angle + 360) % 360
-            if a <= 60 or a >= 300:
-                if distance > beste_avstand:
+            if a <= 60 or a >= 300:  # foran roboten
+                score = calculate_opening_score(angle, distance, heading)
+                if score > beste_score:
+                    beste_score = score
                     beste_vinkel = angle
                     beste_avstand = distance
 
-    if beste_avstand > (ROBOT_DIAMETER + SIKKERHETSMARGIN):
-        logg.skriv_logg(f"[SOK] Beste aapning pa {beste_vinkel:.1f} grader, avstand {beste_avstand:.1f} cm.")
+    if beste_vinkel is not None:
+        logg.skriv_logg(f"[SOK] Valgt aapning {beste_vinkel:.1f}°, avstand {beste_avstand:.1f} cm, score {beste_score:.1f}")
         return beste_vinkel, beste_avstand
     else:
         return None, None
+
 
 def ultralyd_blokkert():
     blokkert = False
@@ -53,6 +58,21 @@ def ultralyd_blokkert():
             blokkert = True
     return blokkert
 
+def calculate_opening_score(opening_angle, distance, current_heading):
+    angle_diff = normalize_angle(opening_angle - current_heading)
+    weight_forward = math.cos(math.radians(angle_diff))  # 1.0 for 0°, 0 for 90°, -1.0 for 180°
+    score = distance * max(0, weight_forward)  # ignorer bakover helt
+    return score
+
+def normalize_angle(angle):
+    """Normaliserer vinkel til [-180, 180) grader."""
+    return (angle + 180) % 360 - 180
+
+def heading_correction(current_heading, target_heading, k=0.5, max_omega=60):
+    avvik = normalize_angle(target_heading - current_heading)
+    omega = -k * avvik
+    omega = max(-max_omega, min(max_omega, omega))
+    return omega
 
 def autonom_logikk(heading):
     global state, drive_start_time, current_target_angle
@@ -66,7 +86,9 @@ def autonom_logikk(heading):
             return (STEP, 0, 0.0)
 
     elif state == "SEARCH":
-        vinkel, avstand = vurder_aapning()
+        vinkel, avstand = finn_beste_aapning(heading)
+
+
         if vinkel is not None:
             delta = ((vinkel - heading + 540) % 360) - 180
             current_target_angle = heading + delta
@@ -75,13 +97,7 @@ def autonom_logikk(heading):
             logg.skriv_logg("[HINDRING] Aapning funnet, starter kjore mot aapning.")
             
             # La roboten snu korrekt med en gang
-            MAX_ROTATE_SPEED = 90.0
-            if delta > MAX_ROTATE_SPEED:
-                omega = MAX_ROTATE_SPEED
-            elif delta < -MAX_ROTATE_SPEED:
-                omega = -MAX_ROTATE_SPEED
-            else:
-                omega = delta
+            omega = heading_correction(heading, current_target_angle)
     
             return (STEP, 0, omega)
         
@@ -93,21 +109,19 @@ def autonom_logikk(heading):
 
     elif state == "DRIVING":
         if (time.time() - drive_start_time) < DRIVE_TIME:
-            vinkel, avstand = vurder_aapning()
+            vinkel, avstand = finn_beste_aapning(heading)
+
+
             if vinkel is not None:
                 delta = ((vinkel - heading + 540) % 360) - 180
                 if abs(delta) > 10:
             
                     # Juster hastighet mot m�lvinkel proporsjonalt
                     MAX_ROTATE_SPEED = 90.0  # eller en annen verdi du �nsker
-                    if delta > MAX_ROTATE_SPEED:
-                        omega = MAX_ROTATE_SPEED
-                    elif delta < -MAX_ROTATE_SPEED:
-                        omega = -MAX_ROTATE_SPEED
-                    else:
-                        omega = delta
-                    logg.skriv_logg(f"[KORRIGERING] Avviker fra mål med {delta:.1} grader, korrigerer med omega={omega:.1f}.")
-                    return (STEP, 0, omega)
+                    if abs(normalize_angle(current_target_angle - heading)) > 5:
+                        omega = heading_correction(heading, current_target_angle)
+                        logg.skriv_logg(f"[KORRIGERING] Korrigerer heading mot mål: omega={omega:.1f}")
+                        return (STEP, 0, omega)
 
             logg.skriv_logg("[DRIVING] Kjorer rett frem uten korreksjon.")
             return (STEP, 0, 0.0)
