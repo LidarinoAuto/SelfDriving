@@ -6,11 +6,10 @@ import os
 import smbus # For I2C communication
 import time # For time functions (time.sleep())
 import math # For mathematical functions (atan2, degrees)
-from logging_utils import skriv_logg
+from logging_utils import skriv_logg # Importerer din skriv_logg funksjon
 
 # --- I2C Address and Register Addresses for QMC5883L ---
 QMC5883L_ADDRESS = 0x0d # Standard I2C address for QMC5883L
-# Moved bus initialization inside init_compass for better error handling
 bus = None # Initialize bus as None initially
 
 # Register Addresses for QMC5883L
@@ -19,9 +18,10 @@ QMC5883L_SET_RESET = 0x0B # Reset register
 QMC5883L_DATA = 0x00 # Start register for X_L data (data begins here)
 
 # --- Global Variables ---
-compass_initialized = False # Flag to indicate successful initialization
 offset_x = 0.0 # Global variable for X offset
 offset_y = 0.0 # Global variable for Y offset
+# Flag to indicate successful initialization
+compass_initialized = False
 
 # --- INITIALIZATION ---
 def init_compass():
@@ -34,24 +34,20 @@ def init_compass():
     skriv_logg("Initializing QMC5883L...")
     try:
         bus = smbus.SMBus(1) # Standard I2C bus on Raspberry Pi (often 1)
-
         # Perform a soft reset by writing to the reset register
         bus.write_byte_data(QMC5883L_ADDRESS, QMC5883L_SET_RESET, 0x01)
         time.sleep(0.1) # Give the sensor some time after reset
-
         # Write to Control Register 1 to set mode and settings
-        # Continuous mode, 50Hz ODR, 8G range, 256x oversampling
-        # Check datasheet for exact bit meanings if needed
-        bus.write_byte_data(QMC5883L_ADDRESS, QMC5883L_CTRL1, 0b00011101) # Example configuration
+        # 0b00011101: OSR=512, RNG=8G, ODR=200Hz, Mode=Continuous
+        bus.write_byte_data(QMC5883L_ADDRESS, QMC5883L_CTRL1, 0b00011101)
         time.sleep(0.1) # Wait for the sensor to start measurements
+        skriv_logg("QMC5883L sensor initialisert via I2C successfully.")
 
-        skriv_logg("QMC5883L sensor initialized via I2C successfully.") # Justert loggtekst
-        
         # --- LOAD CALIBRATION OFFSETS ---
-        # Loading offsets is NOT critical for sensor initialization status
         try:
-            if os.path.exists("kompas_offset.txt"):
-                with open("kompas_offset.txt", "r") as f:
+            offset_file_path = "kompas_offset.txt" # Bruker din filnavn
+            if os.path.exists(offset_file_path):
+                with open(offset_file_path, "r") as f:
                     lines = f.readlines()
                     if len(lines) >= 2:
                         offset_x = float(lines[0].strip())
@@ -62,19 +58,19 @@ def init_compass():
             else:
                 skriv_logg("Warning: kompas_offset.txt not found. Running without compass calibration offsets.")
         except Exception as e:
-                skriv_logg(f"Warning: Error loading compass offsets: {e}")
+            skriv_logg(f"Warning: Error loading compass offsets: {e}")
         # --- END LOAD CALIBRATION OFFSETS ---
 
-        compass_initialized = True # <-- SETT TIL TRUE HER VED SUKSESS MED I2C
+        compass_initialized = True # <-- Sett til TRUE her ved suksess med I2C
         return True # <--- RETURNER TRUE HVIS I2C INITIALISERING LYKTES
-    
+
     except FileNotFoundError:
         skriv_logg("Error: I2C bus not found for compass. Make sure I2C is enabled.")
         compass_initialized = False # Sett til False ved feil
         bus = None # Sett bus til None ved feil
         return False # <--- RETURNER FALSE VED KRITISK FEIL
     except Exception as e:
-        skriv_logg(f"Error during QMC5883L I2C initialization: {e}") # Justert loggtekst
+        skriv_logg(f"Error during QMC5883L I2C initialization: {e}")
         compass_initialized = False # Sett til False ved feil
         bus = None # Sett bus til None ved feil
         return False # <--- RETURNER FALSE VED KRITISK FEIL
@@ -82,24 +78,14 @@ def init_compass():
 
 # --- READING COMPASS DATA ---
 def read_raw_xy():
-    #"""Reads raw X and Y data from QMC5883L sensor."""
+    """Reads raw X and Y data from QMC5883L sensor."""
     global bus, QMC5883L_ADDRESS
-    # Legg til sjekk for compass_initialized her ogs 
+    # Legg til sjekk for compass_initialized her ogs
     if not compass_initialized or bus is None:
         return 0, 0 # Return 0s if not initialized or bus is not available
 
     try:
-        # Ensure the sensor is in continuous measurement mode if not already
-        # This might be redundant if init_compass already sets this,
-        # but safe to ensure for raw reads.
-        # We saw 0x1D (0b00011101) in working code, let's ensure that mode
-        # bus.write_byte_data(QMC5883L_ADDRESS, 0x09, 0x1D) # Dette er CTRL1, modus er 0x0B = 0x01? Sjekk datasheet
-        # bus.write_byte_data(QMC5883L_ADDRESS, 0x0B, 0x01) # Sjekk datasheet for dette!
-        # Ok, den forrige koden hadde 0x09, 0b00011101 som CTRL1. Det er nok riktig.
-        # Fjern ekstra skriving til register i read_raw_xy hvis init_compass gj r det
-        # Dette kan forstyrre lesingen.
-
-        # Les 6 bytes av data fra QMC5883L, starter fra register 0x00 (Data Register)
+        # Read 6 bytes of data from QMC5883L, starting from register 0x00 (Data Register)
         data = bus.read_i2c_block_data(QMC5883L_ADDRESS, QMC5883L_DATA, 6)
 
         # Konverter raw bytes til signed 16-bit integers (Little-Endian)
@@ -116,7 +102,7 @@ def read_raw_xy():
         return x, y
     except Exception as e:
         # Avoid crashing the calibration tool on read error
-        # print(f"Error reading raw compass data: {e}") # Dette er for calibration tool
+        skriv_logg(f"Error reading raw compass data: {e}") # Bruker skriv_logg
         return 0, 0 # Return zeros on error
 
 
@@ -130,7 +116,7 @@ def read_compass_data(): # <--- DETTE ER FUNKSJONEN MAIN.PY TRENGER!
     global compass_initialized, offset_x, offset_y # Bruk de globale offsetene
 
     # Check if the compass sensor has been successfully initialized
-    if not compass_initialized or bus is None: # Sjekk ogs  om bus er satt
+    if not compass_initialized or bus is None: # Sjekk ogs om bus er satt
         # skriv_logg("Warning: Attempted to read compass before initialization.") # Optional debug
         return -1.0 # Return -1.0 if not initialized or bus is not available
 
@@ -139,41 +125,26 @@ def read_compass_data(): # <--- DETTE ER FUNKSJONEN MAIN.PY TRENGER!
         x_raw, y_raw = read_raw_xy() # Kall hjelpefunksjonen
 
         # Hvis raw data var 0 pga feil i read_raw_xy, returner feil
-        # En enkel sjekk, kan forbedres
         if x_raw == 0 and y_raw == 0:
             # skriv_logg("Warning: Raw compass data was zero.") # Kan spamme loggen
             return -1.0
 
         # --- APPLY CALIBRATION OFFSETS (Hard-Iron Compensation) ---
-        # Subtract the loaded hard-iron offsets
+        # Bruker de globale offsetene lastet i init_compass
         compensated_x = x_raw - offset_x
         compensated_y = y_raw - offset_y
         # --- END APPLY CALIBRATION OFFSETS ---
 
+        # --- ORIENTATION COMPENSATION FOR UPSIDE-DOWN MOUNTING (Test 6) ---
+        final_x_for_atan2 = compensated_y # Bruk kompensert +Y som Nord-komponent
+        final_y_for_atan2 = compensated_x # Bruk kompensert +X som �st-komponent
+        # --- SLUTT ORIENTATION COMPENSATION FOR UPSIDE-DOWN MOUNTING ---
 
-        # --- COMPENSATE FOR UPSIDE-DOWN MOUNTING (if sensor is mounted upside down) ---
-        # Viktig: Sjekk at denne kompensasjonen (y, -x) stemmer for DIN montering!
-        # Standard atan2(y, x) gir 0 mot +x ( st). Kompass 0 er mot +y (Nord).
-        # Hvis din sensor gir +Y mot Nord og +X mot  st, s  skal du IKKE bruke (y, -x).
-        # Da skal du sannsynligvis bruke (x, y) eller (y, x) eller lignende.
-        # La oss holde (y, -x) basert p tidligere logger hvor det s  ut til   virke for heading.
-        # Det er en vanlig kompensasjon for en standardorientert sensor snudd 180 grader rundt X-aksen.
-        #final_x_for_atan2 = compensated_y  # Offset-korrigert Y-akse (som peker N/S)
-        #final_y_for_atan2 = -compensated_x # Negativ offset-korrigert X-akse (som peker  /W)
-        # --- END COMPENSATE FOR UPSIDE-DOWN MOUNTING ---
-        
-        # --- TRYING A DIFFERENT UPSIDE-DOWN / ORIENTATION COMPENSATION ---
-        # Forsoek 1: Antar kompensert X er Nord-komponent og kompensert Y er �st-komponent
-        final_x_for_atan2 = compensated_x # Potensiell Nord-komponent
-        final_y_for_atan2 = compensated_y # Potensiell �st-komponent
-        # --- END NEW COMPENSATION ---
-
-
-        # Calculate heading in radians using atan2(final_y_for_atan2, final_x_for_atan2)
+        # Calculate heading in radians using atan2(East_component, North_component)
         heading_rad = math.atan2(final_y_for_atan2, final_x_for_atan2)
 
 
-        # Convert heading from radians to degrees
+        # Convert radians to degrees
         heading_deg = math.degrees(heading_rad)
 
         # Normalize heading to be between 0 and 360 degrees
@@ -182,7 +153,7 @@ def read_compass_data(): # <--- DETTE ER FUNKSJONEN MAIN.PY TRENGER!
             heading_deg += 360
 
         # --- DEBUG LOG ---
-        skriv_logg(f"Compass Debug Heading: {heading_deg:.2f}")
+        skriv_logg(f"Compass Debug Heading: {heading_deg:.2f}") # Bruker skriv_logg for debug
         # --- END DEBUG LOG ---
 
         # Return the calculated heading in degrees
@@ -190,7 +161,7 @@ def read_compass_data(): # <--- DETTE ER FUNKSJONEN MAIN.PY TRENGER!
 
     except Exception as e:
         # Handle potential errors during I2C communication or calculation
-        # skriv_logg(f"Error reading QMC5883L: {e}") # Optional: Uncomment for debugging errors
+        skriv_logg(f"Error reading QMC5883L: {e}") # Bruker skriv_logg
         # Return -1.0 on error (can be handled in the main program)
         return -1.0 # Return -1.0 on error
 
@@ -202,7 +173,6 @@ def get_compass_direction(deg):
     """
     # List of the 16 main directions for precise navigation
     dirs = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
-
     # Handle any abnormal degrees outside 0-360 range (though read_compass normalizes)
     if deg is None or deg < 0 or deg > 360:
         return "Unknown"
@@ -210,7 +180,6 @@ def get_compass_direction(deg):
     # Calculate index based on degrees. Add 11.25 to center around North (0/360 degrees)
     # 360 / 16 = 22.5 degrees per sector
     index = int((deg + 11.25) % 360 // 22.5)
-
     # Return the calculated direction
     return dirs[index]
 

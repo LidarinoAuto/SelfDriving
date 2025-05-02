@@ -5,8 +5,8 @@ import mpu6050
 import calibration
 from motorsignal import send_movement_command
 from heading import HeadingTracker
-import lidar
-import ultrasound
+#import lidar
+#import ultrasound
 import time
 
 # Konstanter
