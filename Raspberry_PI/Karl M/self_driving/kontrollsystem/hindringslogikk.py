@@ -105,45 +105,49 @@ def ultralyd_blokkert():
 
 
 def autonom_logikk(heading):
-    """Main obstacle avoidance state machine with clear search fallback."""
+    """Main obstacle avoidance state machine with improved rotation logic."""
     global state, drive_start_time, current_target_angle
 
     if state == "IDLE":
+        # Check for obstacles to start searching
         if ultralyd_blokkert() or not lidar.is_path_clear():
             state = "SEARCH"
             logg.skriv_logg("[HINDRING] Hindring oppdaget, starter s�k.")
+            # start rotating immediately to find opening
             return (0, 0, ROTATE_STEP_DEFAULT)
+        # No obstacle: drive forward
         return (STEP, 0, 0)
 
     if state == "SEARCH":
+        # Find opening and calculate heading delta
         angle = finn_storste_aapning()
         if angle is None:
-            logg.skriv_logg("[S�K] Ingen �pning funnet, roterer 30� videre.")
-            return (0, 0, 30.0)
+            # No opening: rotate slowly to scan further
+            logg.skriv_logg("[S�K] Ingen �pning funnet, roterer videre.")
+            return (0, 0, ROTATE_STEP_DEFAULT)
         current_target_angle = angle
-        drive_start_time = None
+        delta = normalize_angle(current_target_angle - heading)
+        # If not yet within tolerance, rotate proportionally
+        if abs(delta) > HEADING_TOLERANCE:
+            omega = heading_correction(heading, current_target_angle)
+            logg.skriv_logg(f"[S�K] Justerer mot �pning: delta {delta:.1f}�, omega {omega:.1f}")
+            return (0, 0, omega)
+        # Aligned: transition to DRIVING
         state = "DRIVING"
-        logg.skriv_logg(f"[S�K] �pning ved {angle:.1f}�, justerer heading.")
-        return (0, 0, heading_correction(heading, current_target_angle))
+        drive_start_time = time.time()
+        logg.skriv_logg(f"[S�K] Justering mot {current_target_angle:.1f}� ferdig, kj�rer frem.")
+        return (STEP, 0, 0)
 
     if state == "DRIVING":
+        # Abort driving if ultrasound detects obstacle
         if ultralyd_blokkert():
             logg.skriv_logg("[DRIVING] Hindring foran, avbryter.")
             state = "IDLE"
             return (0, 0, 0)
-
-        delta = normalize_angle(current_target_angle - heading)
-        if abs(delta) > HEADING_TOLERANCE:
-            logg.skriv_logg(f"[DRIVING] Justerer heading: delta {delta:.1f}�")
-            return (0, 0, heading_correction(heading, current_target_angle))
-
-        if drive_start_time is None:
-            drive_start_time = time.time()
-            logg.skriv_logg("[DRIVING] Heading ok, kj�rer frem.")
-
+        # Continue driving until DRIVE_TIME elapses
         if (time.time() - drive_start_time) < DRIVE_TIME:
             return (STEP, 0, 0)
-
+        # Driving complete: return to IDLE
         logg.skriv_logg("[DRIVING] Kj�ring ferdig, tilbake til IDLE.")
         state = "IDLE"
         return (0, 0, 0)
