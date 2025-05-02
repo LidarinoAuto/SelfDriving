@@ -8,7 +8,7 @@ from sensorer import mpu6050
 from kontrollsystem import calibration
 from kontrollsystem.motorsignal import send_movement_command
 from kontrollsystem.heading import HeadingTracker
-from visning.visualisering import tegn_robot_sentrum, tegn_heading_pil, tegn_lidar, tegn_ultralyd
+from visning.visualisering import (tegn_robot_sentrum, tegn_heading_pil, tegn_lidar, tegn_ultralyd, tegn_aapninger)
 from kontrollsystem.hindringslogikk import autonom_logikk
 import time
 import math
@@ -110,14 +110,10 @@ def main():
         tegn_robot_sentrum(screen)
         tegn_heading_pil(screen, fused_heading, font)
 
-        for angle, distance in lidar.scan_data:
-            if distance > 0:
-                lidar_points.append((angle, distance))
-
-        if len(lidar_points) > MAX_LIDAR_POINTS:
-            lidar_points[:] = lidar_points[-MAX_LIDAR_POINTS:]
-
-        tegn_lidar(screen, lidar_points, fused_heading)
+        ferske_lidar_points = [(angle, distance) for angle, distance in lidar.scan_data if distance > 0]
+        
+        tegn_lidar(screen, ferske_lidar_points, fused_heading)
+        tegn_aapninger(screen, fused_heading)
         tegn_ultralyd(screen, ultrasound.sensor_distances, ultrasound.sensor_angles, fused_heading)
 
         pygame.display.update()

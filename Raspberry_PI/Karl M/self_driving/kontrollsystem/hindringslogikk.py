@@ -5,50 +5,25 @@ from sensorer import ultrasound
 import time
 import math
 import logg
+import visning.visualisering as vis
 
-# Robotens fysiske diameter i centimeter
 ROBOT_DIAMETER = 23.5  # cm
-
-# Ekstra sikkerhetsmargin
 SIKKERHETSMARGIN = 2.0  # cm
-
-# Beregnet sikker radius
 SIKKERHETS_RADIUS = (ROBOT_DIAMETER / 2) + SIKKERHETSMARGIN  # cm
 
 STEP = 100
-ROTATE_STEP = 30.0
-SAFE_DISTANCE_LIDAR = SIKKERHETS_RADIUS  # <-- Bruk sikker radius her!
+ROTATE_STEP = 50.0
+#SAFE_DISTANCE_LIDAR = SIKKERHETS_RADIUS
+SAFE_DISTANCE_LIDAR = 10
 SAFE_DISTANCE_ULTRASOUND = 8  # cm
-DRIVE_TIME = 2.0  # sekunder vi forplikter oss til fremdrift
+DRIVE_TIME = 2.0  # sekunder
+HEADING_TOLERANCE = 5.0  # grader
+AAPNING_BREDDE = 15  # grader minimum �pning
+MAKS_HULL = 3  # antall grader med "falsk" blokkering som tillates
 
 state = "IDLE"
 drive_start_time = 0
 current_target_angle = 0
-
-#log = logging.getLogger()
-
-def finn_beste_aapning(heading):
-    """Returnerer vinkel og avstand til åpningen med høyest score basert på retning og avstand."""
-    beste_vinkel = None
-    beste_avstand = 0
-    beste_score = -1  # laveste mulig score
-
-    for angle, distance in lidar.scan_data:
-        if distance > 0:
-            a = (angle + 360) % 360
-            if a <= 60 or a >= 300:  # foran roboten
-                score = calculate_opening_score(angle, distance, heading)
-                if score > beste_score:
-                    beste_score = score
-                    beste_vinkel = angle
-                    beste_avstand = distance
-
-    if beste_vinkel is not None:
-        logg.skriv_logg(f"[SOK] Valgt aapning {beste_vinkel:.1f}°, avstand {beste_avstand:.1f} cm, score {beste_score:.1f}")
-        return beste_vinkel, beste_avstand
-    else:
-        return None, None
-
 
 def ultralyd_blokkert():
     blokkert = False
@@ -58,21 +33,62 @@ def ultralyd_blokkert():
             blokkert = True
     return blokkert
 
-def calculate_opening_score(opening_angle, distance, current_heading):
-    angle_diff = normalize_angle(opening_angle - current_heading)
-    weight_forward = math.cos(math.radians(angle_diff))  # 1.0 for 0°, 0 for 90°, -1.0 for 180°
-    score = distance * max(0, weight_forward)  # ignorer bakover helt
-    return score
-
 def normalize_angle(angle):
-    """Normaliserer vinkel til [-180, 180) grader."""
-    return (angle + 180) % 360 - 180
+    return int((angle + 180) % 360 - 180)
 
-def heading_correction(current_heading, target_heading, k=0.5, max_omega=60):
+def finn_aapninger():
+    fri = [False] * 360
+    for angle, distance in lidar.scan_data:
+        if isinstance(angle, (int, float)):
+            angle = int(round(angle)) % 360
+            if distance > SAFE_DISTANCE_LIDAR:
+                fri[angle] = True
+
+    # Glatt ut sm� hull
+    for i in range(360):
+        if not fri[i]:
+            hull_start = i
+            lengde = 0
+            while lengde < MAKS_HULL and not fri[(i + lengde) % 360]:
+                lengde += 1
+            if lengde <= MAKS_HULL:
+                for j in range(lengde):
+                    fri[(i + j) % 360] = True
+
+    apninger = []
+    start = None
+    for i in range(360 + AAPNING_BREDDE):
+        idx = i % 360
+        if fri[idx]:
+            if start is None:
+                start = idx
+        else:
+            if start is not None:
+                slutt = (idx - 1) % 360
+                bredde = (slutt - start) % 360 + 1
+                if bredde >= AAPNING_BREDDE:
+                    apninger.append((start, slutt))
+                start = None
+
+    return apninger
+
+def finn_storste_aapning(heading):
+    apninger = finn_aapninger()
+    if not apninger:
+        vis.sett_aapninger([], None)
+        return None, None
+
+    beste = max(apninger, key=lambda a: (a[1] - a[0]) % 360)
+    bredde = (beste[1] - beste[0]) % 360
+    midt = (beste[0] + bredde / 2) % 360
+    vis.sett_aapninger(apninger, midt)
+    logg.skriv_logg(f"[SOK] Valgt �pning {beste[0]}?{beste[1]}, midt: {midt:.1f}�")
+    return midt, 100  # midt og dummyavstand
+
+def heading_correction(current_heading, target_heading, k=0.5, max_omega=90):
     avvik = normalize_angle(target_heading - current_heading)
     omega = -k * avvik
-    omega = max(-max_omega, min(max_omega, omega))
-    return omega
+    return max(-max_omega, min(max_omega, omega))
 
 def autonom_logikk(heading):
     global state, drive_start_time, current_target_angle
@@ -80,56 +96,38 @@ def autonom_logikk(heading):
     if state == "IDLE":
         if not lidar.is_path_clear() or ultralyd_blokkert():
             state = "SEARCH"
-            logg.skriv_logg("[HINDRING] Starter sok etter aapning.")
+            logg.skriv_logg("[HINDRING] Starter s�k etter �pning.")
             return (0, 0, ROTATE_STEP)
         else:
             return (STEP, 0, 0.0)
 
     elif state == "SEARCH":
-        vinkel, avstand = finn_beste_aapning(heading)
-
+        vinkel, _ = finn_storste_aapning(heading)
 
         if vinkel is not None:
-            delta = ((vinkel - heading + 540) % 360) - 180
+            delta = normalize_angle(vinkel - heading)
             current_target_angle = heading + delta
             drive_start_time = time.time()
             state = "DRIVING"
-            logg.skriv_logg("[HINDRING] Aapning funnet, starter kjore mot aapning.")
-            
-            # La roboten snu korrekt med en gang
+            logg.skriv_logg("[HINDRING] �pning funnet, starter kj�ring mot �pning.")
             omega = heading_correction(heading, current_target_angle)
-    
             return (STEP, 0, omega)
-        
         else:
-            logg.skriv_logg("[HINDRING] Ingen aapning funnet, roterer sakte videre.")
-            # Hvis ingen �pning funnet, roter sakte
-            return (0, 0, 15.0)
-
+            logg.skriv_logg("[HINDRING] Ingen �pning funnet, roterer videre.")
+            current_target_angle = (heading + 30) % 360
+            return (0, 0, 30.0)
 
     elif state == "DRIVING":
         if (time.time() - drive_start_time) < DRIVE_TIME:
-            vinkel, avstand = finn_beste_aapning(heading)
-
-
-            if vinkel is not None:
-                delta = ((vinkel - heading + 540) % 360) - 180
-                if abs(delta) > 10:
-            
-                    # Juster hastighet mot m�lvinkel proporsjonalt
-                    MAX_ROTATE_SPEED = 90.0  # eller en annen verdi du �nsker
-                    if abs(normalize_angle(current_target_angle - heading)) > 5:
-                        omega = heading_correction(heading, current_target_angle)
-                        logg.skriv_logg(f"[KORRIGERING] Korrigerer heading mot mål: omega={omega:.1f}")
-                        return (STEP, 0, omega)
-
-            logg.skriv_logg("[DRIVING] Kjorer rett frem uten korreksjon.")
-            return (STEP, 0, 0.0)
+            delta = normalize_angle(current_target_angle - heading)
+            if abs(delta) > HEADING_TOLERANCE:
+                omega = heading_correction(heading, current_target_angle)
+                logg.skriv_logg(f"[KORRIGERING] Heading delta={delta:.1f}, omega={omega:.1f}")
+                return (0, 0, omega)
+            else:
+                logg.skriv_logg("[DRIVING] Heading ok, kj�rer frem.")
+                return (STEP, 0, 0.0)
         else:
             state = "IDLE"
-            logg.skriv_logg(f"[TILBAKE TIL IDLE] Kjoring mot aapning ferdig. Heading nå: {heading:.1f} grader.")
+            logg.skriv_logg(f"[TILBAKE TIL IDLE] Fremdrift ferdig. N�v�rende heading: {heading:.1f}�")
             return (STEP, 0, 0.0)
-
-    else:
-        state = "IDLE"
-        return (0, 0, 0.0)
