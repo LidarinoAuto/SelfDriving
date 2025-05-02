@@ -13,12 +13,11 @@ SIKKERHETS_RADIUS = (ROBOT_DIAMETER / 2) + SIKKERHETSMARGIN  # cm
 
 STEP = 100
 ROTATE_STEP = 50.0
-#SAFE_DISTANCE_LIDAR = SIKKERHETS_RADIUS
-SAFE_DISTANCE_LIDAR = 10
+SAFE_DISTANCE_LIDAR = 10.0  # <--- Test lav verdi
 SAFE_DISTANCE_ULTRASOUND = 8  # cm
 DRIVE_TIME = 2.0  # sekunder
 HEADING_TOLERANCE = 5.0  # grader
-AAPNING_BREDDE = 15  # grader minimum �pning
+AAPNING_BREDDE = 8  # <--- Test lavere terskel
 MAKS_HULL = 3  # antall grader med "falsk" blokkering som tillates
 
 state = "IDLE"
@@ -44,6 +43,12 @@ def finn_aapninger():
             if distance > SAFE_DISTANCE_LIDAR:
                 fri[angle] = True
 
+    print("Antall frie vinkler:", sum(fri))
+    print("LIDAR verdier over SAFE_DISTANCE_LIDAR:")
+    for angle, distance in lidar.scan_data:
+        if distance > SAFE_DISTANCE_LIDAR:
+            print(f"  Vinkel {angle:.1f}� - Avstand {distance:.1f} cm")
+
     # Glatt ut sm� hull
     for i in range(360):
         if not fri[i]:
@@ -55,20 +60,33 @@ def finn_aapninger():
                 for j in range(lengde):
                     fri[(i + j) % 360] = True
 
+    # S�k etter sammenhengende frie segmenter
     apninger = []
-    start = None
-    for i in range(360 + AAPNING_BREDDE):
-        idx = i % 360
-        if fri[idx]:
-            if start is None:
-                start = idx
-        else:
-            if start is not None:
-                slutt = (idx - 1) % 360
-                bredde = (slutt - start) % 360 + 1
-                if bredde >= AAPNING_BREDDE:
-                    apninger.append((start, slutt))
-                start = None
+    i = 0
+    while i < 360:
+        if fri[i]:
+            start = i
+            while i < 360 and fri[i]:
+                i += 1
+            slutt = (i - 1) % 360
+            bredde = (slutt - start + 1) % 360
+            if start > slutt:
+                bredde = 360 - start + slutt + 1
+            if bredde >= AAPNING_BREDDE:
+                apninger.append((start, slutt))
+        i += 1
+
+    # Wraparound: hvis siste og f�rste del er sammenhengende
+    if fri[0] and fri[-1]:
+        start = 0
+        while start < 360 and fri[start]:
+            start += 1
+        slutt = 359
+        while slutt >= 0 and fri[slutt]:
+            slutt -= 1
+        bredde = (359 - slutt + start) % 360
+        if bredde >= AAPNING_BREDDE:
+            apninger.append(((slutt + 1) % 360, (start - 1) % 360))
 
     return apninger
 
@@ -78,8 +96,11 @@ def finn_storste_aapning(heading):
         vis.sett_aapninger([], None)
         return None, None
 
-    beste = max(apninger, key=lambda a: (a[1] - a[0]) % 360)
-    bredde = (beste[1] - beste[0]) % 360
+    for a_start, a_slutt in apninger:
+        logg.skriv_logg(f"[SOK] Funnet �pning: {a_start}� ? {a_slutt}�")
+
+    beste = max(apninger, key=lambda a: (a[1] - a[0]) % 360 if a[1] >= a[0] else (360 - a[0] + a[1]))
+    bredde = (beste[1] - beste[0]) % 360 if beste[1] >= beste[0] else (360 - beste[0] + beste[1])
     midt = (beste[0] + bredde / 2) % 360
     vis.sett_aapninger(apninger, midt)
     logg.skriv_logg(f"[SOK] Valgt �pning {beste[0]}?{beste[1]}, midt: {midt:.1f}�")
