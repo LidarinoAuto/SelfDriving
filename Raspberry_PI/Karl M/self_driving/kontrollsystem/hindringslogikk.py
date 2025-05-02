@@ -1,154 +1,149 @@
-# forbedret_hindringslogikk.py
-
-from sensorer import lidar
-from sensorer import ultrasound
+from sensorer import lidar, ultrasound
 import time
 import math
 import logg
 import visning.visualisering as vis
 
+# Robot dimensions and safety
 ROBOT_DIAMETER = 23.5  # cm
-SIKKERHETSMARGIN = 2.0  # cm
-SIKKERHETS_RADIUS = (ROBOT_DIAMETER / 2) + SIKKERHETSMARGIN  # cm
+SAFETY_MARGIN = 2.0     # cm
+SIKKERHETS_RADIUS = ROBOT_DIAMETER / 2 + SAFETY_MARGIN  # cm
 
+# Control parameters
 STEP = 100
-ROTATE_STEP = 50.0
-SAFE_DISTANCE_LIDAR = 10.0  # <--- Test lav verdi
-SAFE_DISTANCE_ULTRASOUND = 8  # cm
-DRIVE_TIME = 2.0  # sekunder
-HEADING_TOLERANCE = 5.0  # grader
-AAPNING_BREDDE = 8  # <--- Test lavere terskel
-MAKS_HULL = 3  # antall grader med "falsk" blokkering som tillates
+ROTATE_STEP_DEFAULT = 50.0
+HEADING_TOLERANCE = 5.0   # degrees
+DRIVE_TIME = 2.0          # seconds
+SAFE_DISTANCE_ULTRASOUND = 10.0  # cm
 
+# State variables
 state = "IDLE"
-drive_start_time = 0
-current_target_angle = 0
+drive_start_time = None
+current_target_angle = None
 
-def ultralyd_blokkert():
-    blokkert = False
-    for sensor, distance in ultrasound.sensor_distances.items():
-        if distance > 0 and distance < SAFE_DISTANCE_ULTRASOUND:
-            logg.skriv_logg(f"[ULTRALYD] Sensor {sensor} blokkert, avstand {distance:.1f} cm.")
-            blokkert = True
-    return blokkert
 
 def normalize_angle(angle):
-    return int((angle + 180) % 360 - 180)
+    """Normalize angle to [-180, 180)."""
+    return (angle + 180) % 360 - 180
+
+
+def heading_correction(current_heading, target_heading, k=0.5, max_omega=ROTATE_STEP_DEFAULT):
+    """Proportional heading correction, clamped to max_omega."""
+    delta = normalize_angle(target_heading - current_heading)
+    omega = k * delta
+    return max(-max_omega, min(max_omega, omega))
+
 
 def finn_aapninger():
+    """Return list of (start, end, width) for free angular segments."""
     fri = [False] * 360
     for angle, distance in lidar.scan_data:
-        if isinstance(angle, (int, float)):
-            angle = int(round(angle)) % 360
-            if distance > SAFE_DISTANCE_LIDAR:
-                fri[angle] = True
+        if not isinstance(angle, (int, float)) or distance <= SIKKERHETS_RADIUS:
+            continue
+        delta = math.degrees(math.asin(min(SIKKERHETS_RADIUS / distance, 1.0)))
+        start = int(math.floor(angle - delta)) % 360
+        end = int(math.ceil(angle + delta)) % 360
+        i = start
+        while True:
+            fri[i] = True
+            if i == end:
+                break
+            i = (i + 1) % 360
 
-    print("Antall frie vinkler:", sum(fri))
-    print("LIDAR verdier over SAFE_DISTANCE_LIDAR:")
-    for angle, distance in lidar.scan_data:
-        if distance > SAFE_DISTANCE_LIDAR:
-            print(f"  Vinkel {angle:.1f}� - Avstand {distance:.1f} cm")
-
-    # Glatt ut sm� hull
-    for i in range(360):
-        if not fri[i]:
-            hull_start = i
-            lengde = 0
-            while lengde < MAKS_HULL and not fri[(i + lengde) % 360]:
-                lengde += 1
-            if lengde <= MAKS_HULL:
-                for j in range(lengde):
-                    fri[(i + j) % 360] = True
-
-    # S�k etter sammenhengende frie segmenter
-    apninger = []
+    segments = []
     i = 0
     while i < 360:
         if fri[i]:
             start = i
-            while i < 360 and fri[i]:
+            while fri[i % 360]:
                 i += 1
-            slutt = (i - 1) % 360
-            bredde = (slutt - start + 1) % 360
-            if start > slutt:
-                bredde = 360 - start + slutt + 1
-            if bredde >= AAPNING_BREDDE:
-                apninger.append((start, slutt))
-        i += 1
+            end = (i - 1) % 360
+            width = (end - start + 1) if end >= start else (360 - start + end + 1)
+            segments.append((start, end, width))
+        else:
+            i += 1
 
-    # Wraparound: hvis siste og f�rste del er sammenhengende
-    if fri[0] and fri[-1]:
-        start = 0
-        while start < 360 and fri[start]:
-            start += 1
-        slutt = 359
-        while slutt >= 0 and fri[slutt]:
-            slutt -= 1
-        bredde = (359 - slutt + start) % 360
-        if bredde >= AAPNING_BREDDE:
-            apninger.append(((slutt + 1) % 360, (start - 1) % 360))
+    # debug logging
+    total_free = sum(fri)
+    logg.skriv_logg(f"[DEBUG] Antall frie grader: {total_free}, segmenter funnet: {len(segments)}")
 
-    return apninger
+    # wraparound merge
+    if segments and segments[0][0] == 0 and segments[-1][1] == 359:
+        first = segments.pop(0)
+        last = segments.pop(-1)
+        merged = (last[0], first[1], first[2] + last[2])
+        segments.insert(0, merged)
 
-def finn_storste_aapning(heading):
-    apninger = finn_aapninger()
-    if not apninger:
+    return segments
+
+
+def finn_storste_aapning():
+    """Return center angle of the largest opening, or None if none, with debug logs."""
+    openings = finn_aapninger()
+    if not openings:
+        logg.skriv_logg(f"[DEBUG] Ingen �pning: ingen segmenter tilstrekkelig brede.")
         vis.sett_aapninger([], None)
-        return None, None
+        return None
 
-    for a_start, a_slutt in apninger:
-        logg.skriv_logg(f"[SOK] Funnet �pning: {a_start}� ? {a_slutt}�")
+    # convert for visualization
+    segment_pairs = [(start, end) for start, end, _ in openings]
+    best = max(openings, key=lambda x: x[2])
+    start, end, width = best
+    center = (start + width / 2) % 360
+    logg.skriv_logg(f"[S�K] Valgt �pning {start}�?{end}�, bredde {width}�, midt: {center:.1f}�")
+    vis.sett_aapninger(segment_pairs, center)
+    return center
 
-    beste = max(apninger, key=lambda a: (a[1] - a[0]) % 360 if a[1] >= a[0] else (360 - a[0] + a[1]))
-    bredde = (beste[1] - beste[0]) % 360 if beste[1] >= beste[0] else (360 - beste[0] + beste[1])
-    midt = (beste[0] + bredde / 2) % 360
-    vis.sett_aapninger(apninger, midt)
-    logg.skriv_logg(f"[SOK] Valgt �pning {beste[0]}?{beste[1]}, midt: {midt:.1f}�")
-    return midt, 100  # midt og dummyavstand
 
-def heading_correction(current_heading, target_heading, k=0.5, max_omega=90):
-    avvik = normalize_angle(target_heading - current_heading)
-    omega = -k * avvik
-    return max(-max_omega, min(max_omega, omega))
+def ultralyd_blokkert():
+    """Return True if any ultrasound sensor detects an obstacle within threshold."""
+    for sensor, dist in ultrasound.sensor_distances.items():
+        if 0 < dist < SAFE_DISTANCE_ULTRASOUND:
+            logg.skriv_logg(f"[ULTRALYD] Sensor {sensor} blokkert: {dist:.1f} cm")
+            return True
+    return False
+
 
 def autonom_logikk(heading):
+    """Main obstacle avoidance state machine with clear search fallback."""
     global state, drive_start_time, current_target_angle
 
     if state == "IDLE":
-        if not lidar.is_path_clear() or ultralyd_blokkert():
+        if ultralyd_blokkert() or not lidar.is_path_clear():
             state = "SEARCH"
-            logg.skriv_logg("[HINDRING] Starter s�k etter �pning.")
-            return (0, 0, ROTATE_STEP)
-        else:
-            return (STEP, 0, 0.0)
+            logg.skriv_logg("[HINDRING] Hindring oppdaget, starter s�k.")
+            return (0, 0, ROTATE_STEP_DEFAULT)
+        return (STEP, 0, 0)
 
-    elif state == "SEARCH":
-        vinkel, _ = finn_storste_aapning(heading)
-
-        if vinkel is not None:
-            delta = normalize_angle(vinkel - heading)
-            current_target_angle = heading + delta
-            drive_start_time = time.time()
-            state = "DRIVING"
-            logg.skriv_logg("[HINDRING] �pning funnet, starter kj�ring mot �pning.")
-            omega = heading_correction(heading, current_target_angle)
-            return (STEP, 0, omega)
-        else:
-            logg.skriv_logg("[HINDRING] Ingen �pning funnet, roterer videre.")
-            current_target_angle = (heading + 30) % 360
+    if state == "SEARCH":
+        angle = finn_storste_aapning()
+        if angle is None:
+            logg.skriv_logg("[S�K] Ingen �pning funnet, roterer 30� videre.")
             return (0, 0, 30.0)
+        current_target_angle = angle
+        drive_start_time = None
+        state = "DRIVING"
+        logg.skriv_logg(f"[S�K] �pning ved {angle:.1f}�, justerer heading.")
+        return (0, 0, heading_correction(heading, current_target_angle))
 
-    elif state == "DRIVING":
-        if (time.time() - drive_start_time) < DRIVE_TIME:
-            delta = normalize_angle(current_target_angle - heading)
-            if abs(delta) > HEADING_TOLERANCE:
-                omega = heading_correction(heading, current_target_angle)
-                logg.skriv_logg(f"[KORRIGERING] Heading delta={delta:.1f}, omega={omega:.1f}")
-                return (0, 0, omega)
-            else:
-                logg.skriv_logg("[DRIVING] Heading ok, kj�rer frem.")
-                return (STEP, 0, 0.0)
-        else:
+    if state == "DRIVING":
+        if ultralyd_blokkert():
+            logg.skriv_logg("[DRIVING] Hindring foran, avbryter.")
             state = "IDLE"
-            logg.skriv_logg(f"[TILBAKE TIL IDLE] Fremdrift ferdig. N�v�rende heading: {heading:.1f}�")
-            return (STEP, 0, 0.0)
+            return (0, 0, 0)
+
+        delta = normalize_angle(current_target_angle - heading)
+        if abs(delta) > HEADING_TOLERANCE:
+            logg.skriv_logg(f"[DRIVING] Justerer heading: delta {delta:.1f}�")
+            return (0, 0, heading_correction(heading, current_target_angle))
+
+        if drive_start_time is None:
+            drive_start_time = time.time()
+            logg.skriv_logg("[DRIVING] Heading ok, kj�rer frem.")
+
+        if (time.time() - drive_start_time) < DRIVE_TIME:
+            return (STEP, 0, 0)
+
+        logg.skriv_logg("[DRIVING] Kj�ring ferdig, tilbake til IDLE.")
+        state = "IDLE"
+        return (0, 0, 0)
