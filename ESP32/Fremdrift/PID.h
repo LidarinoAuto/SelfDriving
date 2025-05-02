@@ -19,7 +19,7 @@ inline float computePID_withAntiWindup(byte i, float setpoint, float actual, flo
   pid_integral[i] += error * dt;
 
   // Begrens integral (anti-windup del 1)
-  const float integralLimit = 300.0;
+  const float integralLimit = 100.0;
   if (pid_integral[i] > integralLimit)  pid_integral[i] = integralLimit;
   if (pid_integral[i] < -integralLimit) pid_integral[i] = -integralLimit;
 

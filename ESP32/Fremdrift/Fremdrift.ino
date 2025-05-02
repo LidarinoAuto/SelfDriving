@@ -17,9 +17,9 @@ int speedY = 0;
 int rotation = 0;
 
 // === PID-relaterte arrayer (ett sett for hvert hjul) ===
-float pid_kp[3] = {1.75, 1.75, 1.75};
-float pid_ki[3] = {1.0, 1.0, 1.0};
-float pid_kd[3] = {0.0001, 0.0001, 0.0001};
+float pid_kp[3] = {1.32, 1.32, 1.32};
+float pid_ki[3] = {3.5, 3.5, 3.5};
+float pid_kd[3] = {0.028, 0.028, 0.028};
 
 float pid_integral[3]   = {0, 0, 0};
 float pid_lastError[3]  = {0, 0, 0};
