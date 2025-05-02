@@ -17,6 +17,11 @@ class HeadingTracker:
     GYRO_WEIGHT = 0.9
     COMPASS_WEIGHT = 1.0 - GYRO_WEIGHT # Beregnes automatisk
 
+    # Statisk korreksjon for kompasset (grader) basert p  manuell kalibrering
+    # Dette offsetet justerer den r  kompass-headingen til   peke Nord (0 grader)
+    # n r roboten fysisk peker Nord.
+    STATIC_COMPASS_OFFSET = -105.0 # <-------- DEFINER STATISK KORREKSJON HER
+
 
     def __init__(self, imu_data_reader, compass_data_reader): # <--- MOTTA LESEFUNKSJONER HER
         """
@@ -29,17 +34,19 @@ class HeadingTracker:
         self.imu_data_reader = imu_data_reader
         self.compass_data_reader = compass_data_reader
 
-        self._fused_heading = 0.0  # Fused heading, initialized
+        self._fused_heading = 0.0  # Fused heading, initialized (this will be the UNCUTTIGED fused heading)
         self._last_time = time.time() # Time of the last update
 
         # --- Initial calibration/synchronization ---
         # Les kompass ved start for en grov initial heading.
         # Dette skjer KUN n r objektet opprettes.
-        initial_compass_heading = self.compass_data_reader() # Bruk den sendte funksjonen
+        initial_compass_heading_raw = self.compass_data_reader() # Bruk den sendte funksjonen
 
-        if initial_compass_heading != -1.0: # Forutsatt -1.0 indikerer feil i compass_module
-            self._fused_heading = initial_compass_heading
-            skriv_logg(f"HeadingTracker initialized. Initial fused heading set to compass value: {self._fused_heading:.1f} ")
+        if initial_compass_heading_raw != -1.0: # Forutsatt -1.0 indikerer feil i compass_module
+            # Initial fused heading set directly from the raw compass reading
+            self._fused_heading = initial_compass_heading_raw # Store the raw fused heading
+            # Log the raw initial heading
+            skriv_logg(f"HeadingTracker initialized. Initial fused heading set to raw compass value: {self._fused_heading:.1f} ")
         else:
             skriv_logg("Warning: HeadingTracker initialized, but could not get initial compass heading. Fused heading set to 0.")
             self._fused_heading = 0.0 # Fallback til 0 hvis kompass feiler
@@ -66,7 +73,7 @@ class HeadingTracker:
         # --- Get new sensor data using the passed functions ---
         # Kall funksjonene som ble sendt inn til __init__
         gyro_rate = self.imu_data_reader()
-        compass_heading_raw = self.compass_data_reader()
+        compass_heading_raw = self.compass_data_reader() # This is the heading from compass_module (using atan2(-Y,X))
 
 
         # --- Complementary Filter Logic ---
@@ -100,5 +107,10 @@ class HeadingTracker:
             # skriv_logg("Warning: Compass data not available. Fused heading updated using only gyro.") # Unng spamming
 
     def get_heading(self):
-
-        return math.fmod(self._fused_heading, 360.0) if self._fused_heading >= 0 else math.fmod(self._fused_heading, 360.0) + 360
+        """
+        Returns the current fused heading in degrees (0-359.9),
+        with the static compass offset applied.
+        """
+        # Apply the static offset to the fused heading before returning
+        corrected_heading = (self._fused_heading + self.STATIC_COMPASS_OFFSET + 360.0) % 360.0 # <-------- LEGG TIL KORREKSJONEN HER
+        return corrected_heading # Returner den korrigerte headingen

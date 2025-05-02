@@ -135,10 +135,22 @@ def read_compass_data(): # <--- DETTE ER FUNKSJONEN MAIN.PY TRENGER!
         compensated_y = y_raw - offset_y
         # --- END APPLY CALIBRATION OFFSETS ---
 
-        # --- ORIENTATION COMPENSATION FOR UPSIDE-DOWN MOUNTING (Test 6) ---
-        final_x_for_atan2 = compensated_y # Bruk kompensert +Y som Nord-komponent
-        final_y_for_atan2 = compensated_x # Bruk kompensert +X som �st-komponent
+        # --- ORIENTATION COMPENSATION FOR UPSIDE-DOWN MOUNTING (Test 7) ---
+        # Pr�ver atan2(compensated_y, -compensated_x)
+        # Dette antar at kompensert +Y er �st-komponent og kompensert -X er Nord-komponent for atan2(East, North).
+        final_x_for_atan2 = -compensated_x # Bruk kompensert -X som Nord-komponent
+        final_y_for_atan2 = compensated_y # Bruk kompensert +Y som �st-komponent
         # --- SLUTT ORIENTATION COMPENSATION FOR UPSIDE-DOWN MOUNTING ---
+
+        # --- OLD/OTHER ATAN2 COMBINATIONS (Kommentert ut for testing) ---
+        # Original (antar +X Nord, +Y �st for atan2): heading_rad = math.atan2(compensated_y, compensated_x)
+        # Ditt forrige fors�k (antar -X Nord, +Y �st for atan2): heading_rad = math.atan2(compensated_y, -compensated_x)
+        # Test 2: atan2(-compensated_x, -compensated_y): heading_rad = math.atan2(-compensated_x, -compensated_y)
+        # Test 3: atan2(-compensated_y, -compensated_x): heading_rad = math.atan2(-compensated_y, -compensated_x)
+        # Test 4: atan2(compensated_x, -compensated_y): heading_rad = math.atan2(compensated_x, -compensated_y)
+        # Test 5: atan2(-compensated_y, compensated_x): heading_rad = math.atan2(-compensated_y, compensated_x)
+        # Test 6: atan2(compensated_x, compensated_y): heading_rad = math.atan2(compensated_x, compensated_y)
+
 
         # Calculate heading in radians using atan2(East_component, North_component)
         heading_rad = math.atan2(final_y_for_atan2, final_x_for_atan2)
