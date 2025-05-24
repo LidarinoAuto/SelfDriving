@@ -69,6 +69,11 @@ void IRAM_ATTR encoderInterrupt3() {
 // ----------------------------------------------------------
 void setup() {
   Serial.begin(115200);
+    while (!Serial);
+  // Kun de fem kolonnene vi skal plotte:
+  //Serial.println("SP0,Err0,P0,I0,D0");
+
+  // ? resten av setup() uendret ?
 
   // Motorpinner
   motorSetup();
@@ -156,6 +161,9 @@ void loop() {
         // Kall PID
         float pwm = computePID_withAntiWindup(i, setpointSpeed[i], speed_mms, dt_seconds);
 
+        // Ta vare p� gammel feil for D-term:
+        long oldErr0 = pid_lastError[0];
+        
         // Kjør motor
         int fwdPin = (i == 0 ? MOTOR_1_FORWARD_PIN
                      : (i == 1 ? MOTOR_2_FORWARD_PIN : MOTOR_3_FORWARD_PIN));
@@ -171,21 +179,22 @@ void loop() {
           Serial.print("  PWM=");    Serial.println(pwm, 1);
 
           */
-          // Inne i lkken der du itererer gjennom hjulene, sannsynligvis med en variabel 'i' (0, 1, 2...)
-          
-          // Sjekk om gjeldende hjulindeks er 0, 1 eller 2 (antar du har 3 hjul)
-          if (i < 3) { // Korrigert sjekk: Kj r for index 0, 1, 2
-           Serial.print("[M"); // Skriv ut "[M"
-           Serial.print(i); // Skriv ut hjulindeksen (0, 1, eller 2)
-           Serial.print("] "); // Skriv ut "] "
-          
-           // Skriv ut SetPoint for det G JELDENDE hjulet (bruk index 'i')
-           Serial.print("SP=");Serial.print(setpointSpeed[i], 1); // Bruk [i]
-           Serial.print("Act="); Serial.print(speed_mms, 1); // speed_mms antas a v re aktuell hastighet for hjul 'i'
-           Serial.print("Err="); Serial.print(setpointSpeed[i] - speed_mms, 1); // Bruk [i]
-           Serial.print("PWM="); Serial.println(pwm, 1); // pwm antas a v re beregnet PWM for hjul 'i'
-          
+        // Inne i l�kka der du itererer gjennom hjulene (i = 0, 1, 2)
+        // Kun for hjul 0: CSV-utskrift for Serial Plotter
+        if (i == 0) {
+          float err0 = setpointSpeed[0] - speed_mms;
+          float p0   = pid_kp[0] * err0;
+          float i0   = pid_ki[0] * pid_integral[0];
+          float d0   = pid_kd[0] * (err0 - pid_lastError[0]) / dt_seconds;
+        
+          // �n linje med space-separerte label:value-par
+          Serial.print("SP0:"); Serial.print(setpointSpeed[0], 1); Serial.print(" ");
+          Serial.print("Err0:");Serial.print(err0,            1); Serial.print(" ");
+          Serial.print("P0:");  Serial.print(p0,              1); Serial.print(" ");
+          Serial.print("I0:");  Serial.print(i0,              1); Serial.print(" ");
+          Serial.println("D0:");Serial.print(d0,              1);
         }
+
       }
     }
 

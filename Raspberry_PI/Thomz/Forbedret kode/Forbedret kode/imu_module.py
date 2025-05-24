@@ -10,303 +10,322 @@ import motor_control
 import mpu6050 # Assumes your file is named mpu6050.py
 
 # --- Configuration Constants ---
-Kp_heading = 1.5 # Proportional gain for Heading Control
+Kp_heading = 1.2 # Proportional gain for Heading Control
 Kd_heading = 0.5 # Derivative gain for Heading Control
 # Ki_heading = 0.0 # Integral gain (not used in this version)
-
 heading_tolerance = 5.0 # Degrees. Tolerance for rotate_to_heading completion
-
 GYRO_ROTATION_COMMAND_VALUE = 50.0 # Internal command value for gyro rotation
-
 base_speed_heading = 50 # Max rotation speed command scale
-
 # >>> UPDATE THIS VALUE WITH THE RESULT FROM YOUR CALIBRATION SCRIPT (calibrate_rotate.py)! <<<
 MAX_ROBOT_ROTATION_DEGPS_AT_BASE_SPEED = 37.80 # Max rotation speed in deg/s at base_speed_heading
-
+# Minimum rotation speed in degrees per second to overcome friction/inertia
+# This is calculated based on a minimum internal command value (e.g., 50)
 MIN_INTERNAL_ROTATION_COMMAND = 50.0 # Minimum command value to send to motors for rotation
-MIN_ROBOT_ROTATION_DEGPS = (MIN_INTERNAL_ROTATION_COMMAND / base_speed_heading) * MAX_ROBOT_ROTATION_DEGPS_AT_BASE_SPEED if base_speed_heading != 0 else 0.0
+MIN_ROBOT_ROTATION_DEGPS = (MIN_INTERNAL_ROTATION_COMMAND / base_speed_heading) * MAX_ROBOT_ROTATION_DEGPS_AT_BASE_SPEED
 
-GYRO_ROTATION_TOLERANCE = 2.0 # Degrees. Tolerance for rotate_by_gyro completion
+# Global variables for IMU data and calibration
+gyro_bias_z = 0.0
+imu_initialized = False
 
-
-# --- Global Variables ---
-gyro_bias_z = 0.0 # Will be set by calibrate_gyro
-imu_initialized = False # Status for MPU6050 initialization
-gyro_bias_calibration_done = False # Status for gyro bias calibration
-
-# --- Gyro Calibration Function ---
-# This function uses read_gyro_z_raw() from your mpu6050.py
-def calibrate_gyro(samples=500):
-    """
-    Calibrates the Z-axis gyro bias by averaging raw readings while the robot is still.
-    Assumes mpu6050 module is available and initialized.
-    Sets the global gyro_bias_z and gyro_bias_calibration_done flag.
-    """
-    global gyro_bias_z, gyro_bias_calibration_done
-    skriv_logg("Calibrating gyro bias. Keep robot completely still...")
-
-    if not imu_initialized:
-        skriv_logg("MPU6050 not initialized. Cannot calibrate gyro.")
-        gyro_bias_calibration_done = False
-        return False
-
-    total_raw_z = 0.0
-    read_count = 0
-
-    skriv_logg(f"Reading {samples} raw gyro Z samples for bias calibration...")
-    for i in range(samples):
-         try:
-             raw_z_deg_s = mpu6050.read_gyro_z_raw()
-             if raw_z_deg_s is not None:
-                 total_raw_z += raw_z_deg_s
-                 read_count += 1
-             else:
-                 skriv_logg(f"Warning: Failed to read MPU6050 raw gyro during calibration sample {i}.")
-
-             time.sleep(0.01)
-         except Exception as e:
-             skriv_logg(f"Error reading MPU6050 during calibration sample {i}: {e}")
-             pass
-
-    if read_count > 0:
-        gyro_bias_z = total_raw_z / read_count
-        skriv_logg(f"Gyro bias Z calibrated: {gyro_bias_z:.4f} deg/s")
-        gyro_bias_calibration_done = True
-        return True
-    else:
-        skriv_logg("Gyro calibration failed: No valid samples read.")
-        gyro_bias_calibration_done = False
-        return False
-
-
-# --- IMU Data Reading Function ---
-# This function uses read_gyro_z_raw() from your mpu6050.py and applies imu_module's bias
-def read_imu_data():
-    """
-    Reads raw IMU data (gyro Z in deg/s) from mpu6050.py and applies imu_module's calculated bias.
-    Returns the corrected gyro Z value (degrees per second), or 0.0 on error/not calibrated.
-    """
-    global gyro_bias_z, gyro_bias_calibration_done, imu_initialized
-    if not imu_initialized or not gyro_bias_calibration_done:
-        return 0.0
-
-    try:
-        raw_gyro_z_deg_s = mpu6050.read_gyro_z_raw()
-
-        if raw_gyro_z_deg_s is not None:
-            corrected_gyro_z = raw_gyro_z_deg_s - gyro_bias_z
-            return corrected_gyro_z
-        else:
-            return 0.0
-
-    except Exception as e:
-        skriv_logg(f"Error reading IMU data from mpu6050.py: {e}")
-        return 0.0
-
-
-# --- IMU Initialization Function ---
-# This function uses setup_mpu6050() from your mpu6050.py
+# --- Initialization ---
 def init_imu_system():
     """
-    Initializes the IMU (Gyro) system by calling setup_mpu6050() and performs gyro calibration.
-    Returns True if initialization and calibration are successful, False otherwise.
-    Sets the global imu_initialized flag.
+    Initializes the MPU6050 and calibrates the gyro bias.
+    Returns True if successful, False otherwise.
     """
     global imu_initialized
 
     skriv_logg("Initializing IMU system...")
-    if mpu6050.setup_mpu6050():
-       skriv_logg("MPU6050 initialized successfully via mpu6050.py.")
-       imu_initialized = True
-    else:
-       skriv_logg("MPU6050 initialization failed via mpu6050.py.")
-       imu_initialized = False
-       return False
+    try:
+        if mpu6050.setup_mpu6050():
+            skriv_logg("MPU6050 initialized successfully via mpu6050.py.")
+            calibrate_gyro()
+            imu_initialized = True
+            skriv_logg("IMU system initialization and calibration successful.")
+            return True
+        else:
+            skriv_logg("Failed to initialize MPU6050.")
+            imu_initialized = False
+            return False
+    except Exception as e:
+        skriv_logg(f"Error during IMU system initialization: {e}")
+        imu_initialized = False
+        return False
 
-    calibration_success = calibrate_gyro()
 
-    if imu_initialized and gyro_bias_calibration_done:
-         skriv_logg("IMU system initialization and calibration successful.")
-         return True
-    else:
-         skriv_logg("IMU system initialization or calibration failed.")
-         return False
-
-
-# --- Heading Rotation Function (Absolute Heading using Compass) ---
-def rotate_to_heading(heading_tracker, target_heading_degrees, timeout=20.0):
+def calibrate_gyro(num_samples=500):
     """
-    Rotates the robot to a target absolute heading using the compass via HeadingTracker.
-    Requires a HeadingTracker instance.
-    Returns True if rotation is completed within tolerance/timeout, False otherwise.
+    Calibrates the gyro Z-axis bias by averaging readings while stationary.
     """
-    global imu_initialized, gyro_bias_calibration_done
-    if not imu_initialized or not gyro_bias_calibration_done or not compass_module.compass_initialized:
-        skriv_logg("Cannot execute rotate_to_heading: IMU/Compass not initialized or calibrated.")
-        motor_control.send_command(f"0.0 0.0 {0.0:.2f}\n")
-        return False
+    global gyro_bias_z
+    skriv_logg(f"Calibrating gyro bias. Keep robot completely still...")
+    z_sum = 0.0
+    skriv_logg(f"Reading {num_samples} raw gyro Z samples for bias calibration...")
 
-    if heading_tracker is None:
-        skriv_logg("Error: rotate_to_heading requires a valid HeadingTracker instance.")
-        motor_control.send_command(f"0.0 0.0 {0.0:.2f}\n")
-        return False
+    # Ensure MPU6050 is set up before reading
+    if not imu_initialized and not mpu6050.setup_mpu6050():
+         skriv_logg("MPU6050 not set up for calibration!")
+         return False # Cannot calibrate if sensor is not set up
 
-    target_heading_degrees = target_heading_degrees % 360.0
-    if target_heading_degrees < 0:
-        target_heading_degrees += 360
-
-    rotation_timeout = 20.0
-    start_rotation_time = time.time()
-
-    heading_tracker.update()
-    current_heading = heading_tracker.get_heading() # Heading is corrected by get_heading()
-
-    if current_heading == -1.0:
-        skriv_logg("Error: Initial heading tracker reading failed in rotate_to_heading.")
-        motor_control.send_command(f"0.0 0.0 {0.0:.2f}\n")
-        return False
-
-    error = ((target_heading_degrees - current_heading + 540.0) % 360.0) - 180.0
-
-    previous_heading = current_heading
-    last_time_pid = time.time()
-    previous_error = error
-    previous_smoothed_rate_of_change = 0.0
-
-    skriv_logg(f"Executing initial rotation to {target_heading_degrees:.1f} (Error: {error:.1f})...")
-    skriv_logg(f"Starting rotation (compass) to heading: {target_heading_degrees:.2f}")
-
-    while (time.time() - start_rotation_time) < rotation_timeout:
-        current_time_pid = time.time()
-        dt = current_time_pid - last_time_pid
-        last_time_pid = current_time_pid
-
-        heading_tracker.update()
-        current_heading = heading_tracker.get_heading() # Heading is corrected by get_heading()
-
-        if current_heading == -1.0:
-            skriv_logg("Warning: Heading tracker returned -1.0 during rotation. Skipping PID update.")
-            motor_control.send_command(f"0.0 0.0 {0.0:.2f}\n")
-            time.sleep(0.1)
-            continue
-
-        error = ((target_heading_degrees - current_heading + 540.0) % 360.0) - 180.0
-
-        skriv_logg(f"PID Debug - Fused Heading: {current_heading:.2f} , Error: {error:.2f} ")
-
-        if abs(error) <= heading_tolerance:
-            skriv_logg(f"Target heading {target_heading_degrees:.2f} reached within tolerance {heading_tolerance:.2f}.")
-            break
-
-        error_change = error - previous_error
-        alpha_derivative = 0.3
-        raw_rate_of_change = (error_change / dt) if dt > 0 else 0.0
-        smoothed_rate_of_change = alpha_derivative * raw_rate_of_change + (1 - alpha_derivative) * previous_smoothed_rate_of_change
-        previous_smoothed_rate_of_change = smoothed_rate_of_change
-        derivative_term = Kd_heading * smoothed_rate_of_change
-
-        previous_error = error
-
-        rotate_speed_command_internal_scale = (Kp_heading * error) + derivative_term
-        rotate_speed_command_internal_scale = max(min(rotate_speed_command_internal_scale, base_speed_heading), -base_speed_heading)
-
-        rotation_command_dps = 0.0
-        if base_speed_heading != 0:
-            rotation_command_dps = (rotate_speed_command_internal_scale / base_speed_heading) * MAX_ROBOT_ROTATION_DEGPS_AT_BASE_SPEED
-
-        if abs(error) > heading_tolerance and abs(rotation_command_dps) > 0.0 and abs(rotation_command_dps) < MIN_ROBOT_ROTATION_DEGPS:
-            rotation_command_dps = math.copysign(MIN_ROBOT_ROTATION_DEGPS, rotate_speed_command_internal_scale)
-        elif abs(error) <= heading_tolerance:
-             rotation_command_dps = 0.0
-
-        command_to_send = f"{0.0:.2f} {0.0:.2f} {rotation_command_dps:.2f}\n"
-        motor_control.send_command(command_to_send)
-        time.sleep(0.05)
-
-    motor_control.send_command(f"0.0 0.0 {0.0:.2f}\n")
-    time.sleep(0.5)
-
-    heading_tracker.update()
-    final_heading = heading_tracker.get_heading() # Heading is corrected by get_heading()
-    final_error = ((target_heading_degrees - final_heading + 540.0) % 360.0) - 180.0
+    # Read samples and calculate sum
+    start_time = time.time()
+    for i in range(num_samples):
+        try:
+            z_sum += mpu6050.read_gyro_z_raw() # Use raw reading for calibration
+            time.sleep(0.01) # Small delay between readings
+        except Exception as e:
+            skriv_logg(f"Error reading gyro during calibration sample {i}: {e}")
+            # Decide if you want to stop calibration or continue with fewer samples
+            continue # Continue for now, but log the error
 
     end_time = time.time()
-    duration = end_time - start_rotation_time
+    duration = end_time - start_time
+    skriv_logg(f"Finished reading {num_samples} gyro samples in {duration:.2f}s.")
 
-    if abs(final_error) <= heading_tolerance:
-        skriv_logg(f"Heading rotation to {target_heading_degrees:.2f} completed. Final heading: {final_heading:.2f} in {duration:.2f}s.")
+    if num_samples > 0:
+        gyro_bias_z = z_sum / num_samples
+        skriv_logg(f"Gyro bias Z calibrated: {gyro_bias_z:.4f} deg/s")
         return True
-    elif (end_time - start_rotation_time) >= rotation_timeout:
-        skriv_logg(f"Heading rotation to {target_heading_degrees:.2f} timed out after {duration:.2f}s. Final heading: {final_heading:.2f} , Remaining error: {final_error:.2f} .")
-        return False
     else:
-        skriv_logg(f"Heading rotation to {target_heading_degrees:.2f} exited unexpectedly after {duration:.2f}s. Final heading: {final_heading:.2f} , Remaining error: {final_error:.2f} .")
+        skriv_logg("No gyro samples read for calibration.")
+        gyro_bias_z = 0.0
         return False
 
-# --- Gyro-based Rotation Function (Relative Angle) ---
-def rotate_by_gyro(angle_degrees, timeout=10.0):
-    """
-    Rotates the robot by a specified angle (in degrees) using only gyro data.
-    Positive angle for clockwise, negative for counter-clockwise.
-    Uses gyro integration to track the rotated angle.
-    Returns True if rotation is completed within tolerance/timeout, False otherwise.
-    """
-    global imu_initialized, gyro_bias_calibration_done
-    if not imu_initialized or not gyro_bias_calibration_done:
-        skriv_logg("Cannot execute rotate_by_gyro: IMU not initialized or calibrated.")
-        motor_control.send_command(f"0.0 0.0 {0.0:.2f}\n")
-        return False
 
-    skriv_logg(f"Executing rotate_by_gyro for {angle_degrees:.1f} degrees...")
+# --- Data Reading ---
+def read_imu_data():
+    """
+    Reads corrected gyro Z data.
+    Returns corrected gyro Z value in degrees per second, or None if IMU not initialized.
+    """
+    if not imu_initialized:
+        #skriv_logg("IMU not initialized. Cannot read data.")
+        return None
+
+    try:
+        # Read raw gyro Z value
+        raw_gyro_z_deg_s = mpu6050.read_gyro_z_raw() # Use raw reading
+
+        # Apply calibrated bias
+        # --- FIX: INVERT GYRO SIGN FOR UPSIDE-DOWN MOUNTING ---
+        # Based on observation of rotate_by_gyro logs, the gyro Z sign appears inverted.
+        # We flip the sign of the corrected reading here.
+        corrected_gyro_z = -(raw_gyro_z_deg_s - gyro_bias_z)
+        # Alternative way to write the same:
+        # corrected_gyro_z = gyro_bias_z - raw_gyro_z_deg_s
+        # --- END FIX ---
+
+
+        # Return corrected gyro Z value
+        return corrected_gyro_z
+
+    except Exception as e:
+        skriv_logg(f"Error reading IMU data: {e}")
+        return None
+
+# --- Rotation Functions ---
+
+# Assume HeadingTracker instance is passed to rotation functions
+# and is updated externally in a loop (e.g., in main.py)
+
+def rotate_to_heading(heading_tracker, target_heading_degrees, timeout=10.0):
+    """
+    Rotates the robot to face a specific absolute heading using PID control.
+    Requires an updated HeadingTracker instance.
+    Args:
+        heading_tracker: An instance of HeadingTracker providing fused heading.
+        target_heading_degrees: The desired absolute heading (0-360).
+        timeout: Maximum time to attempt rotation in seconds.
+    Returns:
+        True if rotation completed successfully within tolerance and timeout, False otherwise.
+    """
+    if heading_tracker is None:
+        skriv_logg("HeadingTracker not provided to rotate_to_heading.")
+        return False
 
     start_time = time.time()
-    last_loop_time = time.time()
-    total_gyro_rotation = 0.0
+    last_error = 0.0 # For derivative term
+    # last_integral = 0.0 # For integral term (if Ki > 0)
 
-    rotation_direction = math.copysign(1.0, angle_degrees)
-    rotation_speed_command = GYRO_ROTATION_COMMAND_VALUE * rotation_direction
+    skriv_logg(f"Starting rotation (compass) to heading: {target_heading_degrees:.2f} ")
 
+    while time.time() - start_time < timeout:
+        current_heading = heading_tracker.get_heading() # Get the latest fused heading (already offset adjusted if implemented in HeadingTracker)
+
+        if current_heading == -1.0:
+            skriv_logg("HeadingTracker not initialized or providing invalid heading.")
+            time.sleep(0.1) # Wait a bit before trying again
+            continue
+
+        # Calculate the shortest angle difference (error)
+        # This handles wrapping around 0/360 degrees
+        error = target_heading_degrees - current_heading
+        if error > 180:
+            error -= 360
+        elif error < -180:
+            error += 360
+
+        # PID calculations (simplified PD)
+        # Proportional term
+        P_term = Kp_heading * error
+
+        # Derivative term
+        D_term = Kd_heading * (error - last_error) # / dt - dt is assumed ~constant per loop
+
+        # Integral term (uncomment and implement if Ki > 0)
+        # last_integral += error * dt # Requires actual dt
+        # I_term = Ki_heading * last_integral
+
+        # Combine terms (PD control)
+        pid_output = P_term + D_term # + I_term # Include I_term if used
+
+        # --- DEBUG LOG ---
+        skriv_logg(f"PID Debug - Fused Heading: {current_heading:.2f} , Error: {error:.2f} ")
+        # --- END DEBUG LOG ---
+
+        # Check if target heading is reached within tolerance
+        if abs(error) <= heading_tolerance:
+            skriv_logg(f"Target heading {target_heading_degrees:.2f} reached within tolerance {heading_tolerance:.2f} during PID loop.")
+            break # Exit the loop as target is reached
+
+        # Scale PID output based on max rotation speed
+        max_pid_output = Kp_heading * 180 + Kd_heading * 180 # Very rough estimate
+        rotation_speed_deg_s = pid_output # Assume PID output is already in deg/s or proportional to it. If not, scale it here.
+
+        # Map degrees/s to internal motor command scale (-base_speed_heading to +base_speed_heading)
+        # internal_rotation_command = (rotation_speed_deg_s / MAX_ROBOT_ROTATION_DEGPS_AT_BASE_SPEED) * base_speed_heading
+
+        rotation_command_value = pid_output # Use PID output directly as the rotation command value scale
+
+        # Let's apply the minimum threshold on the internal command value scale
+        if abs(rotation_command_value) > 0 and abs(rotation_command_value) < MIN_INTERNAL_ROTATION_COMMAND:
+             # Apply minimum command in the direction of the error
+             rotation_command_value = math.copysign(MIN_INTERNAL_ROTATION_COMMAND, rotation_command_value)
+             # skriv_logg(f"Applying min rotation command: {rotation_command_value}")
+
+
+        # Clamp the command value to prevent sending values outside the expected range (-base_speed_heading to +base_speed_heading)
+        rotation_command_value = max(-base_speed_heading, min(base_speed_heading, rotation_command_value))
+
+
+        # Send rotation command to motors. Assuming format "left_speed right_speed rotation_speed\n"
+        # For pure rotation, left_speed and right_speed are typically 0.
+        motor_control.send_command(f"0.0 0.0 {rotation_command_value:.2f}\n")
+
+        # Update for derivative term
+        last_error = error
+
+        # Add a small delay to allow the robot to respond and sensor to update
+        time.sleep(0.05) # Adjust sleep time as needed for your sensor update rate
+
+    # Stop the robot after the loop finishes
+    skriv_logg("Stopping heading rotation...")
+    motor_control.send_command(f"0.0 0.0 {0.0:.2f}\n")
+    time.sleep(0.5) # Wait a bit for robot to physically stop
+
+    end_time = time.time()
+    duration = end_time - start_time
+
+    # Check final heading to report success/failure
+    final_heading = heading_tracker.get_heading() # Get final heading after stopping
+    if final_heading == -1.0:
+        skriv_logg("Failed to get final heading after rotation.")
+        # Report failure based on timeout if heading is invalid
+        if (end_time - start_time) >= timeout:
+             skriv_logg(f"Heading rotation to {target_heading_degrees:.2f} timed out after {duration:.2f}s with invalid final heading.")
+             return False
+        else:
+             # If loop broke due to tolerance but final heading is invalid, something is wrong.
+             skriv_logg(f"Heading rotation to {target_heading_degrees:.2f} loop broke but final heading is invalid.")
+             return False
+
+    final_error = target_heading_degrees - final_heading
+    if final_error > 180:
+        final_error -= 360
+    elif final_error < -180:
+        final_error += 360
+
+
+    # Report result
+    if abs(error) <= heading_tolerance: # error is the error when the loop broke
+         skriv_logg(f"Heading rotation to {target_heading_degrees:.2f} completed successfully (tolerance met in loop). Final heading: {final_heading:.2f} in {duration:.2f}s. Final error: {final_error:.2f} .")
+         return True
+    elif (end_time - start_time) >= timeout:
+        skriv_logg(f"Heading rotation to {target_heading_degrees:.2f} timed out after {duration:.2f}s. Final heading: {final_heading:.2f}. Final error: {final_error:.2f}.")
+        return False
+    else:
+         # Should not happen if loop exits only by timeout or tolerance met
+         skriv_logg(f"Heading rotation to {target_heading_degrees:.2f} ended unexpectedly. Final heading: {final_heading:.2f}. Final error: {final_error:.2f}.")
+         return False
+def rotate_by_gyro(angle_degrees, timeout=5.0):
+    """
+    Rotates the robot by a specific relative angle using integrated gyro data.
+    Note: Gyro integration accumulates error over time. Best for small, quick turns.
+    Args:
+        angle_degrees: The relative angle to rotate (positive for CW, negative for CCW, assuming standard convention after gyro sign fix).
+        timeout: Maximum time to attempt rotation in seconds.
+    Returns:
+        True if rotation completed successfully within tolerance and timeout, False otherwise.
+    """
+    if not imu_initialized:
+        skriv_logg("IMU not initialized. Cannot perform gyro rotation.")
+        return False
+
+    start_time = time.time()
+    last_time = time.time()
+    total_gyro_rotation = 0.0 # Integrated rotation in degrees
+    # GYRO_ROTATION_TOLERANCE = 2.0 # Degrees tolerance for stopping
+
+    # Use the same heading_tolerance for consistency if it makes sense for relative turns
+    GYRO_ROTATION_TOLERANCE = heading_tolerance # Use the same tolerance as for heading control
+
+    skriv_logg(f"Executing rotate_by_gyro for {angle_degrees:.2f} degrees...")
+
+    # Determine rotation direction
+    direction_sign = math.copysign(1.0, angle_degrees)
     target_rotation = abs(angle_degrees)
+    rotation_command_value = direction_sign * GYRO_ROTATION_COMMAND_VALUE
 
-    motor_control.send_command(f"0.0 0.0 {rotation_speed_command:.2f}\n")
+    motor_control.send_command(f"0.0 0.0 {rotation_command_value:.2f}\n")
 
-    while (time.time() - start_time) < timeout:
-        current_loop_time = time.time()
-        dt = current_loop_time - last_loop_time
-        last_loop_time = current_loop_time
+    # Integrate gyro data until target angle is reached
+    while abs(total_gyro_rotation) < target_rotation - GYRO_ROTATION_TOLERANCE and (time.time() - start_time) < timeout:
+        current_time = time.time()
+        dt = current_time - last_time
+        last_time = current_time
 
-        # Read corrected gyro data in degrees/second using imu_module's read_imu_data
-        gyro_rate = read_imu_data() # This now calls mpu6050.read_gyro_z_raw() and applies bias
+        gyro_z_deg_s = read_imu_data() # Get corrected gyro Z
 
-        if dt > 0:
-            gyro_delta_rotation = gyro_rate * dt
-            total_gyro_rotation += gyro_delta_rotation
+        if gyro_z_deg_s is not None:
+            # Integrate rotation rate over time
+            total_gyro_rotation += gyro_z_deg_s * dt
 
-        # Check if the target rotation has been reached
-        # We check if the absolute value of the total accumulated rotation is close to the target angle.
-        if abs(total_gyro_rotation) >= target_rotation - GYRO_ROTATION_TOLERANCE and abs(total_gyro_rotation) <= target_rotation + GYRO_ROTATION_TOLERANCE:
-             skriv_logg(f"Target gyro rotation {target_rotation:.2f} degrees reached within tolerance {GYRO_ROTATION_TOLERANCE:.2f}. Total integrated rotation: {total_gyro_rotation:.2f}")
-             break
+        # --- DEBUG LOG ---
+        # skriv_logg(f"Gyro Rotate Debug - Gyro Z: {gyro_z_deg_s:.2f}, dt: {dt:.4f}, Total Rotation: {total_gyro_rotation:.2f}")
+        # --- END DEBUG LOG ---
 
-        # Optional: Add a small delay
-        # time.sleep(0.01)
+        # Check if rotation is close to target (this check is now mainly for logging/breaking early if needed)
+        # The loop condition `abs(total_gyro_rotation) < target_rotation - GYRO_ROTATION_TOLERANCE`
 
+        # The original check was:
+        # if abs(total_gyro_rotation) >= target_rotation - GYRO_ROTATION_TOLERANCE and abs(total_gyro_rotation) <= target_rotation + GYRO_ROTATION_TOLERANCE:
+
+    # Stop rotation after loop finishes
     skriv_logg("Stopping gyro rotation...")
     motor_control.send_command(f"0.0 0.0 {0.0:.2f}\n")
-    time.sleep(0.5)
+    time.sleep(0.5) # Wait a bit for robot to physically stop
 
     end_time = time.time()
     duration = end_time - start_time
 
     # Report result
-    if abs(total_gyro_rotation) >= target_rotation - GYRO_ROTATION_TOLERANCE and abs(total_gyro_rotation) <= target_rotation + GYRO_ROTATION_TOLERANCE:
+    # Check if the magnitude of total rotation is within the tolerance of the target magnitude.
+    if abs(total_gyro_rotation) >= target_rotation - GYRO_ROTATION_TOLERANCE:
         skriv_logg(f"Gyro rotation of {angle_degrees:.2f} degrees completed. Total integrated rotation: {total_gyro_rotation:.2f} in {duration:.2f}s.")
         return True
     elif (end_time - start_time) >= timeout:
         skriv_logg(f"Gyro rotation to {angle_degrees:.2f} degrees timed out after {duration:.2f}s. Total integrated rotation: {total_gyro_rotation:.2f}.")
         return False
     else:
-        skriv_logg(f"Gyro rotation to {angle_degrees:.2f} degrees exited unexpectedly after {duration:.2f}s. Total integrated rotation: {total_gyro_rotation:.2f}.")
-        return False
-
-# Note: No if __name__ == "__main__": block here. Code is started from main.py.
+         skriv_logg(f"Gyro rotation to {angle_degrees:.2f} ended unexpectedly. Total integrated rotation: {total_gyro_rotation:.2f}.")
+         return False

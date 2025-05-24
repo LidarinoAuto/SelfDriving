@@ -146,6 +146,31 @@ def get_triggered_ultrasound_info(threshold_cm):
 
     return triggered_sensors, distances
 
+# --- Read All Sensors and Check Threshold ---
+def check_all_ultrasound_sensors(threshold_cm):
+    """
+    Reads all ultrasound sensors and checks if their distance is below a threshold.
+    Returns a tuple: (list of triggered sensor IDs, dictionary of all distances).
+    """
+    triggered_sensors = []
+    distances = {}
+
+    # Read each sensor by its ID
+    for sensor_id in US_PINS.keys():
+        distance = read_single_ultrasound(sensor_id) # Assumes read_single_ultrasound exists
+        distances[sensor_id] = distance # Store distance even if not triggered
+
+        # Check if distance is below the threshold (and is a valid reading, not infinity)
+        if distance != float('inf') and distance < threshold_cm:
+            triggered_sensors.append(sensor_id)
+            # Optional: skriv_logg which sensor triggered below threshold
+            # skriv_logg(f"Ultrasound sensor {sensor_id} triggered! Distance: {distance:.2f} cm (Threshold: {threshold_cm:.2f} cm)")
+
+        # Small delay between sensor readings to avoid interference
+        time.sleep(0.06) # Delay based on sensor cycle time (min ~50ms)
+
+    return triggered_sensors, distances
+
 
 # --- Cleanup GPIO ---
 def cleanup_ultrasound_gpio():

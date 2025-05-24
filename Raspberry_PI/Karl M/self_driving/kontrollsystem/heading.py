@@ -6,7 +6,7 @@ from sensorer import mpu6050
 
 # Konstanter
 KOMPASS_JUSTERING = 270
-GYRO_WEIGHT = 0.98
+GYRO_WEIGHT = 0.50
 COMPASS_WEIGHT = 1.0 - GYRO_WEIGHT
 
 class HeadingTracker:

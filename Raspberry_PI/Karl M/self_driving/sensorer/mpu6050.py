@@ -34,6 +34,6 @@ def read_gyro_z():
     if value >= 0x8000:
         value = -((65535 - value) + 1)
 
-    gyro_z = (value / 131.0)
+    gyro_z = -(value / 131.0)
     gyro_z -= offset_z  # Fjern offset for korrigert måling
     return gyro_z
