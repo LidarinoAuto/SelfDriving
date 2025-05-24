@@ -8,7 +8,10 @@ from sensorer import mpu6050
 from kontrollsystem import calibration
 from kontrollsystem.motorsignal import send_movement_command
 from kontrollsystem.heading import HeadingTracker
-from visning.visualisering import (tegn_robot_sentrum, tegn_heading_pil, tegn_lidar, tegn_ultralyd, tegn_aapninger)
+from visning.visualisering import (
+    tegn_robot_sentrum, tegn_heading_pil, tegn_lidar, tegn_ultralyd,
+    tegn_aapninger, sett_status, tegn_status
+)
 from kontrollsystem.hindringslogikk import autonom_logikk
 import time
 import math
@@ -105,16 +108,29 @@ def main():
 
         # Oppdater heading
         fused_heading = heading_tracker.update()
+        compass_heading = heading_tracker.get_compass()
+        gyro_z = heading_tracker.get_gyro()
 
         # --- TEGNING ---
         tegn_robot_sentrum(screen)
-        tegn_heading_pil(screen, fused_heading, font)
+        # BL� pil: fused heading (styrer roboten)
+        tegn_heading_pil(screen, fused_heading, font, color=(0,0,255))
+        # R�D pil: kompass-heading (magnetisk nord)
+        tegn_heading_pil(screen, compass_heading, font, color=(255,0,0))
 
         ferske_lidar_points = [(angle, distance) for angle, distance in lidar.scan_data if distance > 0]
-        
         tegn_lidar(screen, ferske_lidar_points, fused_heading)
         tegn_aapninger(screen, fused_heading)
         tegn_ultralyd(screen, ultrasound.sensor_distances, ultrasound.sensor_angles, fused_heading)
+
+        # Live status (�verst til venstre)
+        sett_status(
+            f"Modus: {modus}\n"
+            f"Fused: {fused_heading:.1f}� (bl�)\n"
+            f"Kompass: {compass_heading:.1f}� (r�d)\n"
+            f"GyroZ: {gyro_z:.2f}�/s"
+        )
+        tegn_status(screen, x=10, y=10)
 
         pygame.display.update()
         clock.tick(30)

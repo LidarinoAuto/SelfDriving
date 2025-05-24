@@ -20,7 +20,7 @@ def calibrate_gyro():
     logg("Starter gyro-kalibrering")
     mpu6050.setup_mpu6050()
 
-    samples = 500
+    samples = 1000
     total = 0
 
     for _ in range(samples):
@@ -43,7 +43,7 @@ def calibrate_compass():
     kompas.setup_compass()
 
     rotation_speed = 30  # grader per sekund
-    rotation_duration = 10  # sekunder (mer enn 360� rotasjon)
+    rotation_duration = 15  # sekunder (mer enn 360� rotasjon)
 
     min_x = min_y = 32767
     max_x = max_y = -32768
