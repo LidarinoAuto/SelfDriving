@@ -1,0 +1,12 @@
+[workspace]
+restore_data_on_startup = True
+save_data_on_exit = True
+save_history = True
+save_non_project_files = False
+project_type = 'empty-project-type'
+recent_files = ['../../../../../.config/spyder-py3/temp.py', 'kontroll.py', 'kompas_calibrate_plot.py', 'sensorer/kompas_calibrate.py', 'sensorer/kompas.py', 'kontrollsystem/calibration.py', 'kontrollsystem/heading.py', 'sensorer/mpu6050.py', 'kontrollsystem/hindringslogikk.py', 'visning/visualisering.py']
+
+[main]
+version = 0.2.0
+recent_files = []
+

@@ -13,16 +13,14 @@ LIDAR_MIDT_FARGE = (0, 255, 255)   # Turkis
 LIDAR_LANGT_FARGE = (0, 255, 0)    # Gr�nn
 ULTRALYD_NAER_FARGE = (255, 0, 0)  # R�d
 ULTRALYD_LANGT_FARGE = (0, 255, 0) # Gr�nn
-AAPNING_FARGE = (0, 255, 100)      # Gr�nn aktiverbar sone
 VALGT_AAPNING_FARGE = (255, 255, 0) # Gul pil for valgt �pning
 
-# �pninger (start, slutt, valgt_midt)
-apninger = []
+# �pninger (kun valgt midtpunkt)
 valgt_midt = None
 
-def sett_aapninger(ny_liste, midtpunkt=None):
-    global apninger, valgt_midt
-    apninger = ny_liste
+def sett_aapninger(_, midtpunkt=None):
+    """Ignorer liste, ta kun vare p� midtpunktet til valgt �pning."""
+    global valgt_midt
     valgt_midt = midtpunkt
 
 def polar_to_cartesian(angle_deg, distance_cm, robot_heading_deg=0):
@@ -41,8 +39,8 @@ def tegn_heading_pil(screen, heading, font, color=(0, 0, 255)):
     end_x = int(CENTER[0] + math.cos(heading_rad) * arrow_length)
     end_y = int(CENTER[1] - math.sin(heading_rad) * arrow_length)
     pygame.draw.line(screen, color, CENTER, (end_x, end_y), 4)
-    # 'N' p� toppen (vises bare �n gang)
-    if color == (0, 0, 255):  # Bare p� hovedpil (fused heading)
+    # 'N' p� toppen
+    if color == (0, 0, 255):
         north_text = font.render('N', True, (255, 0, 0))
         screen.blit(north_text, (WIDTH // 2 - 10, 10))
 
@@ -66,19 +64,7 @@ def tegn_ultralyd(screen, sensor_distances, sensor_angles, fused_heading):
             pygame.draw.line(screen, color, CENTER, (x, y), 3)
 
 def tegn_aapninger(screen, fused_heading):
-    for start, slutt in apninger:
-        midt = (start + ((slutt - start) % 360) / 2) % 360
-        start_rad = math.radians(-(start + fused_heading))
-        slutt_rad = math.radians(-(slutt + fused_heading))
-
-        start_x = int(CENTER[0] + math.cos(start_rad) * 60)
-        start_y = int(CENTER[1] - math.sin(start_rad) * 60)
-        slutt_x = int(CENTER[0] + math.cos(slutt_rad) * 60)
-        slutt_y = int(CENTER[1] - math.sin(slutt_rad) * 60)
-
-        pygame.draw.line(screen, AAPNING_FARGE, CENTER, (start_x, start_y), 2)
-        pygame.draw.line(screen, AAPNING_FARGE, CENTER, (slutt_x, slutt_y), 2)
-
+    """Tegn kun gul pil mot valgt �pning."""
     if valgt_midt is not None:
         midt_rad = math.radians(-(valgt_midt + fused_heading))
         end_x = int(CENTER[0] + math.cos(midt_rad) * 80)

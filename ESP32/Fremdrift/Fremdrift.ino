@@ -157,8 +157,12 @@ void loop() {
 
         // speed_mms = (rpm * WHEEL_CIRCUM_MM) / 60 => mm/s
         float speed_mms = (rpm * WHEEL_CIRCUM_MM) / 60.0;
-
-        // Kall PID
+        
+        // Beregn feil og D f�r PID kalles (for � f� riktig D-verdi)
+        float err0 = setpointSpeed[i] - speed_mms;
+        float d0 = pid_kd[i] * (err0 - pid_lastError[i]) / dt_seconds;
+        
+        // N� kan du trygt kalle PID
         float pwm = computePID_withAntiWindup(i, setpointSpeed[i], speed_mms, dt_seconds);
 
         // Ta vare p� gammel feil for D-term:
@@ -171,6 +175,11 @@ void loop() {
                      : (i == 1 ? MOTOR_2_BACKWARD_PIN : MOTOR_3_BACKWARD_PIN));
         setMotorSpeed(fwdPin, bwdPin, (int)pwm);
 
+                  //float err0 = setpointSpeed[0] - speed_mms;
+          float p0   = pid_kp[i] * err0;
+          float i0   = pid_ki[i] * pid_integral[0];
+          //float d0   = pid_kd[0] * (err0 - pid_lastError[0]) / dt_seconds;
+
         /* (Valgfritt) enkel debug for hjul 0
         if (i == 0) {
           Serial.print("[M1] SP=");  Serial.print(setpointSpeed[0], 1);
@@ -181,18 +190,30 @@ void loop() {
           */
         // Inne i l�kka der du itererer gjennom hjulene (i = 0, 1, 2)
         // Kun for hjul 0: CSV-utskrift for Serial Plotter
-        if (i == 0) {
-          float err0 = setpointSpeed[0] - speed_mms;
-          float p0   = pid_kp[0] * err0;
-          float i0   = pid_ki[0] * pid_integral[0];
-          float d0   = pid_kd[0] * (err0 - pid_lastError[0]) / dt_seconds;
+        if (i==0) {
+          //float err0 = setpointSpeed[0] - speed_mms;
+          //float p0   = pid_kp[i] * err0;
+          //float i0   = pid_ki[i] * pid_integral[0];
+          //float d0   = pid_kd[0] * (err0 - pid_lastError[0]) / dt_seconds;
         
-          // �n linje med space-separerte label:value-par
-          Serial.print("SP0:"); Serial.print(setpointSpeed[0], 1); Serial.print(" ");
-          Serial.print("Err0:");Serial.print(err0,            1); Serial.print(" ");
-          Serial.print("P0:");  Serial.print(p0,              1); Serial.print(" ");
-          Serial.print("I0:");  Serial.print(i0,              1); Serial.print(" ");
-          Serial.println("D0:");Serial.print(d0,              1);
+          Serial.print("SP0: ");
+          Serial.print(setpointSpeed[i], 0);
+          Serial.print("   ");
+        
+          Serial.print("Err0: ");
+          Serial.print(setpointSpeed[i]+err0, 0);
+          Serial.print("   ");
+        
+          Serial.print("P0: ");
+          Serial.print(p0+1100, 0);
+          Serial.print("   ");
+        
+          Serial.print("I0: ");
+          Serial.print(i0+650, 0);
+          Serial.print("   ");
+        
+          Serial.print("D0: ");
+          Serial.println(-d0+1100, 0);
         }
 
       }

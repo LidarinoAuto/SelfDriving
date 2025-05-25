@@ -28,7 +28,7 @@ inline float computePID_withAntiWindup(byte i, float setpoint, float actual, flo
   // Regn ut PID:
   float output = (pid_kp[i] * error)
                + (pid_ki[i] * pid_integral[i])
-               + (pid_kd[i] * derivative);
+               - (pid_kd[i] * derivative);
 
   // Begrens til PWM-område
   output = constrain(output, -255, 255);
