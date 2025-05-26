@@ -1,518 +1,451 @@
-# Filename: main.py
-# Main program for robot navigation with sensors and motor control
-from logging_utils import skriv_logg
-# --- IMPORT NECESSARY MODULES ---
+import pygame
+import serial
 import time
-import sys
-# Importer kun klassen HeadingTracker
-from Heading_Tracker import HeadingTracker
-# Import other modules
-import motor_control
-import imu_module # Importer hele modulen (inneholder init_imu_system, calibrate_gyro, read_imu_data, rotate_to_heading, rotate_by_gyro)
-import compass_module # Importer hele modulen (inneholder init_compass, read_compass_data)
-import ultrasound_module
-import lidar_module
+import math
+import threading
+import os
 
-# Import specific functions needed by main.py
-# init_imu_system is needed to initialize IMU and Gyro calibration
-from imu_module import init_imu_system # <-------- BEHOLD DENNE IMPORTEN FRA IMU_MODULE
+# ======== LOGGING ========
+def skriv_logg(melding, filnavn="logg.txt"):
+    timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+    full_melding = f"[{timestamp}] {melding}"
+    print(full_melding)
+    with open(filnavn, "a") as f:
+        f.write(full_melding + "\n")
 
-# init_compass might be called by init_imu_system, but your original code calls it separately.
-# Let's keep the import and call in initialize_systems for now to match your structure.
-from compass_module import init_compass # <-------- BEHOLD DENNE IMPORTEN FRA COMPASS_MODULE
+# ======== SENSOR-KLASSER ========
 
-# Import specific data reading functions needed by HeadingTracker (based on your Heading_Tracker.py)
-# These functions must exist in your imu_module.py and compass_module.py files.
-# read_imu_data should return corrected gyro Z data (e.g., degrees per second).
-# read_compass_data should return heading in degrees (0-360).
-from imu_module import read_imu_data # <-------- LEGG TILBAKE DENNE IMPORTEN
-from compass_module import read_compass_data # <-------- LEGG TILBAKE DENNE IMPORTEN
+# --- MPU6050 GYRO ---
+class MPU6050:
+    def __init__(self):
+        import smbus
+        self.MPU6050_ADDR = 0x68
+        self.bus = smbus.SMBus(1)
+        self.offset_z = 0
+        self.setup_mpu6050()
 
-# Import rotate_to_heading and rotate_by_gyro from imu_module
-from imu_module import rotate_to_heading, rotate_by_gyro # <-------- IMPORTER DISSE FUNKSJONENE
+    def setup_mpu6050(self):
+        self.bus.write_byte_data(self.MPU6050_ADDR, 0x6B, 0x00)
+        time.sleep(0.1)
+        if os.path.exists("gyro_offset.txt"):
+            with open("gyro_offset.txt", "r") as f:
+                self.offset_z = float(f.readline().strip())
+                print(f"Lastet gyro offset: {self.offset_z:.5f}")
 
+    def read_gyro_z_raw(self):
+        high = self.bus.read_byte_data(self.MPU6050_ADDR, 0x47)
+        low = self.bus.read_byte_data(self.MPU6050_ADDR, 0x48)
+        value = (high << 8) | low
+        if value >= 0x8000:
+            value = -((65535 - value) + 1)
+        return (value / 131.0)
 
-from ultrasound_module import setup_ultrasound_gpio, get_triggered_ultrasound_info, cleanup_ultrasound_gpio # Antar disse finnes
-from lidar_module import start_lidar, get_median_lidar_reading_cm, stop_lidar # Antar disse finnes
+    def read_gyro_z(self):
+        value = self.read_gyro_z_raw()
+        return value - self.offset_z
 
-# --- CONFIGURATION CONSTANTS ---
-# Define operational states
-STATE_INITIALIZING = 0
-STATE_NAVIGATING = 1
-STATE_OBSTACLE_AVOIDANCE = 2
-STATE_STOPPED = 3 # Add a stopped state
+# --- QMC5883L KOMPASS ---
+class Kompass:
+    def __init__(self):
+        import smbus
+        self.QMC5883L_ADDRESS = 0x0d
+        self.bus = smbus.SMBus(1)
+        self.QMC5883L_CTRL1 = 0x09
+        self.QMC5883L_SET_RESET = 0x0B
+        self.QMC5883L_DATA = 0x00
+        self.offset_x = 0
+        self.offset_y = 0
+        self.setup_compass()
 
-# --- NAVIGATION CONFIGURATION ---
-FORWARD_SPEED = 100  # Standard forward speed
+    def setup_compass(self):
+        try:
+            self.bus.write_byte_data(self.QMC5883L_ADDRESS, self.QMC5883L_SET_RESET, 0x01)
+            time.sleep(0.1)
+            self.bus.write_byte_data(self.QMC5883L_ADDRESS, self.QMC5883L_CTRL1, 0b00011101)
+            time.sleep(0.1)
+            if os.path.exists("kompas_offset.txt"):
+                with open("kompas_offset.txt", "r") as f:
+                    lines = f.readlines()
+                    if len(lines) >= 2:
+                        self.offset_x = float(lines[0].strip())
+                        self.offset_y = float(lines[1].strip())
+                        print(f"Offset lastet: x = {self.offset_x:.2f}, y = {self.offset_y:.2f}")
+        except Exception as e:
+            print(f"Feil ved initiering av kompass: {e}")
 
-# Detection thresholds
-LIDAR_STOP_DISTANCE_CM = 27.0  # Adjusted for robot radius (15 cm + 11.75 cm)
-ULTRASOUND_STOP_DISTANCE_CM = 8.0  # Reliable stop distance for ultrasound
+    def read_heading(self):
+        try:
+            data = self.bus.read_i2c_block_data(self.QMC5883L_ADDRESS, self.QMC5883L_DATA, 6)
+            x_raw = (data[1] << 8) | data[0]
+            y_raw = (data[3] << 8) | data[2]
+            x = x_raw - 65536 if x_raw > 32767 else x_raw
+            y = y_raw - 65536 if y_raw > 32767 else y_raw
+            x -= self.offset_x
+            y -= self.offset_y
+            heading_rad = math.atan2(y, x)
+            heading_deg = math.degrees(heading_rad)
+            if heading_deg < 0:
+                heading_deg += 360
+            return heading_deg
+        except Exception as e:
+            print(f"Feil ved lesing av kompass: {e}")
+            return -1
 
-# Global variable to track last fallback turn direction
-last_turn_dir = 1  # 1 = Right, -1 = Left
+# --- LIDAR (RPLidar) ---
+class Lidar:
+    def __init__(self):
+        from rplidar import RPLidar
+        self.PORT_NAME = "/dev/rplidar"
+        self.ROBOT_RADIUS = 117.5
+        self.STOP_DISTANCE_LIDAR = 250
+        self.current_distance_lidar = 9999
+        self.lidar_buffer = []
+        self.scan_data = []
+        self.running = False
+        self.lidar = RPLidar(self.PORT_NAME, baudrate=115200)
 
-# Global variable for heading tracker instance
-heading_tracker = None # Vil bli initialisert i initialize_systems
+    def start(self):
+        self.running = True
+        threading.Thread(target=self._lidar_thread, daemon=True).start()
 
-# Flag to indicate successful critical initialization
-initialized_successfully = False
+    def stop(self):
+        self.running = False
+        if self.lidar:
+            self.lidar.stop()
+            self.lidar.disconnect()
 
-# Global variable for Lidar object (if needed directly in main, though read func is passed)
-lidar_object = None # Lagre lidar objektet her hvis start_lidar returnerer det
+    def _lidar_thread(self):
+        for scan in self.lidar.iter_scans():
+            temp_scan = []
+            for measurement in scan:
+                angle = measurement[1]
+                distance = measurement[2]
+                temp_scan.append((angle, distance))
+            self.scan_data = temp_scan
+            distances = [d for a, d in temp_scan if abs(a - 0) <= 30 or abs(a - 360) <= 30]
+            if distances:
+                min_distance = min(distances)
+                self.current_distance_lidar = min_distance
+                self.lidar_buffer.append(min_distance)
+                if len(self.lidar_buffer) > 5:
+                    self.lidar_buffer.pop(0)
+            if not self.running:
+                break
 
-# --- GLOBAL HEADING OFFSET ---
-# Dette er den r� headingen HeadingTracker rapporterer n�r roboten peker Nord i virkeligheten.
-# Funnet fra logg 17:56:23 (Initial heading 352.7 da roboten pekte Nord).
-# Hvis roboten peker Nord i virkeligheten, kj�r et skript for � se
-# hva heading_tracker.get_heading() rapporterer F�R offseten brukes (sjekk HeadingTracker log).
-# Sett denne offseten til den rapporterte verdien n�r roboten peker Nord.
-GLOBAL_HEADING_OFFSET_DEGREES = 352.7 # Start med denne verdien basert p� din siste logg
-
-
-# --- SYSTEM INITIALIZATION FUNCTIONS ---
-# Moved initialize_systems, obstacle_avoidance, main, cleanup_systems definitions here
-
-def initialize_systems():
-    """
-    Initializes all robot systems (sensors, motors, heading tracker).
-    Sets global initialized_successfully flag.
-    """
-    global heading_tracker, initialized_successfully, lidar_object
-
-    skriv_logg("Starting robot systems initialization...")
-    initialized_successfully = False # Assume failure until all critical systems are up
-
-    # 1. Ultrasound Initialization (non-critical for basic navigation, but good practice)
-    try:
-        skriv_logg("Setting up ultrasound sensors...")
-        us_initialized = setup_ultrasound_gpio()
-        if us_initialized:
-            skriv_logg("Ultrasound sensors set up.")
+    def get_median_lidar_reading(self):
+        if not self.lidar_buffer:
+            return float('inf')
+        sorted_buffer = sorted(self.lidar_buffer)
+        n = len(sorted_buffer)
+        if n % 2 == 1:
+            return sorted_buffer[n // 2]
         else:
-            skriv_logg("Warning: Ultrasound sensors failed to set up.")
+            return (sorted_buffer[n // 2 - 1] + sorted_buffer[n // 2]) / 2
 
+    def is_path_clear(self):
+        stable_distance = self.get_median_lidar_reading()
+        adjusted_distance = stable_distance - self.ROBOT_RADIUS
+        return adjusted_distance > self.STOP_DISTANCE_LIDAR
 
-    except Exception as e:
-        skriv_logg(f"Error setting up ultrasound sensors: {e}")
-        # Continue initialization, but log the error
+# --- ULTRALYD ---
+class Ultrasound:
+    def __init__(self):
+        import RPi.GPIO as GPIO
+        self.GPIO = GPIO
+        self.trig_pins = [9, 7, 23, 10]
+        self.echo_pins = [8, 6, 24, 11]
+        self.sensor_names = ["front_left", "front_right", "back_left", "back_right"]
+        self.sensor_angles = {
+            "front_left": 340, "front_right": 20,
+            "back_left": 222, "back_right": 138
+        }
+        self.sensor_distances = {name: -1 for name in self.sensor_names}
+        self.sensors = dict(zip(self.sensor_names, zip(self.trig_pins, self.echo_pins)))
+        self.setup_ultrasound()
 
+    def setup_ultrasound(self):
+        self.GPIO.setmode(self.GPIO.BCM)
+        for trig in self.trig_pins:
+            self.GPIO.setup(trig, self.GPIO.OUT)
+            self.GPIO.output(trig, False)
+        for echo in self.echo_pins:
+            self.GPIO.setup(echo, self.GPIO.IN)
+        print("Ultralydsensorene er satt opp. Vent 2 sekunder for stabilisering...")
+        time.sleep(2)
 
-    # 2. IMU Initialization (Critical for heading and gyro turns)
-    # init_imu_system handles MPU6050 setup and gyro calibration
-    # Your original code calls both separately, so we will maintain that for now.
-    try:
-        skriv_logg("Initializing IMU system...") # Justert logg
-        # Call init_imu_system from imu_module
-        imu_init_success = imu_module.init_imu_system() # <-------- BRUK DENNE FUNKSJONEN
+    def read_distance(self, trig, echo):
+        self.GPIO.output(trig, True)
+        time.sleep(0.00001)
+        self.GPIO.output(trig, False)
+        timeout_start = time.time()
+        timeout = 0.02
+        pulse_start = pulse_end = None
+        while self.GPIO.input(echo) == 0:
+            pulse_start = time.time()
+            if pulse_start - timeout_start > timeout:
+                return -1
+        timeout_start = time.time()
+        while self.GPIO.input(echo) == 1:
+            pulse_end = time.time()
+            if pulse_end - timeout_start > timeout:
+                return -1
+        if pulse_start is None or pulse_end is None:
+            return -1
+        pulse_duration = (pulse_end - pulse_start) * 1e6
+        distance = pulse_duration * 0.0343 / 2
+        return distance
 
-        if imu_init_success:
-            skriv_logg("IMU system initialized successfully.") # Justert logg
+    def update_ultrasound_readings(self):
+        for sensor, (trig, echo) in self.sensors.items():
+            distance = self.read_distance(trig, echo)
+            self.sensor_distances[sensor] = distance if distance > 0 else 0
+
+# ======== HEADING FUSION ========
+class HeadingTracker:
+    def __init__(self, kompass, mpu):
+        self.kompass = kompass
+        self.mpu = mpu
+        self.KOMPASS_JUSTERING = 270
+        self.GYRO_VEKT_HOY = 0.98
+        self.GYRO_VEKT_LAV = 0.90
+        self.ROTASJON_TERSKEL = 30
+        self.KOMPASS_CORRECT_INTERVAL = 0.20
+        self.last_time = time.time()
+        self.last_compass_update = 0
+        self.fused_heading = 0
+        self.latest_compass = 0
+        self.latest_gyro = 0
+        self.initialized = False
+        self.setup()
+
+    def setup(self):
+        heading = self.kompass.read_heading()
+        if heading != -1:
+            self.fused_heading = (heading + self.KOMPASS_JUSTERING) % 360
+            self.latest_compass = self.fused_heading
         else:
-            skriv_logg("IMU system initialization failed.") # Justert logg
-            # initialized_successfully = False # Setter flagget i feilh�ndtering under
-            raise RuntimeError("IMU initialization failed.") # Kast feil for � fanges under
+            self.fused_heading = 0
+            self.latest_compass = 0
+        self.initialized = True
+        skriv_logg(f"[HEADING] Init: heading={self.fused_heading:.1f}°")
 
+    def update(self):
+        current_time = time.time()
+        dt = current_time - self.last_time
+        if dt <= 0 or dt > 1:
+            dt = 0.02
+        self.last_time = current_time
 
-    except Exception as e:
-        skriv_logg(f"FATAL: Error during IMU system initialization: {e}")
-        # initialized_successfully = False # Setter flagget etter try/except
-        cleanup_systems() # Clean up if a critical system fails early
-        return # Stop initialization if IMU fails
+        gyro_z = self.mpu.read_gyro_z()
+        self.latest_gyro = gyro_z
+        delta_heading = gyro_z * dt
+        self.fused_heading = (self.fused_heading + delta_heading) % 360
 
-
-    # 3. Compass Initialization (Critical for absolute heading)
-    try:
-        skriv_logg("Initializing QMC5883L...")
-        # Call init_compass function imported from compass_module
-        compass_init_success = compass_module.init_compass() # <-------- BRUK DENNE FUNKSJONEN
-
-        if compass_init_success:
-            skriv_logg("QMC5883L initialization reported success.")
-        else:
-            skriv_logg("QMC5883L initialization reported failure.")
-            # initialized_successfully = False # Setter flagget i feilh�ndtering under
-            raise RuntimeError("Compass initialization failed.") # Kast feil for � fanges under
-
-    except Exception as e:
-        skriv_logg(f"FATAL: Error during QMC5883L initialization: {e}")
-        # initialized_successfully = False # Setter flagget etter try/except
-        cleanup_systems() # Clean up if a critical system fails early
-        return # Stop initialization if Compass fails
-
-    # 4. Lidar Initialization (Critical for obstacle detection)
-    # lidar_object = lidar_module.start_lidar() # start_lidar should return the lidar object if needed later
-    # Assuming start_lidar handles thread creation internally and returns True/False
-    lidar_initialized_ok = lidar_module.start_lidar()
-    if not lidar_initialized_ok:
-        skriv_logg("FATAL: Lidar failed to initialize. Cannot proceed with obstacle detection.")
-        # Decide if this is FATAL or just a WARNING based on requirements
-        # For now, let's make it FATAL as obstacle avoidance is key.
-        cleanup_systems()
-        return # Stop initialization if Lidar fails
-
-
-    # 5. Heading Tracker Initialization (Critical for navigation)
-    # Initialize HeadingTracker AFTER IMU and Compass are initialized
-    try:
-        skriv_logg("HeadingTracker: Initializing...")
-        # Create HeadingTracker instance, passing sensor reading functions
-        # Pass the global offset to the HeadingTracker constructor
-        heading_tracker = HeadingTracker(
-            imu_data_reader=imu_module.read_imu_data,
-            compass_data_reader=compass_module.read_compass_data,
-            global_offset_degrees=GLOBAL_HEADING_OFFSET_DEGREES # Pass offset here
-        )
-        # Initial heading is set inside HeadingTracker.__init__
-
-        # Check if the HeadingTracker was able to get an initial valid heading (depends on compass_module.read_compass_data returning valid data)
-        if heading_tracker is None or heading_tracker.get_heading() == -1.0:
-             skriv_logg("WARNING: HeadingTracker could not get initial valid heading (likely compass issue). Proceeding without reliable heading.")
-             # If reliable heading is essential, make this FATAL
-             # cleanup_systems()
-             # return
-             # initialized_successfully = False # Consider this critical if initial heading failed
-             raise RuntimeError("HeadingTracker failed to get initial heading.") # Throw error if it cannot get initial heading
-
-
-    except Exception as e:
-        skriv_logg(f"FATAL: Error initializing HeadingTracker: {e}")
-        heading_tracker = None # Ensure it's None on error
-        # initialized_successfully = False # Setting flag after try/except
-        cleanup_systems() # Clean up if a critical system fails early
-        return # Stop initialization if HeadingTracker fails
-
-    # If we reached here, all critical systems (IMU, Lidar, HeadingTracker) initialized
-    # Set initialized_successfully to True ONLY if all steps above completed without returning
-    initialized_successfully = True # <-------- SETT FLAGGET HER HVIS ALT LYKKES
-    skriv_logg("All critical systems initialized successfully.")
-
-    # Optional: Perform initial check and rotation to North (0 degrees)
-    # Only do this if HeadingTracker was successfully initialized with a valid heading
-    if initialized_successfully and heading_tracker is not None and heading_tracker.get_heading() != -1.0:
-        skriv_logg("Performing initial heading check and rotation...")
-        current_heading = heading_tracker.get_heading() # This is the adjusted heading
-        skriv_logg(f"Current heading: {current_heading:.1f}\t")
-
-        # Define target heading (North)
-        target_heading = 0.0 # North
-
-        # Check if already close enough to North (within heading_tolerance)
-        # Need to handle wrap-around when calculating difference for the check
-        error_at_start = target_heading - current_heading
-        if error_at_start > 180:
-             error_at_start -= 360
-        elif error_at_start < -180:
-             error_at_start += 360
-
-        # Use imu_module.heading_tolerance for the check
-        if abs(error_at_start) > imu_module.heading_tolerance:
-            skriv_logg(f"Initial heading is {current_heading:.1f}, outside tolerance {imu_module.heading_tolerance:.1f} from {target_heading:.1f}. Executing initial rotation to {target_heading:.1f} (Error: {error_at_start:.1f} )...")
-            # Add debug log before calling rotate_to_heading
-            skriv_logg(f"Calling rotate_to_heading with heading_tracker, target_heading={target_heading}")
-            # Kall rotate_to_heading for a svinge til 0 grader (Nord)
-            # Pass HeadingTracker instansen til rotate_to_heading
-            rotation_successful = rotate_to_heading(heading_tracker, target_heading) # <-------- KALL rotate_to_heading FUNKSJONEN IMPORTERT FRA imu_module
-            # Add debug log after calling rotate_to_heading
-            skriv_logg("Returned from rotate_to_heading.")
-
-            if rotation_successful:
-                skriv_logg("Initial rotation completed.")
-                # Get new heading after rotation (this is the adjusted heading)
-                new_heading_after_init_rot = heading_tracker.get_heading()
-                skriv_logg(f"New heading after initial rotation: {new_heading_after_init_rot:.1f} ")
+        if (current_time - self.last_compass_update) > self.KOMPASS_CORRECT_INTERVAL:
+            compass_heading = self.kompass.read_heading()
+            if compass_heading != -1:
+                compass_heading = (compass_heading + self.KOMPASS_JUSTERING) % 360
+                self.latest_compass = compass_heading
+                gyro_rate = abs(gyro_z)
+                if gyro_rate > self.ROTASJON_TERSKEL:
+                    gyro_vekt = self.GYRO_VEKT_HOY
+                else:
+                    gyro_vekt = self.GYRO_VEKT_LAV
+                kompass_vekt = 1 - gyro_vekt
+                delta = ((compass_heading - self.fused_heading + 540) % 360) - 180
+                correction = delta * kompass_vekt
+                self.fused_heading = (self.fused_heading + correction) % 360
+                skriv_logg(
+                    f"[HEADING] Kompass={compass_heading:.1f}° GyroZ={gyro_z:.2f}°/s Δ={delta:.1f}° Korrigerer {correction:.2f}° → {self.fused_heading:.1f}° (gyro_vekt={gyro_vekt:.2f})"
+                )
             else:
-                skriv_logg("WARNING: Initial rotation failed or timed out.")
-                # Decide how to handle rotation failure (stop, try again, proceed anyway)
-                # For now, we proceed, but robot might not be facing North.
+                skriv_logg("[HEADING] Kompassfeil, ingen korreksjon!")
+            self.last_compass_update = current_time
+        return self.fused_heading
+
+    def get_heading(self):
+        return self.fused_heading
+
+    def get_compass(self):
+        return self.latest_compass
+
+    def get_gyro(self):
+        return self.latest_gyro
+
+# ======== MOTORSTYRING ========
+class MotorController:
+    def __init__(self, port="/dev/esp32", baudrate=115200):
+        self.port = port
+        self.baudrate = baudrate
+        self.ser = serial.Serial(port, baudrate, timeout=1)
+        time.sleep(2)
+
+    def send(self, x, y, omega):
+        msg = f"{x} {y} {omega:.2f}\n"
+        self.ser.write(msg.encode())
+        skriv_logg(f"[MOTOR] Sendt: {msg.strip()}")
+
+    def close(self):
+        self.ser.close()
+
+# ======== HINDRINGSLOGIKK (Obstacle Avoidance) ========
+def normalize_angle(angle):
+    return (angle + 180) % 360 - 180
+
+def heading_correction(current_heading, target_heading, k=0.5, max_omega=50.0):
+    delta = normalize_angle(target_heading - current_heading)
+    omega = k * delta
+    return max(-max_omega, min(max_omega, omega))
+
+def finn_aapninger(lidar, sikkerhetsradius):
+    fri = [False] * 360
+    for angle, distance in lidar.scan_data:
+        if not isinstance(angle, (int, float)) or distance <= sikkerhetsradius:
+            continue
+        delta = math.degrees(math.asin(min(sikkerhetsradius / distance, 1.0)))
+        start = int(math.floor(angle - delta)) % 360
+        end = int(math.ceil(angle + delta)) % 360
+        i = start
+        while True:
+            fri[i] = True
+            if i == end:
+                break
+            i = (i + 1) % 360
+    segments = []
+    i = 0
+    while i < 360:
+        if fri[i]:
+            start = i
+            while fri[i % 360]:
+                i += 1
+            end = (i - 1) % 360
+            width = (end - start + 1) if end >= start else (360 - start + end + 1)
+            segments.append((start, end, width))
         else:
-            skriv_logg("Initial heading is already close enough to North.")
-            skriv_logg(f"Current heading: {current_heading:.1f}\t")
-    elif not initialized_successfully:
-         skriv_logg("Skipping initial heading check and rotation due to initialization failures.")
-    else: # heading_tracker is None or heading_tracker.get_heading() is -1.0
-         skriv_logg("Skipping initial heading check and rotation as HeadingTracker is not providing a valid heading.")
+            i += 1
+    # wraparound merge
+    if segments and segments[0][0] == 0 and segments[-1][1] == 359:
+        first = segments.pop(0)
+        last = segments.pop(-1)
+        merged = (last[0], first[1], first[2] + last[2])
+        segments.insert(0, merged)
+    return segments
 
-# --- OBSTACLE AVOIDANCE LOGIC ---
-def obstacle_avoidance():
-    """
-    Checks for obstacles using Lidar and Ultrasound sensors and performs avoidance maneuvers.
-    Returns True if an obstacle was detected and avoided, False otherwise.
-    """
-    global last_turn_dir, heading_tracker # Use global variables
+def finn_storste_aapning(lidar, sikkerhetsradius):
+    openings = finn_aapninger(lidar, sikkerhetsradius)
+    if not openings:
+        return None
+    best = max(openings, key=lambda x: x[2])
+    start, end, width = best
+    center = (start + width / 2) % 360
+    return center
 
-    # Ensure heading_tracker is available before reading heading
-    if heading_tracker is None or heading_tracker.get_heading() == -1.0:
-        skriv_logg("Warning: HeadingTracker not available or invalid heading in obstacle_avoidance. Cannot perform heading-aware avoidance.")
-        # Decide how to handle this: skip avoidance, use only distance sensors, or stop.
-        # For now, we'll try using only distance sensors and fallback turns.
-
-    # 1. Check Lidar (primary long-range sensor)
-    lidar_distance = get_median_lidar_reading_cm()
-    lidar_detected = lidar_distance != float('inf') and lidar_distance < LIDAR_STOP_DISTANCE_CM
-
-    # 2. Check Ultrasound (secondary short-range sensors)
-    try:
-        # get_triggered_ultrasound_info returns (triggered_sensor_list, distance_dict)
-        # The error was that main.py was calling check_all_ultrasound_sensors,
-        # but the function name in ultrasound_module.py is get_triggered_ultrasound_info.
-        # We change the call in main.py to match the actual function name.
-        triggered_us_info = ultrasound_module.get_triggered_ultrasound_info(ULTRASOUND_STOP_DISTANCE_CM) # <-------- CHANGED FUNCTION CALL HERE
-        triggered_us_sensors = triggered_us_info[0]  # List of triggered US sensor IDs
-        us_distances = triggered_us_info[1]  # Dictionary of distances for ALL US sensors
-        us_detected = len(triggered_us_sensors) > 0
-    except AttributeError:
-         # This should not happen if the function name is correct now
-         skriv_logg("Error: ultrasound_module has no attribute 'get_triggered_ultrasound_info'. Check function name.")
-         triggered_us_sensors = []
-         us_distances = {}
-         us_detected = False
-    except Exception as e:
-        skriv_logg(f"Error reading ultrasound sensors: {e}")
-        triggered_us_sensors = []
-        us_distances = {}
-        us_detected = False # Assume no detection on error
-
-    if lidar_detected or us_detected:
-        skriv_logg("--- Obstacle detected! Stopping and planning avoidance ---")
-        motor_control.send_command("0 0 0\n") # Stop immediately
-
-        # Analyze which sensors triggered to decide avoidance strategy
-        # US sensor IDs: 0 (Front Left), 1 (Front Right), 2 (Back Left), 3 (Back Right)
-
-        turn_angle = 0 # Initialize turn angle
-        base_turn_angle = 45 # Default angle for US-based turn
-        base_fallback_angle = 25 # Default angle for fallback turn
-
-        is_us_0 = 0 in triggered_us_sensors
-        is_us_1 = 1 in triggered_us_sensors
-        is_back = any(i in triggered_us_sensors for i in [2, 3]) # Assume US 2 and 3 are back
-
-        # Avoid the logic if only back sensors trigger while we are trying to move forward
-        # This prevents stopping if we just backed into something.
-        # Need to know the robot's current movement state to do this properly.
-        # For now, let's keep the simple check based on triggered sensors.
-        # if is_back and not (is_us_0 or is_us_1 or lidar_detected):
-        #     # Assuming this check is within the main loop where we know we are moving forward
-        #     # If this function is called from obstacle_avoidance state,
-        #     # we need to re-evaluate the condition.
-        #     # For now, let's assume the robot is moving forward when this is called from the main loop.
-        #     skriv_logg("Only back sensors triggered while moving forward. Ignoring as obstacle.")
-        #     # Resume forward movement and hope the obstacle is transient or behind us now.
-        #     # motor_control.send_command(f"{FORWARD_SPEED} 0 0\n")
-        #     # time.sleep(0.05) # Short pause
-        #     return False # Not considered a detected obstacle that requires avoidance
-
-        # If not just back sensors triggered, proceed with avoidance logic
-        if is_us_1 and not is_us_0: # US 1 (typically right front) triggered, US 0 (left front) did not
-            turn_angle = base_turn_angle # Turn Right (positive angle for rotate_by_gyro)
-            skriv_logg(f"US 1 triggered: Turning Right (+{turn_angle} )")
-
-        elif is_us_0 and not is_us_1: # US 0 (typically left front) triggered, US 1 did not
-            turn_angle = -base_turn_angle # Turn Left (negative angle for rotate_by_gyro)
-            skriv_logg(f"US 0 triggered: Turning Left ({turn_angle} )")
-
-        # --- FALLBACK LOGIC ---
-        # Lidar triggered, both front US triggered, or back US triggered (while moving forward)
-        elif lidar_detected or (is_us_0 and is_us_1) or is_back:
-            skriv_logg("Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.")
-            turn_angle = base_fallback_angle * last_turn_dir # Determine turn angle and direction
-            last_turn_dir *= -1 # Switch direction for the next fallback turn
-            skriv_logg(f"Fallback turn: {turn_angle:+} ") # Log with + for clarity
-
-
-        else:
-            skriv_logg("Obstacle detected, but no specific avoidance rule matched. Remaining stopped.")
-            # Maybe add a small timeout here before returning False
-            time.sleep(1.0) # Wait a bit before the next check
-            return True # Still considered an obstacle event
-
-        # Execute the turn if a turn angle was determined
-        if turn_angle != 0:
-            try:
-                skriv_logg(f"Executing turn of {turn_angle} ...")
-                # Call rotate_by_gyro for relative turn using gyro
-                # Make sure rotate_by_gyro is imported from imu_module
-                rotate_by_gyro(turn_angle) # <-------- KALL rotate_by_gyro FUNKSJONEN IMPORTERT FRA imu_module
-                skriv_logg("Avoidance maneuver completed.")
-                time.sleep(0.5) # Small pause after turning
-            except Exception as e:
-                skriv_logg(f"Error during turn execution: {e}")
-                motor_control.send_command("0 0 0\n") # Ensure stop on error
-                time.sleep(1.0) # Longer pause on error
-
-        # Resuming forward movement happens in the main loop after this function returns True
-        skriv_logg("Resuming forward movement...")
-
-        return True # Indicate that an obstacle was detected and avoidance was attempted
-
-    # No obstacle detected by Lidar or Ultrasound
+def ultralyd_blokkert(ultrasound, threshold=10.0):
+    for sensor, dist in ultrasound.sensor_distances.items():
+        if 0 < dist < threshold:
+            skriv_logg(f"[ULTRALYD] Sensor {sensor} blokkert: {dist:.1f} cm")
+            return True
     return False
 
-# --- MAIN PROGRAM LOOP ---
+# ======== VISUALISERING (minimal for test/demo) ========
+def polar_to_cartesian(angle_deg, distance_cm, heading_deg=0, scale=2.0):
+    corrected_angle = -(angle_deg + heading_deg)
+    angle_rad = math.radians(corrected_angle)
+    x = math.cos(angle_rad) * distance_cm * scale
+    y = math.sin(angle_rad) * distance_cm * scale
+    return int(300 + x), int(300 - y)
+
+# ======== MAIN LOOP (Pygame) ========
 def main():
-    """
-    Main loop for robot navigation.
-    """
-    skriv_logg("Starting main navigation loop.")
-    current_state = STATE_NAVIGATING # Start in navigating state
+    STEP = 100
+    ROTATE_STEP_DEFAULT = 50.0
+    DRIVE_TIME = 2.0
+    HEADING_TOLERANCE = 5.0
+    ROBOT_DIAMETER = 23.5
+    SAFETY_MARGIN = 2.0
+    SIKKERHETS_RADIUS = ROBOT_DIAMETER / 2 + SAFETY_MARGIN
 
-    try:
-        while True:
-            # State Machine logic
-            if current_state == STATE_NAVIGATING:
-                # Check for obstacles
-                if obstacle_avoidance():
-                    # If obstacle avoidance happens, we remain in NAVIGATING state
-                    # and simply resume forward movement after avoidance.
-                    # Or you could transition to STATE_OBSTACLE_AVOIDANCE if avoidance
-                    # is a more complex, multi-step process.
-                    pass # Stay in navigating state and resume below
+    mpu = MPU6050()
+    kompass = Kompass()
+    lidar = Lidar()
+    ultrasound = Ultrasound()
+    motor = MotorController()
+    heading_tracker = HeadingTracker(kompass, mpu)
 
-                # If no obstacle was detected, continue moving forward
-                # Ensure we are moving forward if not in avoidance
-                # motor_control.move_forward() # This sends command repeatedly
-                # Better to send forward command once and let state manage
-                # Only move forward if system initialized successfully and HeadingTracker is working
-                if initialized_successfully and heading_tracker is not None and heading_tracker.get_heading() != -1.0:
-                    # Optional: Add navigation logic here (e.g., check heading, adjust course)
-                    # current_absolute_heading = heading_tracker.get_heading() # <-------- GET ADJUSTED HEADING HERE
-                    # if current_absolute_heading != -1.0:
-                    #     skriv_logg(f"Current adjusted heading: {current_absolute_heading:.1f}")
-                        # Add logic to correct course if drifting from target heading (e.g., North)
-                        # This would be a second, slower PID loop for course correction
+    lidar.start()
+    state = "IDLE"
+    drive_start_time = None
+    current_target_angle = None
 
-                    skriv_logg(f"Moving forward at speed {FORWARD_SPEED}...")
-                    motor_control.send_command(f"{FORWARD_SPEED} 0 0\n")
+    pygame.init()
+    screen = pygame.display.set_mode((600, 600))
+    pygame.display.set_caption("Robotkontroll")
+    clock = pygame.time.Clock()
+    font = pygame.font.SysFont(None, 24)
+    running = True
+
+    prev_command = (0, 0, 0)
+    while running:
+        screen.fill((0, 0, 0))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        ultrasound.update_ultrasound_readings()
+        fused_heading = heading_tracker.update()
+        x = y = omega = 0
+
+        if state == "IDLE":
+            if ultralyd_blokkert(ultrasound) or not lidar.is_path_clear():
+                state = "SEARCH"
+                skriv_logg("[HINDRING] Hindring oppdaget, starter søk.")
+                x, y, omega = (0, 0, ROTATE_STEP_DEFAULT)
+            else:
+                x, y, omega = (STEP, 0, 0)
+        elif state == "SEARCH":
+            angle = finn_storste_aapning(lidar, SIKKERHETS_RADIUS)
+            if angle is None:
+                x, y, omega = (0, 0, ROTATE_STEP_DEFAULT)
+            else:
+                current_target_angle = angle
+                delta = normalize_angle(current_target_angle - fused_heading)
+                if abs(delta) > HEADING_TOLERANCE:
+                    omega = heading_correction(fused_heading, current_target_angle)
+                    x, y = 0, 0
                 else:
-                     # If not initialized or heading is invalid, stop and log
-                     skriv_logg("Not initialized successfully or heading invalid. Stopping.")
-                     motor_control.stop_robot()
-                     time.sleep(1.0) # Pause before checking again
-                     # Maybe transition to a stopped state or attempt re-initialization
+                    state = "DRIVING"
+                    drive_start_time = time.time()
+                    x, y, omega = (STEP, 0, 0)
+        elif state == "DRIVING":
+            if ultralyd_blokkert(ultrasound):
+                state = "IDLE"
+                x, y, omega = (0, 0, 0)
+            elif (time.time() - drive_start_time) < DRIVE_TIME:
+                x, y, omega = (STEP, 0, 0)
+            else:
+                state = "IDLE"
+                x, y, omega = (0, 0, 0)
+        current_command = (x, y, omega)
+        if current_command != prev_command:
+            motor.send(x, y, omega)
+            prev_command = current_command
 
+        pygame.draw.circle(screen, (0, 255, 0), (300, 300), 5)
+        heading_rad = math.radians(-fused_heading)
+        end_x = int(300 + math.cos(heading_rad) * 50)
+        end_y = int(300 - math.sin(heading_rad) * 50)
+        pygame.draw.line(screen, (0, 0, 255), (300, 300), (end_x, end_y), 4)
+        for angle, distance in lidar.scan_data:
+            if distance > 0:
+                x_vis, y_vis = polar_to_cartesian(angle, distance / 10.0, fused_heading)
+                pygame.draw.circle(screen, (255, 255, 255), (x_vis, y_vis), 2)
+        pygame.display.update()
+        clock.tick(20)
 
-                pass # Currently just moves forward until obstacle
+    motor.send(0, 0, 0)
+    lidar.stop()
+    motor.close()
+    pygame.quit()
 
-
-            elif current_state == STATE_OBSTACLE_AVOIDANCE:
-                # Logic for complex obstacle avoidance if needed
-                # For now, avoidance happens within obstacle_avoidance() and returns to NAVIGATING state implicitly.
-                pass
-
-            elif current_state == STATE_STOPPED:
-                 # Robot is stopped, waiting for external command or condition
-                 motor_control.stop_robot()
-                 pass # Stay in stopped state until state is changed
-
-
-            # Add a small delay in the main loop to avoid high CPU usage
-            time.sleep(0.05) # Adjust as needed - reduced from 0.1 for potentially faster loop updates
-
-
-    except KeyboardInterrupt:
-        skriv_logg("Program interrupted by user (Ctrl+C).")
-        current_state = STATE_STOPPED # Transition to stopped state
-
-    except Exception as e:
-        skriv_logg(f"An unexpected error occurred in the main loop: {e}")
-        current_state = STATE_STOPPED # Transition to stopped state
-
-    finally:
-        # Ensure cleanup is called on exit
-        cleanup_systems()
-
-
-# --- SYSTEM CLEANUP ---
-def cleanup_systems():
-    """Clean up sensor connections, stop motors, etc."""
-    skriv_logg("Cleaning up before exit...")
-
-    # 1. Stop Motors
-    skriv_logg("Stopping motors...")
-    motor_control.send_command("0 0 0\n") # Send stop command to ESP32
-
-    # 2. Clean up Ultrasound GPIO
-    try:
-        # Assuming ultrasound_module has a cleanup_ultrasound_gpio() function
-        ultrasound_module.cleanup_ultrasound_gpio() # Call your cleanup function
-        skriv_logg("Ultrasound GPIO cleanup complete.")
-    except Exception as e:
-        skriv_logg(f"Error during ultrasound cleanup: {e}")
-
-    # 3. Stop Lidar thread and cleanup (assuming lidar_module has a stop_lidar function)
-    try:
-        global lidar_object # Use the global lidar object if stop_lidar needs it
-        # Ensure stop_lidar is called correctly based on its definition in lidar_module.py
-        # Your previous error message suggests stop_lidar() doesn't take arguments.
-        # If lidar_object is checked inside stop_lidar, just call it.
-        # If not, check here:
-        if lidar_object is not None:
-            # Based on previous error message: stop_lidar(lidar_object) was wrong.
-            # Call stop_lidar() without arguments if that's how it's defined.
-            lidar_module.stop_lidar() # <-- Call stop_lidar WITHOUT argument
-            # You might need a small delay for the lidar thread to finish
-            if lidar_module.lidar_thread_instance and lidar_module.lidar_thread_instance.is_alive():
-                 skriv_logg("Waiting for Lidar thread to join...")
-                 # Give the thread a short time to finish
-                 lidar_module.lidar_thread_instance.join(timeout=2.0)
-                 if lidar_module.lidar_thread_instance.is_alive():
-                      skriv_logg("Warning: Lidar thread did not finish gracefully within timeout.")
-                 else:
-                      skriv_logg("Lidar thread joined successfully.")
-
-            skriv_logg("Lidar cleanup complete.")
-        else:
-            # If lidar_object was not initialized, still try to call stop_lidar
-            # in case it handles some global cleanup.
-            skriv_logg("Lidar object was not initialized for cleanup.")
-            try:
-                 lidar_module.stop_lidar()
-            except Exception as e:
-                 skriv_logg(f"Error during Lidar stop attempt when object was None: {e}")
-
-
-    except Exception as e:
-        skriv_logg(f"Error during Lidar cleanup: {e}")
-
-    # 4. Add cleanup for IMU/Compass if they have specific cleanup methods (unlikely for these sensors)
-    # For MPU6050 and QMC5883L, usually no specific cleanup is needed beyond stopping reads.
-
-    # 5. Add cleanup for the serial connection to ESP32 if it's managed globally in motor_control.py
-    # Assuming motor_control.py manages the serial connection internally and it's closed on script exit.
-    # If you need explicit close: motor_control.close_serial() # (If you add this function)
-
-
-    skriv_logg("Cleanup completed. Program finished.")
-
-
-# --- PROGRAM ENTRY POINT ---
 if __name__ == "__main__":
-    # Optional: Try cleanup at start for a clean state (useful during development)
-    # try:
-    #    cleanup_systems()
-    # except Exception as e:
-    #    # FIX: Removed unnecessary backslashes causing SyntaxError
-    #    skriv_logg(f"Initial cleanup attempt failed: {e}")
-    # except Exception as e: # Removed duplicate except block causing error
-    #     pass # This except block was empty and redundant
-
-
-    initialize_systems()
-
-    # Run the main logic only if critical systems were initialized successfully
-    if initialized_successfully:
-        try:
-            main() # <--- Now main() is defined before this block
-        except Exception as e:
-            # FIX: Removed unnecessary backslashes causing SyntaxError
-            skriv_logg(f"Program exited due to unhandled error in main loop: {e}")
-    else:
-        skriv_logg("System initialization failed. Main loop will not run.")
-        # Ensure cleanup is called if initialization failed. It's called at the end of initialize_systems now.
-
-    # Ensure cleanup is called if main loop finished without exception (e.g., state change to stopped and break)
-    # Or if initialization failed and we didn't exit explicitly
-    # The finally block in main() calls cleanup_systems().
-    # If initialize_systems() fails before main is called, cleanup_systems() is called at the end of initialize_systems.
-    pass # Cleanup is handled by the calls within initialize_systems and main's finally block
+    main()
