@@ -175,7 +175,7 @@ class HeadingTracker:
             self.fused_heading = 0
             self.latest_compass = 0
         self.initialized = True
-        skriv_logg(f"[HEADING] Init: heading={self.fused_heading:.1f}�")
+        skriv_logg(f"[HEADING] Init: heading={self.fused_heading:.1f}°")
 
     def update(self):
         current_time = time.time()
@@ -204,7 +204,7 @@ class HeadingTracker:
                 correction = delta * kompass_vekt
                 self.fused_heading = (self.fused_heading + correction) % 360
                 skriv_logg(
-                    f"[HEADING] Kompass={compass_heading:.1f}� GyroZ={gyro_z:.2f}�/s ?={delta:.1f}� Korrigerer {correction:.2f}� ? {self.fused_heading:.1f}� (gyro_vekt={gyro_vekt:.2f})"
+                    f"[HEADING] Kompass={compass_heading:.1f}° GyroZ={gyro_z:.2f}°/s Δ={delta:.1f}° Korrigerer {correction:.2f}° → {self.fused_heading:.1f}° (gyro_vekt={gyro_vekt:.2f})"
                 )
             else:
                 skriv_logg("[HEADING] Kompassfeil, ingen korreksjon!")
@@ -279,125 +279,124 @@ def finn_aapninger(lidar, sikkerhetsradius):
     return segments
 
 def finn_storste_aapning(lidar, sikkerhetsradius):
-    openings = finn_aapninger(lidar, s     8rimport pygame
-import serial
-import time
-import math
-import threading
-import os
-from ultrasound_module import setup_ultrasound_gpio, check_all_ultrasound_sensors, cleanup_ultrasound_gpio
+    openings = finn_aapninger(lidar, sikkerhetsradius)
+    if not openings:
+        return None
+    best = max(openings, key=lambda x: x[2])
+    start, end, width = best
+    center = (start + width / 2) % 360
+    return center
 
-# ======== LOGGING ========
-def skriv_logg(melding, filnavn="logg.txt"):
-    timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
-    full_melding = f"[{timestamp}] {melding}"
-    print(full_melding)
-    with open(filnavn, "a") as f:
-        f.write(full_melding + "\n")
+# ======== NY ULTRALYD-FUNKSJON ========
+def ultralyd_blokkert(threshold=10.0):
+    triggered, _ = check_all_ultrasound_sensors(threshold)
+    return len(triggered) > 0
 
-# ======== SENSOR-KLASSER ========
+# ======== VISUALISERING ========
+def polar_to_cartesian(angle_deg, distance_cm, heading_deg=0, scale=2.0):
+    corrected_angle = -(angle_deg + heading_deg)
+    angle_rad = math.radians(corrected_angle)
+    x = math.cos(angle_rad) * distance_cm * scale
+    y = math.sin(angle_rad) * distance_cm * scale
+    return int(300 + x), int(300 - y)
 
-# --- MPU6050 GYRO ---
-class MPU6050:
-    def __init__(self):
-        import smbus
-        self.MPU6050_ADDR = 0x68
-        self.bus = smbus.SMBus(1)
-        self.offset_z = 0
-        self.setup_mpu6050()
+# ======== MAIN LOOP ========
+def main():
+    STEP = 100
+    ROTATE_STEP_DEFAULT = 50.0
+    DRIVE_TIME = 2.0
+    HEADING_TOLERANCE = 5.0
+    ROBOT_DIAMETER = 23.5
+    SAFETY_MARGIN = 2.0
+    SIKKERHETS_RADIUS = ROBOT_DIAMETER / 2 + SAFETY_MARGIN
 
-    def setup_mpu6050(self):
-        self.bus.write_byte_data(self.MPU6050_ADDR, 0x6B, 0x00)
-        time.sleep(0.1)
-        if os.path.exists("gyro_offset.txt"):
-            with open("gyro_offset.txt", "r") as f:
-                self.offset_z = float(f.readline().strip())
-                print(f"Lastet gyro offset: {self.offset_z:.5f}")
+    mpu = MPU6050()
+    kompass = Kompass()
+    lidar = Lidar()
+    motor = MotorController()
+    heading_tracker = HeadingTracker(kompass, mpu)
 
-    def read_gyro_z_raw(self):
-        high = self.bus.read_byte_data(self.MPU6050_ADDR, 0x47)
-        low = self.bus.read_byte_data(self.MPU6050_ADDR, 0x48)
-        value = (high << 8) | low
-        if value >= 0x8000:
-            value = -((65535 - value) + 1)
-        return (value / 131.0)
+    # ---- NY LINJE! ----
+    setup_ultrasound_gpio()
 
-    def read_gyro_z(self):
-        value = self.read_gyro_z_raw()
-        return value - self.offset_z
+    lidar.start()
+    state = "IDLE"
+    drive_start_time = None
+    current_target_angle = None
 
-# --- QMC5883L KOMPASS ---
-class Kompass:
-    def __init__(self):
-        import smbus
-        self.QMC5883L_ADDRESS = 0x0d
-        self.bus = smbus.SMBus(1)
-        self.QMC5883L_CTRL1 = 0x09
-        self.QMC5883L_SET_RESET = 0x0B
-        self.QMC5883L_DATA = 0x00
-        self.offset_x = 0
-        self.offset_y = 0
-        self.setup_compass()
+    pygame.init()
+    screen = pygame.display.set_mode((600, 600))
+    pygame.display.set_caption("Robotkontroll")
+    clock = pygame.time.Clock()
+    font = pygame.font.SysFont(None, 24)
+    running = True
 
-    def setup_compass(self):
-        try:
-            self.bus.write_byte_data(self.QMC5883L_ADDRESS, self.QMC5883L_SET_RESET, 0x01)
-            time.sleep(0.1)
-            self.bus.write_byte_data(self.QMC5883L_ADDRESS, self.QMC5883L_CTRL1, 0b00011101)
-            time.sleep(0.1)
-            if os.path.exists("kompas_offset.txt"):
-                with open("kompas_offset.txt", "r") as f:
-                    lines = f.readlines()
-                    if len(lines) >= 2:
-                        self.offset_x = float(lines[0].strip())
-                        self.offset_y = float(lines[1].strip())
-                        print(f"Offset lastet: x = {self.offset_x:.2f}, y = {self.offset_y:.2f}")
-        except Exception as e:
-            print(f"Feil ved initiering av kompass: {e}")
+    prev_command = (0, 0, 0)
+    while running:
+        screen.fill((0, 0, 0))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
 
-    def read_heading(self):
-        try:
-            data = self.bus.read_i2c_block_data(self.QMC5883L_ADDRESS, self.QMC5883L_DATA, 6)
-            x_raw = (data[1] << 8) | data[0]
-            y_raw = (data[3] << 8) | data[2]
-            x = x_raw - 65536 if x_raw > 32767 else x_raw
-            y = y_raw - 65536 if y_raw > 32767 else y_raw
-            x -= self.offset_x
-            y -= self.offset_y
-            heading_rad = math.atan2(y, x)
-            heading_deg = math.degrees(heading_rad)
-            if heading_deg < 0:
-                heading_deg += 360
-            return heading_deg
-        except Exception as e:
-            print(f"Feil ved lesing av kompass: {e}")
-            return -1
+        # ---- NY LINJE! (Bruk ultrasound readings) ----
+        _, ultrasound_distances = check_all_ultrasound_sensors(10.0)
+        fused_heading = heading_tracker.update()
+        x = y = omega = 0
 
-# --- LIDAR (RPLidar) ---
-class Lidar:
-    def __init__(self):
-        from rplidar import RPLidar
-        self.PORT_NAME = "/dev/rplidar"
-        self.ROBOT_RADIUS = 117.5
-        self.STOP_DISTANCE_LIDAR = 250
-        self.current_distance_lidar = 9999
-        self.lidar_buffer = []
-        self.scan_data = []
-        self.running = False
-        self.lidar = RPLidar(self.PORT_NAME, baudrate=115200)
+        if state == "IDLE":
+            if ultralyd_blokkert() or not lidar.is_path_clear():
+                state = "SEARCH"
+                skriv_logg("[HINDRING] Hindring oppdaget, starter søk.")
+                x, y, omega = (0, 0, ROTATE_STEP_DEFAULT)
+            else:
+                x, y, omega = (STEP, 0, 0)
+        elif state == "SEARCH":
+            angle = finn_storste_aapning(lidar, SIKKERHETS_RADIUS)
+            if angle is None:
+                x, y, omega = (0, 0, ROTATE_STEP_DEFAULT)
+            else:
+                current_target_angle = angle
+                delta = normalize_angle(current_target_angle - fused_heading)
+                if abs(delta) > HEADING_TOLERANCE:
+                    omega = heading_correction(fused_heading, current_target_angle)
+                    x, y = 0, 0
+                else:
+                    state = "DRIVING"
+                    drive_start_time = time.time()
+                    x, y, omega = (STEP, 0, 0)
+        elif state == "DRIVING":
+            if ultralyd_blokkert():
+                state = "IDLE"
+                x, y, omega = (0, 0, 0)
+            elif (time.time() - drive_start_time) < DRIVE_TIME:
+                x, y, omega = (STEP, 0, 0)
+            else:
+                state = "IDLE"
+                x, y, omega = (0, 0, 0)
+        current_command = (x, y, omega)
+        if current_command != prev_command:
+            motor.send(x, y, omega)
+            prev_command = current_command
 
-    def start(self):
-        self.running = True
-        threading.Thread(target=self._lidar_thread, daemon=True).start()
+        pygame.draw.circle(screen, (0, 255, 0), (300, 300), 5)
+        heading_rad = math.radians(-fused_heading)
+        end_x = int(300 + math.cos(heading_rad) * 50)
+        end_y = int(300 - math.sin(heading_rad) * 50)
+        pygame.draw.line(screen, (0, 0, 255), (300, 300), (end_x, end_y), 4)
+        for angle, distance in lidar.scan_data:
+            if distance > 0:
+                x_vis, y_vis = polar_to_cartesian(angle, distance / 10.0, fused_heading)
+                pygame.draw.circle(screen, (255, 255, 255), (x_vis, y_vis), 2)
+        pygame.display.update()
+        clock.tick(20)
 
-    def stop(self):
-        self.running = False
-        if self.lidar:
-            self.lidar.stop()
-            self.lidar.disconnect()
+    motor.send(0, 0, 0)
+    lidar.stop()
+    motor.close()
 
-    def _lidar_thread(self):
-        for scan in self.lidar.iter_scans():
-            temp_scan = []
-            for measurement in scan:
-     
+    # ---- NY LINJE! ----
+    cleanup_ultrasound_gpio()
+    pygame.quit()
+
+if __name__ == "__main__":
+    main()
