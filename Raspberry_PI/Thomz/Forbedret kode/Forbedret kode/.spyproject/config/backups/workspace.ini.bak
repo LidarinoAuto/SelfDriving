@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['../../../Erik_Magnussen/influx_ultralyd_Test.py', '../../../Erik_Magnussen/060425_v2/database.py', '../../../Erik_Magnussen/060425_v2/main.py', '../../../Karl M/self_driving/kontroll.py', '../../../Karl M/self_driving/sensorer/kompas.py', '../../../Karl M/self_driving/sensorer/mpu6050.py', '../../../Karl M/self_driving/visning/visualisering.py', '../../../Karl M/self_driving/kontrollsystem/heading.py', 'mpu6050.py', 'calibrate_compass.py', 'Heading_Tracker.py', 'imu_module.py', 'compass_module.py', 'main.py']
+recent_files = ['main.py']
 
 [main]
 version = 0.2.0

@@ -2836,3 +2836,1182 @@
 [2025-05-25 18:18:29] Disconnecting Lidar serial port...
 [2025-05-25 18:18:35] Lidar disconnected.
 [2025-05-25 18:18:35] Cleanup completed. Program finished.
+[2025-05-26 16:05:24] Starting robot systems initialization...
+[2025-05-26 16:05:25] Setting up ultrasound sensors...
+[2025-05-26 16:05:25] Setting up Ultrasound GPIO pins...
+[2025-05-26 16:05:25] Ultrasound GPIO setup complete.
+[2025-05-26 16:05:25] Ultrasound sensors set up.
+[2025-05-26 16:05:25] Initializing IMU system...
+[2025-05-26 16:05:25] Initializing IMU system...
+[2025-05-26 16:05:25] MPU6050 initialized successfully via mpu6050.py.
+[2025-05-26 16:05:25] Calibrating gyro bias. Keep robot completely still...
+[2025-05-26 16:05:25] Reading 500 raw gyro Z samples for bias calibration...
+[2025-05-26 16:05:31] Finished reading 500 gyro samples in 5.46s.
+[2025-05-26 16:05:31] Gyro bias Z calibrated: -0.1265 deg/s
+[2025-05-26 16:05:31] IMU system initialization and calibration successful.
+[2025-05-26 16:05:31] IMU system initialized successfully.
+[2025-05-26 16:05:31] Initializing QMC5883L...
+[2025-05-26 16:05:31] Initializing QMC5883L...
+[2025-05-26 16:05:31] QMC5883L sensor initialisert via I2C successfully.
+[2025-05-26 16:05:31] Compass offsets loaded: x=366.00, y=-389.00
+[2025-05-26 16:05:31] QMC5883L initialization reported success.
+[2025-05-26 16:05:31] Attempting to start Lidar at /dev/rplidar with baud rate 115200...
+[2025-05-26 16:05:31] Attempting to stop Lidar...
+[2025-05-26 16:05:31] Signal sent to Lidar thread to stop.
+[2025-05-26 16:05:31] Lidar object was not initialized.
+[2025-05-26 16:05:32] Lidar thread: Started scanning loop.
+[2025-05-26 16:05:32] Lidar initialized and data collection thread started.
+[2025-05-26 16:05:32] HeadingTracker: Initializing...
+[2025-05-26 16:05:32] HeadingTracker: Initializing...
+[2025-05-26 16:05:32] Compass Debug Heading: 62.67
+[2025-05-26 16:05:32] HeadingTracker: Initialized heading with first valid compass reading: 62.7 (raw)
+[2025-05-26 16:05:32] HeadingTracker: __init__ finished. Initial _current_heading is: 62.7
+[2025-05-26 16:05:32] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:32] All critical systems initialized successfully.
+[2025-05-26 16:05:32] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:32] Performing initial heading check and rotation...
+[2025-05-26 16:05:32] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:32] Current heading: 70.0	
+[2025-05-26 16:05:32] Initial heading is 70.0, outside tolerance 5.0 from 0.0. Executing initial rotation to 0.0 (Error: -70.0 )...
+[2025-05-26 16:05:32] Calling rotate_to_heading with heading_tracker, target_heading=0.0
+[2025-05-26 16:05:32] Starting rotation (compass) to heading: 0.00 
+[2025-05-26 16:05:32] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:32] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:32] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:32] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:32] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:32] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:32] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:32] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:32] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:32] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:32] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:32] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:32] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:32] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:32] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:32] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:32] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:32] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:32] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:32] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:32] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:32] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:32] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:32] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:32] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:32] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:33] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:33] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:33] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:33] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:33] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:33] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:33] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:33] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:33] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:33] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:33] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:33] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:33] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:33] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:33] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:33] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:33] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:33] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:33] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:33] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:33] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:33] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:33] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:33] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:33] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:33] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:33] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:33] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:33] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:33] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:33] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:33] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:33] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:33] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:33] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:33] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:33] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:33] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:33] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:33] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:34] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:34] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:34] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:34] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:34] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:34] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:34] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:34] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:34] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:34] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:34] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:34] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:34] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:34] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:34] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:34] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:34] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:34] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:34] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:34] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:34] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:34] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:34] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:34] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:34] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:34] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:34] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:34] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:34] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:34] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:34] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:34] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:34] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:34] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:34] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:34] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:34] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:34] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:34] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:34] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:35] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:35] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:35] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:35] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:35] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:35] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:35] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:35] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:35] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:35] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:35] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:35] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:35] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:35] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:35] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:35] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:35] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:35] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:35] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:35] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:35] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:35] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:35] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:35] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:35] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:35] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:35] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:35] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:35] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:35] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:35] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:35] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:35] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:35] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:35] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:35] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:35] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:35] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:36] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:36] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:36] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:36] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:36] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:36] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:36] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:36] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:36] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:36] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:36] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:36] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:36] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:36] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:36] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:36] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:36] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:36] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:36] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:36] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:36] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:36] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:36] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:36] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:36] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:36] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:36] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:36] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:36] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:36] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:36] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:36] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:36] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:36] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:36] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:36] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:36] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:36] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:36] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:36] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:37] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:37] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:37] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:37] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:37] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:37] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:37] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:37] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:37] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:37] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:37] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:37] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:37] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:37] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:37] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:37] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:37] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:37] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:37] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:37] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:37] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:37] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:37] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:37] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:37] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:37] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:37] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:37] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:37] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:37] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:37] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:37] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:37] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:37] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:37] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:37] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:37] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:37] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:37] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:37] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:38] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:38] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:38] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:38] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:38] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:38] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:38] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:38] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:38] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:38] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:38] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:38] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:38] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:38] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:38] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:38] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:38] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:38] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:38] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:38] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:38] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:38] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:38] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:38] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:38] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:38] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:38] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:38] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:38] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:38] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:38] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:38] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:38] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:38] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:38] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:38] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:38] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:38] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:38] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:38] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:39] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:39] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:39] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:39] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:39] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:39] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:39] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:39] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:39] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:39] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:39] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:39] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:39] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:39] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:39] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:39] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:39] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:39] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:39] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:39] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:39] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:39] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:39] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:39] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:39] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:39] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:39] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:39] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:39] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:39] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:39] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:39] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:39] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:39] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:39] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:39] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:39] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:39] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:39] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:39] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:40] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:40] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:40] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:40] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:40] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:40] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:40] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:40] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:40] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:40] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:40] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:40] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:40] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:40] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:40] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:40] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:40] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:40] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:40] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:40] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:40] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:40] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:40] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:40] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:40] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:40] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:40] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:40] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:40] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:40] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:40] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:40] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:40] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:40] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:40] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:40] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:40] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:40] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:41] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:41] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:41] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:41] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:41] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:41] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:41] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:41] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:41] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:41] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:41] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:41] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:41] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:41] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:41] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:41] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:41] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:41] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:41] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:41] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:41] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:41] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:41] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:41] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:41] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:41] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:41] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:41] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:41] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:41] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:41] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:41] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:41] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:41] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:41] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:41] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:41] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:41] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:41] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:41] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:42] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:42] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:42] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:42] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:42] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:42] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:42] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:42] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:42] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:42] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:42] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:42] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:42] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:42] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:42] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:42] PID Debug - Fused Heading: 69.97 , Error: -69.97 
+[2025-05-26 16:05:42] Stopping heading rotation...
+[2025-05-26 16:05:42] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:42] Heading rotation to 0.00 timed out after 10.55s. Final heading: 69.97. Final error: -69.97.
+[2025-05-26 16:05:42] Returned from rotate_to_heading.
+[2025-05-26 16:05:42] WARNING: Initial rotation failed or timed out.
+[2025-05-26 16:05:42] Starting main navigation loop.
+[2025-05-26 16:05:42] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:43] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:43] Moving forward at speed 100...
+[2025-05-26 16:05:43] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:43] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:43] Moving forward at speed 100...
+[2025-05-26 16:05:43] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:43] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:43] Moving forward at speed 100...
+[2025-05-26 16:05:43] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:44] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:44] Moving forward at speed 100...
+[2025-05-26 16:05:44] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:44] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:44] Moving forward at speed 100...
+[2025-05-26 16:05:44] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:44] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:44] Moving forward at speed 100...
+[2025-05-26 16:05:44] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:45] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:45] Moving forward at speed 100...
+[2025-05-26 16:05:45] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:45] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:45] Moving forward at speed 100...
+[2025-05-26 16:05:45] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:45] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:45] Moving forward at speed 100...
+[2025-05-26 16:05:45] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:46] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:46] Moving forward at speed 100...
+[2025-05-26 16:05:46] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:46] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:46] Moving forward at speed 100...
+[2025-05-26 16:05:46] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:46] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:46] Moving forward at speed 100...
+[2025-05-26 16:05:46] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:46] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:46] Moving forward at speed 100...
+[2025-05-26 16:05:47] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:47] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:47] Moving forward at speed 100...
+[2025-05-26 16:05:47] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:47] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:47] Moving forward at speed 100...
+[2025-05-26 16:05:47] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:47] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:47] Moving forward at speed 100...
+[2025-05-26 16:05:47] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:48] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:48] Moving forward at speed 100...
+[2025-05-26 16:05:48] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:48] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:48] Moving forward at speed 100...
+[2025-05-26 16:05:48] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:48] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:48] Moving forward at speed 100...
+[2025-05-26 16:05:48] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:49] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:49] Moving forward at speed 100...
+[2025-05-26 16:05:49] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:49] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:49] Moving forward at speed 100...
+[2025-05-26 16:05:49] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:49] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:49] Moving forward at speed 100...
+[2025-05-26 16:05:49] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:50] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:50] Moving forward at speed 100...
+[2025-05-26 16:05:50] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:50] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:50] Moving forward at speed 100...
+[2025-05-26 16:05:50] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:50] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:50] Moving forward at speed 100...
+[2025-05-26 16:05:50] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:51] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:51] Moving forward at speed 100...
+[2025-05-26 16:05:51] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:51] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:51] Moving forward at speed 100...
+[2025-05-26 16:05:51] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:51] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:51] Moving forward at speed 100...
+[2025-05-26 16:05:51] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:52] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:52] Moving forward at speed 100...
+[2025-05-26 16:05:52] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:52] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:52] Moving forward at speed 100...
+[2025-05-26 16:05:52] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:52] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:52] Moving forward at speed 100...
+[2025-05-26 16:05:52] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:52] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:05:52] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:05:52] Fallback turn: +25 
+[2025-05-26 16:05:52] Executing turn of 25 ...
+[2025-05-26 16:05:52] Executing rotate_by_gyro for 25.00 degrees...
+[2025-05-26 16:05:53] Stopping gyro rotation...
+[2025-05-26 16:05:53] Gyro rotation of 25.00 degrees completed. Total integrated rotation: 20.02 in 0.75s.
+[2025-05-26 16:05:53] Avoidance maneuver completed.
+[2025-05-26 16:05:54] Resuming forward movement...
+[2025-05-26 16:05:54] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:54] Moving forward at speed 100...
+[2025-05-26 16:05:54] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:54] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:05:54] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:05:54] Fallback turn: -25 
+[2025-05-26 16:05:54] Executing turn of -25 ...
+[2025-05-26 16:05:54] Executing rotate_by_gyro for -25.00 degrees...
+[2025-05-26 16:05:55] Stopping gyro rotation...
+[2025-05-26 16:05:55] Gyro rotation of -25.00 degrees completed. Total integrated rotation: -20.00 in 1.05s.
+[2025-05-26 16:05:55] Avoidance maneuver completed.
+[2025-05-26 16:05:56] Resuming forward movement...
+[2025-05-26 16:05:56] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:56] Moving forward at speed 100...
+[2025-05-26 16:05:56] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:56] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:05:56] US 1 triggered: Turning Right (+45 )
+[2025-05-26 16:05:56] Executing turn of 45 ...
+[2025-05-26 16:05:56] Executing rotate_by_gyro for 45.00 degrees...
+[2025-05-26 16:05:57] Stopping gyro rotation...
+[2025-05-26 16:05:57] Gyro rotation of 45.00 degrees completed. Total integrated rotation: 40.01 in 1.23s.
+[2025-05-26 16:05:57] Avoidance maneuver completed.
+[2025-05-26 16:05:58] Resuming forward movement...
+[2025-05-26 16:05:58] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:58] Moving forward at speed 100...
+[2025-05-26 16:05:58] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:58] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:05:58] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:05:58] Fallback turn: +25 
+[2025-05-26 16:05:58] Executing turn of 25 ...
+[2025-05-26 16:05:58] Executing rotate_by_gyro for 25.00 degrees...
+[2025-05-26 16:05:58] Stopping gyro rotation...
+[2025-05-26 16:05:59] Gyro rotation of 25.00 degrees completed. Total integrated rotation: 20.00 in 0.99s.
+[2025-05-26 16:05:59] Avoidance maneuver completed.
+[2025-05-26 16:05:59] Resuming forward movement...
+[2025-05-26 16:05:59] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:05:59] Moving forward at speed 100...
+[2025-05-26 16:05:59] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:00] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:00] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:06:00] Fallback turn: -25 
+[2025-05-26 16:06:00] Executing turn of -25 ...
+[2025-05-26 16:06:00] Executing rotate_by_gyro for -25.00 degrees...
+[2025-05-26 16:06:00] Stopping gyro rotation...
+[2025-05-26 16:06:01] Gyro rotation of -25.00 degrees completed. Total integrated rotation: -20.06 in 1.13s.
+[2025-05-26 16:06:01] Avoidance maneuver completed.
+[2025-05-26 16:06:01] Resuming forward movement...
+[2025-05-26 16:06:01] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:01] Moving forward at speed 100...
+[2025-05-26 16:06:01] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:02] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:02] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:06:02] Fallback turn: +25 
+[2025-05-26 16:06:02] Executing turn of 25 ...
+[2025-05-26 16:06:02] Executing rotate_by_gyro for 25.00 degrees...
+[2025-05-26 16:06:02] Stopping gyro rotation...
+[2025-05-26 16:06:03] Gyro rotation of 25.00 degrees completed. Total integrated rotation: 20.04 in 1.01s.
+[2025-05-26 16:06:03] Avoidance maneuver completed.
+[2025-05-26 16:06:03] Resuming forward movement...
+[2025-05-26 16:06:03] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:03] Moving forward at speed 100...
+[2025-05-26 16:06:03] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:03] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:03] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:06:03] Fallback turn: -25 
+[2025-05-26 16:06:03] Executing turn of -25 ...
+[2025-05-26 16:06:03] Executing rotate_by_gyro for -25.00 degrees...
+[2025-05-26 16:06:04] Stopping gyro rotation...
+[2025-05-26 16:06:05] Gyro rotation of -25.00 degrees completed. Total integrated rotation: -20.10 in 1.17s.
+[2025-05-26 16:06:05] Avoidance maneuver completed.
+[2025-05-26 16:06:05] Resuming forward movement...
+[2025-05-26 16:06:05] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:05] Moving forward at speed 100...
+[2025-05-26 16:06:05] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:05] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:05] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:06:05] Fallback turn: +25 
+[2025-05-26 16:06:05] Executing turn of 25 ...
+[2025-05-26 16:06:05] Executing rotate_by_gyro for 25.00 degrees...
+[2025-05-26 16:06:06] Stopping gyro rotation...
+[2025-05-26 16:06:06] Gyro rotation of 25.00 degrees completed. Total integrated rotation: 20.01 in 1.00s.
+[2025-05-26 16:06:06] Avoidance maneuver completed.
+[2025-05-26 16:06:07] Resuming forward movement...
+[2025-05-26 16:06:07] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:07] Moving forward at speed 100...
+[2025-05-26 16:06:07] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:07] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:07] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:06:07] Fallback turn: -25 
+[2025-05-26 16:06:07] Executing turn of -25 ...
+[2025-05-26 16:06:07] Executing rotate_by_gyro for -25.00 degrees...
+[2025-05-26 16:06:08] Stopping gyro rotation...
+[2025-05-26 16:06:08] Gyro rotation of -25.00 degrees completed. Total integrated rotation: -20.03 in 1.12s.
+[2025-05-26 16:06:08] Avoidance maneuver completed.
+[2025-05-26 16:06:09] Resuming forward movement...
+[2025-05-26 16:06:09] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:09] Moving forward at speed 100...
+[2025-05-26 16:06:09] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:09] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:09] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:06:09] Fallback turn: +25 
+[2025-05-26 16:06:09] Executing turn of 25 ...
+[2025-05-26 16:06:09] Executing rotate_by_gyro for 25.00 degrees...
+[2025-05-26 16:06:10] Stopping gyro rotation...
+[2025-05-26 16:06:10] Gyro rotation of 25.00 degrees completed. Total integrated rotation: 20.06 in 1.13s.
+[2025-05-26 16:06:10] Avoidance maneuver completed.
+[2025-05-26 16:06:11] Resuming forward movement...
+[2025-05-26 16:06:11] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:11] Moving forward at speed 100...
+[2025-05-26 16:06:11] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:11] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:11] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:06:11] Fallback turn: -25 
+[2025-05-26 16:06:11] Executing turn of -25 ...
+[2025-05-26 16:06:11] Executing rotate_by_gyro for -25.00 degrees...
+[2025-05-26 16:06:12] Stopping gyro rotation...
+[2025-05-26 16:06:12] Gyro rotation of -25.00 degrees completed. Total integrated rotation: -20.05 in 1.06s.
+[2025-05-26 16:06:12] Avoidance maneuver completed.
+[2025-05-26 16:06:13] Resuming forward movement...
+[2025-05-26 16:06:13] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:13] Moving forward at speed 100...
+[2025-05-26 16:06:13] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:13] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:13] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:06:13] Fallback turn: +25 
+[2025-05-26 16:06:13] Executing turn of 25 ...
+[2025-05-26 16:06:13] Executing rotate_by_gyro for 25.00 degrees...
+[2025-05-26 16:06:14] Stopping gyro rotation...
+[2025-05-26 16:06:14] Gyro rotation of 25.00 degrees completed. Total integrated rotation: 20.04 in 1.07s.
+[2025-05-26 16:06:14] Avoidance maneuver completed.
+[2025-05-26 16:06:15] Resuming forward movement...
+[2025-05-26 16:06:15] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:15] Moving forward at speed 100...
+[2025-05-26 16:06:15] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:15] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:15] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:06:15] Fallback turn: -25 
+[2025-05-26 16:06:15] Executing turn of -25 ...
+[2025-05-26 16:06:15] Executing rotate_by_gyro for -25.00 degrees...
+[2025-05-26 16:06:15] Stopping gyro rotation...
+[2025-05-26 16:06:16] Gyro rotation of -25.00 degrees completed. Total integrated rotation: -20.03 in 1.11s.
+[2025-05-26 16:06:16] Avoidance maneuver completed.
+[2025-05-26 16:06:16] Resuming forward movement...
+[2025-05-26 16:06:16] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:16] Moving forward at speed 100...
+[2025-05-26 16:06:17] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:17] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:17] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:06:17] Fallback turn: +25 
+[2025-05-26 16:06:17] Executing turn of 25 ...
+[2025-05-26 16:06:17] Executing rotate_by_gyro for 25.00 degrees...
+[2025-05-26 16:06:17] Stopping gyro rotation...
+[2025-05-26 16:06:18] Gyro rotation of 25.00 degrees completed. Total integrated rotation: 20.01 in 1.04s.
+[2025-05-26 16:06:18] Avoidance maneuver completed.
+[2025-05-26 16:06:18] Resuming forward movement...
+[2025-05-26 16:06:18] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:18] Moving forward at speed 100...
+[2025-05-26 16:06:18] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:19] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:19] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:06:19] Fallback turn: -25 
+[2025-05-26 16:06:19] Executing turn of -25 ...
+[2025-05-26 16:06:19] Executing rotate_by_gyro for -25.00 degrees...
+[2025-05-26 16:06:19] Stopping gyro rotation...
+[2025-05-26 16:06:20] Gyro rotation of -25.00 degrees completed. Total integrated rotation: -20.06 in 1.18s.
+[2025-05-26 16:06:20] Avoidance maneuver completed.
+[2025-05-26 16:06:20] Resuming forward movement...
+[2025-05-26 16:06:20] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:20] Moving forward at speed 100...
+[2025-05-26 16:06:20] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:21] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:21] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:06:21] Fallback turn: +25 
+[2025-05-26 16:06:21] Executing turn of 25 ...
+[2025-05-26 16:06:21] Executing rotate_by_gyro for 25.00 degrees...
+[2025-05-26 16:06:21] Stopping gyro rotation...
+[2025-05-26 16:06:22] Gyro rotation of 25.00 degrees completed. Total integrated rotation: 20.08 in 1.00s.
+[2025-05-26 16:06:22] Avoidance maneuver completed.
+[2025-05-26 16:06:22] Resuming forward movement...
+[2025-05-26 16:06:22] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:22] Moving forward at speed 100...
+[2025-05-26 16:06:22] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:22] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:22] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:06:22] Fallback turn: -25 
+[2025-05-26 16:06:22] Executing turn of -25 ...
+[2025-05-26 16:06:22] Executing rotate_by_gyro for -25.00 degrees...
+[2025-05-26 16:06:23] Stopping gyro rotation...
+[2025-05-26 16:06:24] Gyro rotation of -25.00 degrees completed. Total integrated rotation: -20.01 in 1.19s.
+[2025-05-26 16:06:24] Avoidance maneuver completed.
+[2025-05-26 16:06:24] Resuming forward movement...
+[2025-05-26 16:06:24] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:24] Moving forward at speed 100...
+[2025-05-26 16:06:24] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:24] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:24] US 1 triggered: Turning Right (+45 )
+[2025-05-26 16:06:24] Executing turn of 45 ...
+[2025-05-26 16:06:24] Executing rotate_by_gyro for 45.00 degrees...
+[2025-05-26 16:06:25] Stopping gyro rotation...
+[2025-05-26 16:06:26] Gyro rotation of 45.00 degrees completed. Total integrated rotation: 40.01 in 1.43s.
+[2025-05-26 16:06:26] Avoidance maneuver completed.
+[2025-05-26 16:06:26] Resuming forward movement...
+[2025-05-26 16:06:26] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:26] Moving forward at speed 100...
+[2025-05-26 16:06:26] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:27] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:27] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:06:27] Fallback turn: +25 
+[2025-05-26 16:06:27] Executing turn of 25 ...
+[2025-05-26 16:06:27] Executing rotate_by_gyro for 25.00 degrees...
+[2025-05-26 16:06:27] Stopping gyro rotation...
+[2025-05-26 16:06:27] Gyro rotation of 25.00 degrees completed. Total integrated rotation: 20.06 in 0.65s.
+[2025-05-26 16:06:27] Avoidance maneuver completed.
+[2025-05-26 16:06:28] Resuming forward movement...
+[2025-05-26 16:06:28] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:28] Moving forward at speed 100...
+[2025-05-26 16:06:28] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:28] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:28] US 0 triggered: Turning Left (-45 )
+[2025-05-26 16:06:28] Executing turn of -45 ...
+[2025-05-26 16:06:28] Executing rotate_by_gyro for -45.00 degrees...
+[2025-05-26 16:06:30] Stopping gyro rotation...
+[2025-05-26 16:06:30] Gyro rotation of -45.00 degrees completed. Total integrated rotation: -40.02 in 2.05s.
+[2025-05-26 16:06:30] Avoidance maneuver completed.
+[2025-05-26 16:06:31] Resuming forward movement...
+[2025-05-26 16:06:31] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:31] Moving forward at speed 100...
+[2025-05-26 16:06:31] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:31] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:31] Moving forward at speed 100...
+[2025-05-26 16:06:31] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:31] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:31] Moving forward at speed 100...
+[2025-05-26 16:06:31] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:32] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:32] Moving forward at speed 100...
+[2025-05-26 16:06:32] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:32] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:32] US 1 triggered: Turning Right (+45 )
+[2025-05-26 16:06:32] Executing turn of 45 ...
+[2025-05-26 16:06:32] Executing rotate_by_gyro for 45.00 degrees...
+[2025-05-26 16:06:33] Stopping gyro rotation...
+[2025-05-26 16:06:33] Gyro rotation of 45.00 degrees completed. Total integrated rotation: 40.07 in 1.21s.
+[2025-05-26 16:06:33] Avoidance maneuver completed.
+[2025-05-26 16:06:34] Resuming forward movement...
+[2025-05-26 16:06:34] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:34] Moving forward at speed 100...
+[2025-05-26 16:06:34] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:34] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:34] US 0 triggered: Turning Left (-45 )
+[2025-05-26 16:06:34] Executing turn of -45 ...
+[2025-05-26 16:06:34] Executing rotate_by_gyro for -45.00 degrees...
+[2025-05-26 16:06:35] Stopping gyro rotation...
+[2025-05-26 16:06:36] Gyro rotation of -45.00 degrees completed. Total integrated rotation: -40.04 in 1.57s.
+[2025-05-26 16:06:36] Avoidance maneuver completed.
+[2025-05-26 16:06:36] Resuming forward movement...
+[2025-05-26 16:06:36] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:36] Moving forward at speed 100...
+[2025-05-26 16:06:36] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:36] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:36] US 0 triggered: Turning Left (-45 )
+[2025-05-26 16:06:36] Executing turn of -45 ...
+[2025-05-26 16:06:36] Executing rotate_by_gyro for -45.00 degrees...
+[2025-05-26 16:06:37] Stopping gyro rotation...
+[2025-05-26 16:06:37] Gyro rotation of -45.00 degrees completed. Total integrated rotation: -40.04 in 1.01s.
+[2025-05-26 16:06:37] Avoidance maneuver completed.
+[2025-05-26 16:06:38] Resuming forward movement...
+[2025-05-26 16:06:38] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:38] Moving forward at speed 100...
+[2025-05-26 16:06:38] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:38] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:38] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:06:38] Fallback turn: -25 
+[2025-05-26 16:06:38] Executing turn of -25 ...
+[2025-05-26 16:06:38] Executing rotate_by_gyro for -25.00 degrees...
+[2025-05-26 16:06:38] Stopping gyro rotation...
+[2025-05-26 16:06:39] Gyro rotation of -25.00 degrees completed. Total integrated rotation: -20.00 in 0.74s.
+[2025-05-26 16:06:39] Avoidance maneuver completed.
+[2025-05-26 16:06:39] Resuming forward movement...
+[2025-05-26 16:06:39] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:39] Moving forward at speed 100...
+[2025-05-26 16:06:39] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:40] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:40] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:06:40] Fallback turn: +25 
+[2025-05-26 16:06:40] Executing turn of 25 ...
+[2025-05-26 16:06:40] Executing rotate_by_gyro for 25.00 degrees...
+[2025-05-26 16:06:40] Stopping gyro rotation...
+[2025-05-26 16:06:41] Gyro rotation of 25.00 degrees completed. Total integrated rotation: 20.04 in 0.98s.
+[2025-05-26 16:06:41] Avoidance maneuver completed.
+[2025-05-26 16:06:41] Resuming forward movement...
+[2025-05-26 16:06:41] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:41] Moving forward at speed 100...
+[2025-05-26 16:06:41] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:42] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:42] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:06:42] Fallback turn: -25 
+[2025-05-26 16:06:42] Executing turn of -25 ...
+[2025-05-26 16:06:42] Executing rotate_by_gyro for -25.00 degrees...
+[2025-05-26 16:06:42] Stopping gyro rotation...
+[2025-05-26 16:06:43] Gyro rotation of -25.00 degrees completed. Total integrated rotation: -20.05 in 1.13s.
+[2025-05-26 16:06:43] Avoidance maneuver completed.
+[2025-05-26 16:06:43] Resuming forward movement...
+[2025-05-26 16:06:43] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:43] Moving forward at speed 100...
+[2025-05-26 16:06:43] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:43] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:43] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:06:43] Fallback turn: +25 
+[2025-05-26 16:06:43] Executing turn of 25 ...
+[2025-05-26 16:06:43] Executing rotate_by_gyro for 25.00 degrees...
+[2025-05-26 16:06:44] Stopping gyro rotation...
+[2025-05-26 16:06:44] Gyro rotation of 25.00 degrees completed. Total integrated rotation: 20.01 in 1.01s.
+[2025-05-26 16:06:44] Avoidance maneuver completed.
+[2025-05-26 16:06:45] Resuming forward movement...
+[2025-05-26 16:06:45] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:45] Moving forward at speed 100...
+[2025-05-26 16:06:45] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:45] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:45] US 1 triggered: Turning Right (+45 )
+[2025-05-26 16:06:45] Executing turn of 45 ...
+[2025-05-26 16:06:45] Executing rotate_by_gyro for 45.00 degrees...
+[2025-05-26 16:06:46] Stopping gyro rotation...
+[2025-05-26 16:06:46] Gyro rotation of 45.00 degrees completed. Total integrated rotation: 40.05 in 1.01s.
+[2025-05-26 16:06:46] Avoidance maneuver completed.
+[2025-05-26 16:06:47] Resuming forward movement...
+[2025-05-26 16:06:47] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:47] Moving forward at speed 100...
+[2025-05-26 16:06:47] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:47] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:47] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:06:47] Fallback turn: -25 
+[2025-05-26 16:06:47] Executing turn of -25 ...
+[2025-05-26 16:06:47] Executing rotate_by_gyro for -25.00 degrees...
+[2025-05-26 16:06:48] Stopping gyro rotation...
+[2025-05-26 16:06:48] Gyro rotation of -25.00 degrees completed. Total integrated rotation: -20.02 in 1.16s.
+[2025-05-26 16:06:48] Avoidance maneuver completed.
+[2025-05-26 16:06:49] Resuming forward movement...
+[2025-05-26 16:06:49] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:49] Moving forward at speed 100...
+[2025-05-26 16:06:49] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:49] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:49] US 1 triggered: Turning Right (+45 )
+[2025-05-26 16:06:49] Executing turn of 45 ...
+[2025-05-26 16:06:49] Executing rotate_by_gyro for 45.00 degrees...
+[2025-05-26 16:06:50] Stopping gyro rotation...
+[2025-05-26 16:06:50] Gyro rotation of 45.00 degrees completed. Total integrated rotation: 40.04 in 1.26s.
+[2025-05-26 16:06:50] Avoidance maneuver completed.
+[2025-05-26 16:06:51] Resuming forward movement...
+[2025-05-26 16:06:51] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:51] Moving forward at speed 100...
+[2025-05-26 16:06:51] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:51] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:51] US 0 triggered: Turning Left (-45 )
+[2025-05-26 16:06:51] Executing turn of -45 ...
+[2025-05-26 16:06:51] Executing rotate_by_gyro for -45.00 degrees...
+[2025-05-26 16:06:52] Stopping gyro rotation...
+[2025-05-26 16:06:52] Gyro rotation of -45.00 degrees completed. Total integrated rotation: -40.06 in 1.17s.
+[2025-05-26 16:06:52] Avoidance maneuver completed.
+[2025-05-26 16:06:53] Resuming forward movement...
+[2025-05-26 16:06:53] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:53] Moving forward at speed 100...
+[2025-05-26 16:06:53] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:53] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:53] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:06:53] Fallback turn: +25 
+[2025-05-26 16:06:53] Executing turn of 25 ...
+[2025-05-26 16:06:53] Executing rotate_by_gyro for 25.00 degrees...
+[2025-05-26 16:06:54] Stopping gyro rotation...
+[2025-05-26 16:06:54] Gyro rotation of 25.00 degrees completed. Total integrated rotation: 20.05 in 1.02s.
+[2025-05-26 16:06:54] Avoidance maneuver completed.
+[2025-05-26 16:06:55] Resuming forward movement...
+[2025-05-26 16:06:55] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:55] Moving forward at speed 100...
+[2025-05-26 16:06:55] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:55] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:55] US 0 triggered: Turning Left (-45 )
+[2025-05-26 16:06:55] Executing turn of -45 ...
+[2025-05-26 16:06:55] Executing rotate_by_gyro for -45.00 degrees...
+[2025-05-26 16:06:56] Stopping gyro rotation...
+[2025-05-26 16:06:56] Gyro rotation of -45.00 degrees completed. Total integrated rotation: -40.03 in 1.37s.
+[2025-05-26 16:06:56] Avoidance maneuver completed.
+[2025-05-26 16:06:57] Resuming forward movement...
+[2025-05-26 16:06:57] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:57] Moving forward at speed 100...
+[2025-05-26 16:06:57] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:57] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:57] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:06:57] Fallback turn: -25 
+[2025-05-26 16:06:57] Executing turn of -25 ...
+[2025-05-26 16:06:57] Executing rotate_by_gyro for -25.00 degrees...
+[2025-05-26 16:06:57] Stopping gyro rotation...
+[2025-05-26 16:06:58] Gyro rotation of -25.00 degrees completed. Total integrated rotation: -20.00 in 0.74s.
+[2025-05-26 16:06:58] Avoidance maneuver completed.
+[2025-05-26 16:06:58] Resuming forward movement...
+[2025-05-26 16:06:58] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:58] Moving forward at speed 100...
+[2025-05-26 16:06:58] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:06:59] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:06:59] US 0 triggered: Turning Left (-45 )
+[2025-05-26 16:06:59] Executing turn of -45 ...
+[2025-05-26 16:06:59] Executing rotate_by_gyro for -45.00 degrees...
+[2025-05-26 16:06:59] Stopping gyro rotation...
+[2025-05-26 16:07:00] Gyro rotation of -45.00 degrees completed. Total integrated rotation: -40.05 in 1.02s.
+[2025-05-26 16:07:00] Avoidance maneuver completed.
+[2025-05-26 16:07:00] Resuming forward movement...
+[2025-05-26 16:07:00] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:00] Moving forward at speed 100...
+[2025-05-26 16:07:00] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:01] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:07:01] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:07:01] Fallback turn: +25 
+[2025-05-26 16:07:01] Executing turn of 25 ...
+[2025-05-26 16:07:01] Executing rotate_by_gyro for 25.00 degrees...
+[2025-05-26 16:07:01] Stopping gyro rotation...
+[2025-05-26 16:07:02] Gyro rotation of 25.00 degrees completed. Total integrated rotation: 20.01 in 1.00s.
+[2025-05-26 16:07:02] Avoidance maneuver completed.
+[2025-05-26 16:07:02] Resuming forward movement...
+[2025-05-26 16:07:02] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:02] Moving forward at speed 100...
+[2025-05-26 16:07:02] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:02] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:07:02] US 0 triggered: Turning Left (-45 )
+[2025-05-26 16:07:02] Executing turn of -45 ...
+[2025-05-26 16:07:02] Executing rotate_by_gyro for -45.00 degrees...
+[2025-05-26 16:07:03] Stopping gyro rotation...
+[2025-05-26 16:07:04] Gyro rotation of -45.00 degrees completed. Total integrated rotation: -40.05 in 1.50s.
+[2025-05-26 16:07:04] Avoidance maneuver completed.
+[2025-05-26 16:07:04] Resuming forward movement...
+[2025-05-26 16:07:04] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:04] Moving forward at speed 100...
+[2025-05-26 16:07:04] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:05] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:05] Moving forward at speed 100...
+[2025-05-26 16:07:05] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:05] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:07:05] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:07:05] Fallback turn: -25 
+[2025-05-26 16:07:05] Executing turn of -25 ...
+[2025-05-26 16:07:05] Executing rotate_by_gyro for -25.00 degrees...
+[2025-05-26 16:07:05] Stopping gyro rotation...
+[2025-05-26 16:07:06] Gyro rotation of -25.00 degrees completed. Total integrated rotation: -20.10 in 0.77s.
+[2025-05-26 16:07:06] Avoidance maneuver completed.
+[2025-05-26 16:07:06] Resuming forward movement...
+[2025-05-26 16:07:06] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:06] Moving forward at speed 100...
+[2025-05-26 16:07:06] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:07] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:07:07] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:07:07] Fallback turn: +25 
+[2025-05-26 16:07:07] Executing turn of 25 ...
+[2025-05-26 16:07:07] Executing rotate_by_gyro for 25.00 degrees...
+[2025-05-26 16:07:07] Stopping gyro rotation...
+[2025-05-26 16:07:07] Gyro rotation of 25.00 degrees completed. Total integrated rotation: 20.05 in 0.83s.
+[2025-05-26 16:07:07] Avoidance maneuver completed.
+[2025-05-26 16:07:08] Resuming forward movement...
+[2025-05-26 16:07:08] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:08] Moving forward at speed 100...
+[2025-05-26 16:07:08] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:08] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:07:08] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:07:08] Fallback turn: -25 
+[2025-05-26 16:07:08] Executing turn of -25 ...
+[2025-05-26 16:07:08] Executing rotate_by_gyro for -25.00 degrees...
+[2025-05-26 16:07:09] Stopping gyro rotation...
+[2025-05-26 16:07:09] Gyro rotation of -25.00 degrees completed. Total integrated rotation: -20.01 in 1.04s.
+[2025-05-26 16:07:09] Avoidance maneuver completed.
+[2025-05-26 16:07:10] Resuming forward movement...
+[2025-05-26 16:07:10] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:10] Moving forward at speed 100...
+[2025-05-26 16:07:10] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:10] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:10] Moving forward at speed 100...
+[2025-05-26 16:07:10] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:10] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:10] Moving forward at speed 100...
+[2025-05-26 16:07:10] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:11] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:07:11] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:07:11] Fallback turn: +25 
+[2025-05-26 16:07:11] Executing turn of 25 ...
+[2025-05-26 16:07:11] Executing rotate_by_gyro for 25.00 degrees...
+[2025-05-26 16:07:11] Stopping gyro rotation...
+[2025-05-26 16:07:12] Gyro rotation of 25.00 degrees completed. Total integrated rotation: 20.06 in 0.87s.
+[2025-05-26 16:07:12] Avoidance maneuver completed.
+[2025-05-26 16:07:12] Resuming forward movement...
+[2025-05-26 16:07:12] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:12] Moving forward at speed 100...
+[2025-05-26 16:07:12] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:12] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:12] Moving forward at speed 100...
+[2025-05-26 16:07:12] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:13] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:13] Moving forward at speed 100...
+[2025-05-26 16:07:13] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:13] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:13] Moving forward at speed 100...
+[2025-05-26 16:07:13] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:13] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:13] Moving forward at speed 100...
+[2025-05-26 16:07:13] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:14] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:14] Moving forward at speed 100...
+[2025-05-26 16:07:14] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:14] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:14] Moving forward at speed 100...
+[2025-05-26 16:07:14] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:14] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:14] Moving forward at speed 100...
+[2025-05-26 16:07:14] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:15] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:15] Moving forward at speed 100...
+[2025-05-26 16:07:15] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:15] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:15] Moving forward at speed 100...
+[2025-05-26 16:07:15] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:15] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:15] Moving forward at speed 100...
+[2025-05-26 16:07:15] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:15] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:15] Moving forward at speed 100...
+[2025-05-26 16:07:15] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:16] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:16] Moving forward at speed 100...
+[2025-05-26 16:07:16] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:16] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:16] Moving forward at speed 100...
+[2025-05-26 16:07:16] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:16] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:16] Moving forward at speed 100...
+[2025-05-26 16:07:16] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:17] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:17] Moving forward at speed 100...
+[2025-05-26 16:07:17] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:17] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:17] Moving forward at speed 100...
+[2025-05-26 16:07:17] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:17] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:17] Moving forward at speed 100...
+[2025-05-26 16:07:17] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:18] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:18] Moving forward at speed 100...
+[2025-05-26 16:07:18] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:18] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:18] Moving forward at speed 100...
+[2025-05-26 16:07:18] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:18] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:18] Moving forward at speed 100...
+[2025-05-26 16:07:18] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:19] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:19] Moving forward at speed 100...
+[2025-05-26 16:07:19] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:19] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:19] Moving forward at speed 100...
+[2025-05-26 16:07:19] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:19] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:19] Moving forward at speed 100...
+[2025-05-26 16:07:19] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:19] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:19] Moving forward at speed 100...
+[2025-05-26 16:07:20] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:20] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:20] Moving forward at speed 100...
+[2025-05-26 16:07:20] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:20] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:20] Moving forward at speed 100...
+[2025-05-26 16:07:20] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:20] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:20] Moving forward at speed 100...
+[2025-05-26 16:07:20] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:21] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:07:21] US 1 triggered: Turning Right (+45 )
+[2025-05-26 16:07:21] Executing turn of 45 ...
+[2025-05-26 16:07:21] Executing rotate_by_gyro for 45.00 degrees...
+[2025-05-26 16:07:21] Stopping gyro rotation...
+[2025-05-26 16:07:22] Gyro rotation of 45.00 degrees completed. Total integrated rotation: 40.05 in 1.10s.
+[2025-05-26 16:07:22] Avoidance maneuver completed.
+[2025-05-26 16:07:22] Resuming forward movement...
+[2025-05-26 16:07:22] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:22] Moving forward at speed 100...
+[2025-05-26 16:07:22] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:23] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:23] Moving forward at speed 100...
+[2025-05-26 16:07:23] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:23] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:23] Moving forward at speed 100...
+[2025-05-26 16:07:23] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:23] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:23] Moving forward at speed 100...
+[2025-05-26 16:07:23] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:24] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:24] Moving forward at speed 100...
+[2025-05-26 16:07:24] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:24] --- Obstacle detected! Stopping and planning avoidance ---
+[2025-05-26 16:07:24] Fallback triggered (LiDAR/Both Front US/Back US). Using alternating rotation.
+[2025-05-26 16:07:24] Fallback turn: -25 
+[2025-05-26 16:07:24] Executing turn of -25 ...
+[2025-05-26 16:07:24] Executing rotate_by_gyro for -25.00 degrees...
+[2025-05-26 16:07:24] Stopping gyro rotation...
+[2025-05-26 16:07:25] Gyro rotation of -25.00 degrees completed. Total integrated rotation: -20.04 in 0.84s.
+[2025-05-26 16:07:25] Avoidance maneuver completed.
+[2025-05-26 16:07:25] Resuming forward movement...
+[2025-05-26 16:07:25] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:25] Moving forward at speed 100...
+[2025-05-26 16:07:25] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:26] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:26] Moving forward at speed 100...
+[2025-05-26 16:07:26] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:26] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:26] Moving forward at speed 100...
+[2025-05-26 16:07:26] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:26] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:26] Moving forward at speed 100...
+[2025-05-26 16:07:26] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:26] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:26] Moving forward at speed 100...
+[2025-05-26 16:07:27] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:27] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:27] Moving forward at speed 100...
+[2025-05-26 16:07:27] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:27] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:27] Moving forward at speed 100...
+[2025-05-26 16:07:27] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:27] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:27] Moving forward at speed 100...
+[2025-05-26 16:07:27] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:28] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:28] Moving forward at speed 100...
+[2025-05-26 16:07:28] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:28] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+[2025-05-26 16:07:28] Moving forward at speed 100...
+[2025-05-26 16:07:28] HeadingTracker: get_heading() called. Raw: 62.7, Offset: 352.7, Returning: 70.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      

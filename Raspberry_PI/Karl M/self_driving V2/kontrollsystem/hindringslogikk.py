@@ -3,41 +3,34 @@ import time
 import math
 import logg
 import visning.visualisering as vis
+#import motor_control  # <-- Bruk denne fra prosjektet hvis du har den
 
-# Robot dimensions and safety
+# Robot dimensions and safety (ikke endret)
 ROBOT_DIAMETER = 23.5  # cm
-SAFETY_MARGIN = 2.0    # cm
+SAFETY_MARGIN = 2.0     # cm
 SIKKERHETS_RADIUS = ROBOT_DIAMETER / 2 + SAFETY_MARGIN  # cm
 
-# Control parameters
+# Control parameters (ikke endret)
 STEP = 100
 ROTATE_STEP_DEFAULT = 50.0
-HEADING_TOLERANCE = 18.0   # degrees
-DEADZONE = 8.0             # �kt for � unng� frem/tilbake
-DRIVE_TIME = 2.0           # seconds
+HEADING_TOLERANCE = 5.0   # degrees
+DRIVE_TIME = 2.0          # seconds
 SAFE_DISTANCE_ULTRASOUND = 10.0  # cm
-MAX_SEARCH_ROTATE_TIME = 4.0     # sekunder
-MIN_OPENING_WIDTH = 25           # Minimum bredde p� �pning i grader
 
-# State variables
+# State variables (ikke endret)
 state = "IDLE"
 drive_start_time = None
 current_target_angle = None
-search_start_time = None
 
-def heading_difference(target, current):
-    """Returnerer korteste vinkel-differanse fra current til target i grader (-180 til 180)."""
-    diff = (target - current + 180) % 360 - 180
-    return diff
+def normalize_angle(angle):
+    return (angle + 180) % 360 - 180
 
-def heading_correction(current_heading, target_heading, k=0.12, max_omega=ROTATE_STEP_DEFAULT):
-    """Proportional heading correction, clamped to max_omega."""
-    delta = heading_difference(target_heading, current_heading)
+def heading_correction(current_heading, target_heading, k=0.5, max_omega=ROTATE_STEP_DEFAULT):
+    delta = normalize_angle(target_heading - current_heading)
     omega = k * delta
     return max(-max_omega, min(max_omega, omega))
 
 def finn_aapninger():
-    """Returner liste av (start, end, width) for �pne segmenter."""
     fri = [False] * 360
     for angle, distance in lidar.scan_data:
         if not isinstance(angle, (int, float)) or distance <= SIKKERHETS_RADIUS:
@@ -65,7 +58,6 @@ def finn_aapninger():
         else:
             i += 1
 
-    # debug logging
     total_free = sum(fri)
     logg.skriv_logg(f"[DEBUG] Antall frie grader: {total_free}, segmenter funnet: {len(segments)}")
 
@@ -76,15 +68,12 @@ def finn_aapninger():
         merged = (last[0], first[1], first[2] + last[2])
         segments.insert(0, merged)
 
-    # Filtrer ut �pninger som er for smale
-    wide_segments = [s for s in segments if s[2] >= MIN_OPENING_WIDTH]
-    return wide_segments
+    return segments
 
 def finn_storste_aapning():
-    """Return center angle of the largest opening, or None if none."""
     openings = finn_aapninger()
     if not openings:
-        logg.skriv_logg("[DEBUG] Ingen �pning: ingen segmenter tilstrekkelig brede.")
+        logg.skriv_logg(f"[DEBUG] Ingen �pning: ingen segmenter tilstrekkelig brede.")
         vis.sett_aapninger([], None)
         return None
 
@@ -92,79 +81,65 @@ def finn_storste_aapning():
     best = max(openings, key=lambda x: x[2])
     start, end, width = best
     center = (start + width / 2) % 360
-    logg.skriv_logg(f"[S�K] Valgt �pning {start}?{end}, bredde {width}, midt: {center:.1f}")
+    logg.skriv_logg(f"[S�K] Valgt �pning {start}?{end}, bredde {width}�, midt: {center:.1f}�")
     vis.sett_aapninger(segment_pairs, center)
     return center
 
 def ultralyd_blokkert():
-    """Return True hvis noen ultralydsensor ser hindring n�rt."""
     for sensor, dist in ultrasound.sensor_distances.items():
         if 0 < dist < SAFE_DISTANCE_ULTRASOUND:
             logg.skriv_logg(f"[ULTRALYD] Sensor {sensor} blokkert: {dist:.1f} cm")
             return True
     return False
 
+def send_omnidrive_command(x, y, w):
+    """Send en kj�rekommando til roboten i omnidrive-format (X fremover, Y sideveis, W rotasjon)."""
+    # Her bruker vi motor_control-modulen fra prosjektet hvis tilgjengelig
+    kommando = f"{x} {y} {w}\n"
+    motor_control.send_command(kommando)
+    logg.skriv_logg(f"[KOMMANDO] Sendt: {kommando.strip()}")
+
 def autonom_logikk(heading):
-    """Robust state machine for obstacle avoidance."""
-    global state, drive_start_time, current_target_angle, search_start_time
+    global state, drive_start_time, current_target_angle
 
     if state == "IDLE":
         if ultralyd_blokkert() or not lidar.is_path_clear():
             state = "SEARCH"
-            current_target_angle = None
-            search_start_time = time.time()
             logg.skriv_logg("[HINDRING] Hindring oppdaget, starter s�k.")
+            send_omnidrive_command(0, 0, ROTATE_STEP_DEFAULT)
             return (0, 0, ROTATE_STEP_DEFAULT)
+        send_omnidrive_command(STEP, 0, 0)
         return (STEP, 0, 0)
 
     if state == "SEARCH":
-        # Timeout? Kj�r frem uansett!
-        if search_start_time and (time.time() - search_start_time) > MAX_SEARCH_ROTATE_TIME:
-            state = "DRIVING"
-            drive_start_time = time.time()
-            logg.skriv_logg("[S�K] Timeout p� rotasjon, pr�ver � kj�re frem.")
-            current_target_angle = None
-            return (STEP, 0, 0)
-
-        # Hvis vi ikke har valgt m�l, velg st�rste �pning �n gang
-        if current_target_angle is None:
-            angle = finn_storste_aapning()
-            if angle is None:
-                logg.skriv_logg("[S�K] Ingen �pning funnet, roterer videre.")
-                return (0, 0, ROTATE_STEP_DEFAULT)
-            current_target_angle = angle
-            logg.skriv_logg(f"[S�K] Target for �pning: {current_target_angle}")
-
-        # Hold p� valgt m�l helt til vi peker mot det
-        delta = heading_difference(current_target_angle, heading)
-        logg.skriv_logg(f"[S�K] Mot �pning: target={current_target_angle:.1f}, n�={heading:.1f}, delta={delta:.1f}")
-
-        if abs(delta) < DEADZONE:
-            omega = 0
-            logg.skriv_logg("[S�K] D�dssone aktivert, omega=0")
-        else:
+        angle = finn_storste_aapning()
+        if angle is None:
+            logg.skriv_logg("[S�K] Ingen �pning funnet, roterer videre.")
+            send_omnidrive_command(0, 0, ROTATE_STEP_DEFAULT)
+            return (0, 0, ROTATE_STEP_DEFAULT)
+        current_target_angle = angle
+        delta = normalize_angle(current_target_angle - heading)
+        if abs(delta) > HEADING_TOLERANCE:
             omega = heading_correction(heading, current_target_angle)
-            logg.skriv_logg(f"[S�K] Justerer, omega={omega:.1f}")
-
-        # Hvis vi er "innenfor" HEADING_TOLERANCE, g� over til kj�ring!
-        if abs(delta) <= HEADING_TOLERANCE:
-            state = "DRIVING"
-            drive_start_time = time.time()
-            logg.skriv_logg(f"[S�K] Justering mot {current_target_angle:.1f}� ferdig, kj�rer frem.")
-            current_target_angle = None
-            return (STEP, 0, 0)
-        else:
+            logg.skriv_logg(f"[S�K] Justerer mot �pning: delta {delta:.1f}�, omega {omega:.1f}")
+            send_omnidrive_command(0, 0, omega)
             return (0, 0, omega)
+        state = "DRIVING"
+        drive_start_time = time.time()
+        logg.skriv_logg(f"[S�K] Justering mot {current_target_angle:.1f}� ferdig, kj�rer frem.")
+        send_omnidrive_command(STEP, 0, 0)
+        return (STEP, 0, 0)
 
     if state == "DRIVING":
         if ultralyd_blokkert():
             logg.skriv_logg("[DRIVING] Hindring foran, avbryter.")
             state = "IDLE"
-            current_target_angle = None
+            send_omnidrive_command(0, 0, 0)
             return (0, 0, 0)
         if (time.time() - drive_start_time) < DRIVE_TIME:
+            send_omnidrive_command(STEP, 0, 0)
             return (STEP, 0, 0)
         logg.skriv_logg("[DRIVING] Kj�ring ferdig, tilbake til IDLE.")
         state = "IDLE"
-        current_target_angle = None
+        send_omnidrive_command(0, 0, 0)
         return (0, 0, 0)

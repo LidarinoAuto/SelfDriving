@@ -383,7 +383,7 @@ def main():
                         # This would be a second, slower PID loop for course correction
 
                     skriv_logg(f"Moving forward at speed {FORWARD_SPEED}...")
-                    motor_control.send_command(f"{FORWARD_SPEED} {FORWARD_SPEED} {0.0:.2f}\n")
+                    motor_control.send_command(f"{FORWARD_SPEED} 0 0\n")
                 else:
                      # If not initialized or heading is invalid, stop and log
                      skriv_logg("Not initialized successfully or heading invalid. Stopping.")
